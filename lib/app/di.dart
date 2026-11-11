@@ -5,7 +5,10 @@ import 'package:walks/app/firebase_options.dart';
 import 'package:walks/app/implementations.dart';
 import 'package:walks/data/repositories/crash/crashlytics_crash_reporter.dart';
 import 'package:walks/data/repositories/crash/fake_crash_reporter.dart';
+import 'package:walks/data/services/method_channel_native_crasher.dart';
 import 'package:walks/domain/repositories/crash_reporter.dart';
+import 'package:walks/domain/repositories/native_crasher.dart';
+import 'package:walks/ui/dev_menu/bloc/dev_menu_cubit.dart';
 
 /// The container of the app's dependencies.
 final GetIt getIt = GetIt.instance;
@@ -31,4 +34,11 @@ Future<void> configureDependencies(Implementations implementations) async {
       ),
     },
   );
+
+  // Developer tools.
+  getIt
+    ..registerLazySingleton<NativeCrasher>(MethodChannelNativeCrasher.new)
+    ..registerFactory(
+      () => DevMenuCubit(crashReporter: getIt(), nativeCrasher: getIt()),
+    );
 }
