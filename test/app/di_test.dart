@@ -1,9 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:walks/app/di.dart';
+import 'package:walks/app/implementations.dart';
 import 'package:walks/domain/repositories/crash_reporter.dart';
 
 void main() {
-  setUp(configureDependencies);
+  // On fakes: real SDKs cannot start in a unit test.
+  setUp(() => configureDependencies(Implementations.fakes));
   tearDown(getIt.reset);
 
   // Resolving, not just isRegistered: factories run only when asked, so this
