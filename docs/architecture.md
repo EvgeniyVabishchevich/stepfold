@@ -73,6 +73,14 @@ test/                         зеркалит lib/; contracts/ — общие �
 | Блоки | `bloc_test` на фейках | Запись прогулки, пейволл: каждый путь ошибки sealed-исключения — отдельный тест |
 | Экраны | widget-тесты | Пейволл по состояниям подписки |
 | База | drift в памяти (`NativeDatabase.memory()`) | Миграция v1 → v2 |
+| Граф зависимостей | `configureDependencies()`, затем `getIt<T>()` на каждый тип — не `isRegistered`: фабрики выполняются только при запросе | `test/app/di_test.dart` |
+
+### CI — решено 12.11.2026
+
+GitHub Actions, `.github/workflows/ci.yml`, на каждый PR в `main` и push в `main`. Версия Flutter — из `.fvmrc`, одна на машину и CI. Две параллельные задачи:
+
+- **Проверки:** `dart format --set-exit-if-changed`, `flutter analyze --fatal-infos` (подсказки линтера тоже валят сборку), `flutter test --coverage`. Процент покрытия — в сводке запуска, `lcov.info` — артефактом на 14 дней. Порога покрытия нет.
+- **Сборка Android:** `flutter build apk --debug` на Java 17 — проверяем, что нативная часть собирается.
 
 ### Порядок работ — решено 11.11
 
