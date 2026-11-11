@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:walks/app/app.dart';
+import 'package:walks/app/di.dart';
+import 'package:walks/app/error_handlers.dart';
+import 'package:walks/app/implementations.dart';
+import 'package:walks/domain/repositories/crash_reporter.dart';
 
-void main() => runApp(const StepfoldApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await configureDependencies();
 
-/// Root widget of the Stepfold app.
-class StepfoldApp extends StatelessWidget {
-  /// Creates the root widget.
-  const StepfoldApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Stepfold',
-      home: Scaffold(body: Center(child: Text('Stepfold'))),
-    );
+  final crashReporter = getIt<CrashReporter>();
+  installErrorHandlers(crashReporter);
+  for (final MapEntry(:key, :value) in chosenImplementations.entries) {
+    await crashReporter.setKey(key, value);
   }
+
+  runApp(const StepfoldApp());
 }
