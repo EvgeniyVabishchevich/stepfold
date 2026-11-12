@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:marionette_flutter/marionette_flutter.dart';
 import 'package:walks/app/app.dart';
 import 'package:walks/app/di.dart';
 import 'package:walks/app/error_handlers.dart';
@@ -9,7 +11,13 @@ import 'package:walks/domain/repositories/crash_reporter.dart';
 // Firebase, the handlers need the reporter. An error before the handlers are
 // installed reaches only the console.
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  // Marionette lets an agent read and tap the running app through the VM
+  // service. Release has no VM service, and tree shaking drops this branch.
+  if (kReleaseMode) {
+    WidgetsFlutterBinding.ensureInitialized();
+  } else {
+    MarionetteBinding.ensureInitialized();
+  }
   await configureDependencies(chosenImplementations);
 
   final crashReporter = getIt<CrashReporter>();
