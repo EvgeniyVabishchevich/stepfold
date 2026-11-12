@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "772186568900",
+    "project_id": "stepfold-app",
+    "storage_bucket": "stepfold-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:772186568900:android:37cb6c1292fb0bd2527191",
+        "android_client_info": {
+          "package_name": "dev.ettynat.stepfold"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgxncY7Lc87rBhl4lcQT-tV8BxYRHia8w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
