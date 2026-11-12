@@ -42,6 +42,6 @@ Flutter-приложение, в котором шаги открывают гл
 
 ## Текущее состояние
 
-Этап 0 закрыт 09.11.2026, каркас создан. Flutter 3.47.9 через fvm: команды запускаем как `fvm flutter …`. Bundle ID — `dev.ettynat.stepfold`, имя пакета Dart — `walks`.
+Этап 0 закрыт 09.11.2026, каркас создан. Flutter 3.50.0 через fvm: команды запускаем как `fvm flutter …`. Bundle ID — `dev.ettynat.stepfold`, имя пакета Dart — `walks`.
 
 Этап A закрыт 11.11.2026: `app/` с корнем композиции на get_it, `CrashReporter` с фейком и перехватом ошибок. Дальше — этап B: CI и Crashlytics.
