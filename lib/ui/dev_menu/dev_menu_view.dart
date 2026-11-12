@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:walks/ui/dev_menu/bloc/dev_menu_cubit.dart';
 
 /// Buttons that produce test errors, and what was done last.

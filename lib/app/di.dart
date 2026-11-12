@@ -5,9 +5,13 @@ import 'package:walks/app/firebase_options.dart';
 import 'package:walks/app/implementations.dart';
 import 'package:walks/data/repositories/crash/crashlytics_crash_reporter.dart';
 import 'package:walks/data/repositories/crash/fake_crash_reporter.dart';
+import 'package:walks/data/repositories/permissions/fake_permission_service.dart';
+import 'package:walks/data/repositories/steps/fake_step_source.dart';
 import 'package:walks/data/services/method_channel_native_crasher.dart';
 import 'package:walks/domain/repositories/crash_reporter.dart';
 import 'package:walks/domain/repositories/native_crasher.dart';
+import 'package:walks/domain/repositories/permission_service.dart';
+import 'package:walks/domain/repositories/step_source.dart';
 import 'package:walks/ui/dev_menu/bloc/dev_menu_cubit.dart';
 
 /// The container of the app's dependencies.
@@ -34,6 +38,12 @@ Future<void> configureDependencies(Implementations implementations) async {
       ),
     },
   );
+
+  // Only fakes so far; the real ones come in stage D, and with them a choice
+  // in `Implementations`.
+  getIt
+    ..registerLazySingleton<PermissionService>(FakePermissionService.new)
+    ..registerLazySingleton<StepSource>(FakeStepSource.new);
 
   // Developer tools.
   getIt
