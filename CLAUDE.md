@@ -15,7 +15,7 @@ Flutter-приложение, в котором шаги открывают гл
 ## Правила кода
 
 - Слои сверху: `lib/app/`, `lib/domain/`, `lib/data/`, `lib/ui/`. Подробно — [architecture.md](docs/architecture.md#структура).
-- `domain/` импортирует только Dart (и `clock`). Ни `flutter`, ни `dio`, ни SDK.
+- `domain/` импортирует только Dart, `clock` и `freezed_annotation`. Ни `flutter`, ни `dio`, ни SDK.
 - Интерфейсы — в `domain/repositories/`, реализации — в `data/repositories/<область>/`: `fake_…`, `<вариант1>_…`, `<вариант2>_…`.
 - `ui/` знает только `domain/`. Блок получает интерфейс в конструкторе.
 - Экран — Page/View: `Page` берёт блок из `getIt` и отдаёт `View`, `View` — вёрстка без get_it. Тесты — на `View`.
