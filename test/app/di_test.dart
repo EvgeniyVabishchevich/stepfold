@@ -3,6 +3,8 @@ import 'package:walks/app/di.dart';
 import 'package:walks/app/implementations.dart';
 import 'package:walks/domain/repositories/crash_reporter.dart';
 import 'package:walks/domain/repositories/native_crasher.dart';
+import 'package:walks/domain/repositories/permission_service.dart';
+import 'package:walks/domain/repositories/step_source.dart';
 import 'package:walks/ui/dev_menu/bloc/dev_menu_cubit.dart';
 
 void main() {
@@ -17,6 +19,8 @@ void main() {
 
     expect(getIt.get<CrashReporter>, returnsNormally);
     expect(getIt.get<NativeCrasher>, returnsNormally);
+    expect(getIt.get<PermissionService>, returnsNormally);
+    expect(getIt.get<StepSource>, returnsNormally);
     expect(getIt.get<DevMenuCubit>, returnsNormally);
   });
 }
