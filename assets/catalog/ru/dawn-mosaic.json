@@ -1,0 +1,59 @@
+{
+  "chapters": {
+    "piece-1": [
+      {
+        "type": "image",
+        "source": "images/dawn-mosaic-1.png",
+        "caption": "Ночное небо"
+      },
+      {
+        "type": "paragraph",
+        "text": "Первый кусочек — тёмное небо, на котором ещё видны звёзды."
+      }
+    ],
+    "piece-2": [
+      {
+        "type": "image",
+        "source": "images/dawn-mosaic-2.png",
+        "caption": "Край горизонта"
+      },
+      {
+        "type": "paragraph",
+        "text": "У горизонта небо светлеет: ночь кончается."
+      }
+    ],
+    "piece-3": [
+      {
+        "type": "image",
+        "source": "images/dawn-mosaic-3.png",
+        "caption": "Первый луч"
+      },
+      {
+        "type": "paragraph",
+        "text": "Над краем земли появляется тонкая золотая полоса."
+      }
+    ],
+    "piece-4": [
+      {
+        "type": "image",
+        "source": "images/dawn-mosaic-4.png",
+        "caption": "Утренние облака"
+      },
+      {
+        "type": "paragraph",
+        "text": "Облака розовеют раньше, чем встаёт солнце."
+      }
+    ],
+    "piece-5": [
+      {
+        "type": "image",
+        "source": "images/dawn-mosaic-5.png",
+        "caption": "Рассвет"
+      },
+      {
+        "type": "paragraph",
+        "text": "Последний кусочек — солнце. Картина собрана."
+      }
+    ]
+  }
+}

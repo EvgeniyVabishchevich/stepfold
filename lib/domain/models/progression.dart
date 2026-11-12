@@ -12,10 +12,17 @@ enum ChapterOrder {
 }
 
 /// A chapter: one step of a progression, opened for [price] steps.
+///
+/// Holds only what a list shows. The text and pictures of the chapter are
+/// its `ChapterContent`, read from the catalog when the chapter is opened.
 @freezed
 abstract class Chapter with _$Chapter {
   /// Creates a chapter.
-  const factory Chapter({required String id, required int price}) = _Chapter;
+  const factory Chapter({
+    required String id,
+    required int price,
+    @Default('') String title,
+  }) = _Chapter;
 }
 
 /// A progression: an ordered list of chapters of one kind.
@@ -24,11 +31,17 @@ abstract class Chapter with _$Chapter {
 @freezed
 abstract class Progression with _$Progression {
   /// Creates a progression.
+  ///
+  /// A [hidden] progression is no longer offered to new users, but stays
+  /// for those who started it: published ids are never removed.
   const factory Progression({
     required String id,
     required String kind,
     required ChapterOrder order,
     required List<Chapter> chapters,
+    @Default('') String title,
+    @Default('') String description,
+    @Default(false) bool hidden,
   }) = _Progression;
 
   const Progression._();

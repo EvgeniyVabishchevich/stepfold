@@ -1,13 +1,17 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:walks/app/firebase_options.dart';
 import 'package:walks/app/implementations.dart';
+import 'package:walks/data/repositories/catalog/asset_catalog.dart';
+import 'package:walks/data/repositories/catalog/fake_catalog.dart';
 import 'package:walks/data/repositories/crash/crashlytics_crash_reporter.dart';
 import 'package:walks/data/repositories/crash/fake_crash_reporter.dart';
 import 'package:walks/data/repositories/permissions/fake_permission_service.dart';
 import 'package:walks/data/repositories/steps/fake_step_source.dart';
 import 'package:walks/data/services/method_channel_native_crasher.dart';
+import 'package:walks/domain/repositories/catalog.dart';
 import 'package:walks/domain/repositories/crash_reporter.dart';
 import 'package:walks/domain/repositories/native_crasher.dart';
 import 'package:walks/domain/repositories/permission_service.dart';
@@ -36,6 +40,13 @@ Future<void> configureDependencies(Implementations implementations) async {
       CrashReporterImpl.crashlytics => CrashlyticsCrashReporter(
         FirebaseCrashlytics.instance,
       ),
+    },
+  );
+
+  getIt.registerLazySingleton<Catalog>(
+    () => switch (implementations.catalog) {
+      CatalogImpl.fake => FakeCatalog(),
+      CatalogImpl.assets => AssetCatalog(rootBundle),
     },
   );
 
