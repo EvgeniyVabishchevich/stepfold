@@ -1,0 +1,136 @@
+{
+  "formatVersion": 1,
+  "defaultLanguage": "ru",
+  "languages": [
+    "ru"
+  ],
+  "kinds": [
+    "story",
+    "journey",
+    "collection",
+    "picture"
+  ],
+  "lengthGroups": [
+    {
+      "id": "short",
+      "maxSteps": 30000
+    },
+    {
+      "id": "medium",
+      "maxSteps": 80000
+    },
+    {
+      "id": "long"
+    }
+  ],
+  "progressions": [
+    {
+      "id": "lighthouse",
+      "kind": "story",
+      "order": "strict",
+      "chapters": [
+        {
+          "id": "island",
+          "price": 1500
+        },
+        {
+          "id": "storm",
+          "price": 5000
+        },
+        {
+          "id": "letter",
+          "price": 6000
+        },
+        {
+          "id": "boat",
+          "price": 7000
+        },
+        {
+          "id": "dawn",
+          "price": 8000
+        }
+      ]
+    },
+    {
+      "id": "golden-ring",
+      "kind": "journey",
+      "order": "strict",
+      "chapters": [
+        {
+          "id": "sergiev-posad",
+          "price": 2000
+        },
+        {
+          "id": "pereslavl",
+          "price": 6000
+        },
+        {
+          "id": "rostov",
+          "price": 6000
+        },
+        {
+          "id": "yaroslavl",
+          "price": 7000
+        },
+        {
+          "id": "kostroma",
+          "price": 7000
+        }
+      ]
+    },
+    {
+      "id": "ural-stones",
+      "kind": "collection",
+      "order": "free",
+      "chapters": [
+        {
+          "id": "malachite",
+          "price": 1000
+        },
+        {
+          "id": "jasper",
+          "price": 5000
+        },
+        {
+          "id": "rhodonite",
+          "price": 5000
+        },
+        {
+          "id": "amethyst",
+          "price": 6000
+        },
+        {
+          "id": "rock-crystal",
+          "price": 6000
+        }
+      ]
+    },
+    {
+      "id": "dawn-mosaic",
+      "kind": "picture",
+      "order": "free",
+      "chapters": [
+        {
+          "id": "piece-1",
+          "price": 1000
+        },
+        {
+          "id": "piece-2",
+          "price": 5000
+        },
+        {
+          "id": "piece-3",
+          "price": 5000
+        },
+        {
+          "id": "piece-4",
+          "price": 5000
+        },
+        {
+          "id": "piece-5",
+          "price": 5000
+        }
+      ]
+    }
+  ]
+}

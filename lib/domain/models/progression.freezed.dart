@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Chapter {
 
- String get id; int get price;
+ String get id; int get price; String get title;
 /// Create a copy of Chapter
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,20 +27,20 @@ $ChapterCopyWith<Chapter> get copyWith => _$ChapterCopyWithImpl<Chapter>(this as
 @override
 bool operator ==(Object other) {
   final _this = this as Chapter;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Chapter&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.price, _this.price) || other.price == _this.price));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Chapter&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.price, _this.price) || other.price == _this.price)&&(identical(other.title, _this.title) || other.title == _this.title));
 }
 
 
 @override
 int get hashCode {
   final _this = this as Chapter;
-  return Object.hash(runtimeType,_this.id,_this.price);
+  return Object.hash(runtimeType,_this.id,_this.price,_this.title);
 }
 
 @override
 String toString() {
   final _this = this as Chapter;
-  return 'Chapter(id: ${_this.id}, price: ${_this.price})';
+  return 'Chapter(id: ${_this.id}, price: ${_this.price}, title: ${_this.title})';
 }
 
 
@@ -51,7 +51,7 @@ abstract mixin class $ChapterCopyWith<$Res>  {
   factory $ChapterCopyWith(Chapter value, $Res Function(Chapter) _then) = _$ChapterCopyWithImpl;
 @useResult
 $Res call({
- String id, int price
+ String id, int price, String title
 });
 
 
@@ -68,11 +68,12 @@ class _$ChapterCopyWithImpl<$Res>
 
 /// Create a copy of Chapter
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? price = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? price = null,Object? title = null,}) {
   return _then(Chapter(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
-as int,
+as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -157,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  int price)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  int price,  String title)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Chapter() when $default != null:
-return $default(_that.id,_that.price);case _:
+return $default(_that.id,_that.price,_that.title);case _:
   return orElse();
 
 }
@@ -178,10 +179,10 @@ return $default(_that.id,_that.price);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  int price)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  int price,  String title)  $default,) {final _that = this;
 switch (_that) {
 case _Chapter():
-return $default(_that.id,_that.price);case _:
+return $default(_that.id,_that.price,_that.title);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +199,10 @@ return $default(_that.id,_that.price);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  int price)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  int price,  String title)?  $default,) {final _that = this;
 switch (_that) {
 case _Chapter() when $default != null:
-return $default(_that.id,_that.price);case _:
+return $default(_that.id,_that.price,_that.title);case _:
   return null;
 
 }
@@ -213,11 +214,12 @@ return $default(_that.id,_that.price);case _:
 
 
 class _Chapter implements Chapter {
-  const _Chapter({required this.id, required this.price});
+  const _Chapter({required this.id, required this.price, this.title = ''});
   
 
 @override final  String id;
 @override final  int price;
+@override@JsonKey() final  String title;
 
 /// Create a copy of Chapter
 /// with the given fields replaced by the non-null parameter values.
@@ -229,18 +231,18 @@ _$ChapterCopyWith<_Chapter> get copyWith => __$ChapterCopyWithImpl<_Chapter>(thi
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Chapter&&(identical(other.id, id) || other.id == id)&&(identical(other.price, price) || other.price == price));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Chapter&&(identical(other.id, id) || other.id == id)&&(identical(other.price, price) || other.price == price)&&(identical(other.title, title) || other.title == title));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,price);
+    return Object.hash(runtimeType,id,price,title);
 }
 
 @override
 String toString() {
-    return 'Chapter(id: $id, price: $price)';
+    return 'Chapter(id: $id, price: $price, title: $title)';
 }
 
 
@@ -251,7 +253,7 @@ abstract mixin class _$ChapterCopyWith<$Res> implements $ChapterCopyWith<$Res> {
   factory _$ChapterCopyWith(_Chapter value, $Res Function(_Chapter) _then) = __$ChapterCopyWithImpl;
 @override @useResult
 $Res call({
- String id, int price
+ String id, int price, String title
 });
 
 
@@ -268,11 +270,12 @@ class __$ChapterCopyWithImpl<$Res>
 
 /// Create a copy of Chapter
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? price = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? price = null,Object? title = null,}) {
   return _then(_Chapter(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
-as int,
+as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -282,7 +285,7 @@ as int,
 /// @nodoc
 mixin _$Progression {
 
- String get id; String get kind; ChapterOrder get order; List<Chapter> get chapters;
+ String get id; String get kind; ChapterOrder get order; List<Chapter> get chapters; String get title; String get description; bool get hidden;
 /// Create a copy of Progression
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -294,20 +297,20 @@ $ProgressionCopyWith<Progression> get copyWith => _$ProgressionCopyWithImpl<Prog
 @override
 bool operator ==(Object other) {
   final _this = this as Progression;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Progression&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.kind, _this.kind) || other.kind == _this.kind)&&(identical(other.order, _this.order) || other.order == _this.order)&&const DeepCollectionEquality().equals(other.chapters, _this.chapters));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Progression&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.kind, _this.kind) || other.kind == _this.kind)&&(identical(other.order, _this.order) || other.order == _this.order)&&const DeepCollectionEquality().equals(other.chapters, _this.chapters)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.description, _this.description) || other.description == _this.description)&&(identical(other.hidden, _this.hidden) || other.hidden == _this.hidden));
 }
 
 
 @override
 int get hashCode {
   final _this = this as Progression;
-  return Object.hash(runtimeType,_this.id,_this.kind,_this.order,const DeepCollectionEquality().hash(_this.chapters));
+  return Object.hash(runtimeType,_this.id,_this.kind,_this.order,const DeepCollectionEquality().hash(_this.chapters),_this.title,_this.description,_this.hidden);
 }
 
 @override
 String toString() {
   final _this = this as Progression;
-  return 'Progression(id: ${_this.id}, kind: ${_this.kind}, order: ${_this.order}, chapters: ${_this.chapters})';
+  return 'Progression(id: ${_this.id}, kind: ${_this.kind}, order: ${_this.order}, chapters: ${_this.chapters}, title: ${_this.title}, description: ${_this.description}, hidden: ${_this.hidden})';
 }
 
 
@@ -318,7 +321,7 @@ abstract mixin class $ProgressionCopyWith<$Res>  {
   factory $ProgressionCopyWith(Progression value, $Res Function(Progression) _then) = _$ProgressionCopyWithImpl;
 @useResult
 $Res call({
- String id, String kind, ChapterOrder order, List<Chapter> chapters
+ String id, String kind, ChapterOrder order, List<Chapter> chapters, String title, String description, bool hidden
 });
 
 
@@ -335,13 +338,16 @@ class _$ProgressionCopyWithImpl<$Res>
 
 /// Create a copy of Progression
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? kind = null,Object? order = null,Object? chapters = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? kind = null,Object? order = null,Object? chapters = null,Object? title = null,Object? description = null,Object? hidden = null,}) {
   return _then(Progression(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,kind: null == kind ? _self.kind : kind // ignore: cast_nullable_to_non_nullable
 as String,order: null == order ? _self.order : order // ignore: cast_nullable_to_non_nullable
 as ChapterOrder,chapters: null == chapters ? _self.chapters : chapters // ignore: cast_nullable_to_non_nullable
-as List<Chapter>,
+as List<Chapter>,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,hidden: null == hidden ? _self.hidden : hidden // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -426,10 +432,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String kind,  ChapterOrder order,  List<Chapter> chapters)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String kind,  ChapterOrder order,  List<Chapter> chapters,  String title,  String description,  bool hidden)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Progression() when $default != null:
-return $default(_that.id,_that.kind,_that.order,_that.chapters);case _:
+return $default(_that.id,_that.kind,_that.order,_that.chapters,_that.title,_that.description,_that.hidden);case _:
   return orElse();
 
 }
@@ -447,10 +453,10 @@ return $default(_that.id,_that.kind,_that.order,_that.chapters);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String kind,  ChapterOrder order,  List<Chapter> chapters)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String kind,  ChapterOrder order,  List<Chapter> chapters,  String title,  String description,  bool hidden)  $default,) {final _that = this;
 switch (_that) {
 case _Progression():
-return $default(_that.id,_that.kind,_that.order,_that.chapters);case _:
+return $default(_that.id,_that.kind,_that.order,_that.chapters,_that.title,_that.description,_that.hidden);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -467,10 +473,10 @@ return $default(_that.id,_that.kind,_that.order,_that.chapters);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String kind,  ChapterOrder order,  List<Chapter> chapters)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String kind,  ChapterOrder order,  List<Chapter> chapters,  String title,  String description,  bool hidden)?  $default,) {final _that = this;
 switch (_that) {
 case _Progression() when $default != null:
-return $default(_that.id,_that.kind,_that.order,_that.chapters);case _:
+return $default(_that.id,_that.kind,_that.order,_that.chapters,_that.title,_that.description,_that.hidden);case _:
   return null;
 
 }
@@ -482,7 +488,7 @@ return $default(_that.id,_that.kind,_that.order,_that.chapters);case _:
 
 
 class _Progression extends Progression {
-  const _Progression({required this.id, required this.kind, required this.order, required  List<Chapter> chapters}): _chapters = chapters,super._();
+  const _Progression({required this.id, required this.kind, required this.order, required  List<Chapter> chapters, this.title = '', this.description = '', this.hidden = false}): _chapters = chapters,super._();
   
 
 @override final  String id;
@@ -495,6 +501,9 @@ class _Progression extends Progression {
   return EqualUnmodifiableListView(_chapters);
 }
 
+@override@JsonKey() final  String title;
+@override@JsonKey() final  String description;
+@override@JsonKey() final  bool hidden;
 
 /// Create a copy of Progression
 /// with the given fields replaced by the non-null parameter values.
@@ -506,18 +515,18 @@ _$ProgressionCopyWith<_Progression> get copyWith => __$ProgressionCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Progression&&(identical(other.id, id) || other.id == id)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.order, order) || other.order == order)&&const DeepCollectionEquality().equals(other.chapters, _chapters));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Progression&&(identical(other.id, id) || other.id == id)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.order, order) || other.order == order)&&const DeepCollectionEquality().equals(other.chapters, _chapters)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.hidden, hidden) || other.hidden == hidden));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,kind,order,const DeepCollectionEquality().hash(_chapters));
+    return Object.hash(runtimeType,id,kind,order,const DeepCollectionEquality().hash(_chapters),title,description,hidden);
 }
 
 @override
 String toString() {
-    return 'Progression(id: $id, kind: $kind, order: $order, chapters: $chapters)';
+    return 'Progression(id: $id, kind: $kind, order: $order, chapters: $chapters, title: $title, description: $description, hidden: $hidden)';
 }
 
 
@@ -528,7 +537,7 @@ abstract mixin class _$ProgressionCopyWith<$Res> implements $ProgressionCopyWith
   factory _$ProgressionCopyWith(_Progression value, $Res Function(_Progression) _then) = __$ProgressionCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String kind, ChapterOrder order, List<Chapter> chapters
+ String id, String kind, ChapterOrder order, List<Chapter> chapters, String title, String description, bool hidden
 });
 
 
@@ -545,13 +554,16 @@ class __$ProgressionCopyWithImpl<$Res>
 
 /// Create a copy of Progression
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? kind = null,Object? order = null,Object? chapters = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? kind = null,Object? order = null,Object? chapters = null,Object? title = null,Object? description = null,Object? hidden = null,}) {
   return _then(_Progression(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,kind: null == kind ? _self.kind : kind // ignore: cast_nullable_to_non_nullable
 as String,order: null == order ? _self.order : order // ignore: cast_nullable_to_non_nullable
 as ChapterOrder,chapters: null == chapters ? _self._chapters : chapters // ignore: cast_nullable_to_non_nullable
-as List<Chapter>,
+as List<Chapter>,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,hidden: null == hidden ? _self.hidden : hidden // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

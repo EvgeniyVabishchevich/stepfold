@@ -12,16 +12,31 @@ enum CrashReporterImpl {
   crashlytics,
 }
 
+/// Implementations of `Catalog`.
+enum CatalogImpl {
+  /// In memory, one sample story.
+  fake,
+
+  /// JSON files built into the app.
+  assets,
+}
+
 /// One implementation per area.
 class Implementations {
   /// Creates a set of implementations.
-  const Implementations({required this.crashReporter});
+  const Implementations({required this.crashReporter, required this.catalog});
 
   /// Every area on its fake: no SDK, no network. Used by tests.
-  static const fakes = Implementations(crashReporter: CrashReporterImpl.fake);
+  static const fakes = Implementations(
+    crashReporter: CrashReporterImpl.fake,
+    catalog: CatalogImpl.fake,
+  );
 
   /// The `CrashReporter`.
   final CrashReporterImpl crashReporter;
+
+  /// The `Catalog`.
+  final CatalogImpl catalog;
 
   /// Whether any chosen implementation needs `Firebase.initializeApp`.
   bool get usesFirebase => crashReporter == CrashReporterImpl.crashlytics;
@@ -30,10 +45,12 @@ class Implementations {
   /// implementations it came from.
   Map<String, String> get asReportKeys => {
     'impl_crash_reporter': crashReporter.name,
+    'impl_catalog': catalog.name,
   };
 }
 
 /// The implementations the app is built with.
 const chosenImplementations = Implementations(
   crashReporter: CrashReporterImpl.crashlytics,
+  catalog: CatalogImpl.assets,
 );
