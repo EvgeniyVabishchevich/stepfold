@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:walks/app/router.dart';
+import 'package:walks/ui/l10n/l10n.dart';
 
 /// Root widget of the Stepfold app.
 ///
@@ -24,6 +25,12 @@ class _StepfoldAppState extends State<StepfoldApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(title: 'Stepfold', routerConfig: _router);
+    // Only Russian for now: any device language falls back to it.
+    return MaterialApp.router(
+      onGenerateTitle: (context) => context.l10n.appTitle,
+      localizationsDelegates: appLocalizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      routerConfig: _router,
+    );
   }
 }
