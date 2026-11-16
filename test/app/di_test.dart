@@ -5,7 +5,13 @@ import 'package:walks/domain/repositories/catalog.dart';
 import 'package:walks/domain/repositories/crash_reporter.dart';
 import 'package:walks/domain/repositories/native_crasher.dart';
 import 'package:walks/domain/repositories/permission_service.dart';
+import 'package:walks/domain/repositories/progress_repository.dart';
 import 'package:walks/domain/repositories/step_source.dart';
+import 'package:walks/domain/use_cases/add_manual_steps.dart';
+import 'package:walks/domain/use_cases/buy_medal.dart';
+import 'package:walks/domain/use_cases/open_chapter.dart';
+import 'package:walks/domain/use_cases/set_goal.dart';
+import 'package:walks/domain/use_cases/sync_steps.dart';
 import 'package:walks/ui/dev_menu/bloc/dev_menu_cubit.dart';
 
 void main() {
@@ -23,6 +29,12 @@ void main() {
     expect(getIt.get<PermissionService>, returnsNormally);
     expect(getIt.get<StepSource>, returnsNormally);
     expect(getIt.get<Catalog>, returnsNormally);
+    expect(getIt.get<ProgressRepository>, returnsNormally);
+    expect(getIt.get<OpenChapter>, returnsNormally);
+    expect(getIt.get<BuyMedal>, returnsNormally);
+    expect(getIt.get<SetGoal>, returnsNormally);
+    expect(getIt.get<AddManualSteps>, returnsNormally);
+    expect(getIt.get<SyncSteps>, returnsNormally);
     expect(getIt.get<DevMenuCubit>, returnsNormally);
   });
 }

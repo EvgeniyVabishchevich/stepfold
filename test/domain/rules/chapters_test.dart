@@ -14,7 +14,7 @@ void main() {
     chapterId.startsWith('t') ? free : strict,
     chapterId,
     now: now,
-  );
+  ).progress;
 
   group('availableChapters', () {
     test('strict order offers only the first closed chapter', () {
@@ -50,6 +50,17 @@ void main() {
           price: 1000,
           at: now,
         ),
+      );
+    });
+
+    test('returns the spending it added, for the caller to save', () {
+      final opened = open(withSteps(6000), 'c1');
+      final next = openChapter(opened, strict, 'c2', now: now);
+
+      expect(next.progress.spendings, contains(next.spending));
+      expect(
+        next.spending,
+        isA<ChapterOpened>().having((s) => s.chapterId, 'chapter', 'c2'),
       );
     });
 

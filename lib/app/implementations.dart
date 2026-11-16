@@ -21,15 +21,29 @@ enum CatalogImpl {
   assets,
 }
 
+/// Implementations of `ProgressRepository`.
+enum ProgressImpl {
+  /// In memory, empty on each start.
+  fake,
+
+  /// SQLite on the device, through drift.
+  drift,
+}
+
 /// One implementation per area.
 class Implementations {
   /// Creates a set of implementations.
-  const Implementations({required this.crashReporter, required this.catalog});
+  const Implementations({
+    required this.crashReporter,
+    required this.catalog,
+    required this.progress,
+  });
 
   /// Every area on its fake: no SDK, no network. Used by tests.
   static const fakes = Implementations(
     crashReporter: CrashReporterImpl.fake,
     catalog: CatalogImpl.fake,
+    progress: ProgressImpl.fake,
   );
 
   /// The `CrashReporter`.
@@ -37,6 +51,9 @@ class Implementations {
 
   /// The `Catalog`.
   final CatalogImpl catalog;
+
+  /// The `ProgressRepository`.
+  final ProgressImpl progress;
 
   /// Whether any chosen implementation needs `Firebase.initializeApp`.
   bool get usesFirebase => crashReporter == CrashReporterImpl.crashlytics;
@@ -46,6 +63,7 @@ class Implementations {
   Map<String, String> get asReportKeys => {
     'impl_crash_reporter': crashReporter.name,
     'impl_catalog': catalog.name,
+    'impl_progress': progress.name,
   };
 }
 
@@ -53,4 +71,5 @@ class Implementations {
 const chosenImplementations = Implementations(
   crashReporter: CrashReporterImpl.crashlytics,
   catalog: CatalogImpl.assets,
+  progress: ProgressImpl.drift,
 );

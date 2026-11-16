@@ -25,10 +25,13 @@ Medal? medalOf(Progress progress, Progression progression) {
 /// Buys the next medal of the finished [progression] at [now], paying from
 /// the reserve.
 ///
+/// Returns the new progress and the spending added to it, so the caller
+/// saves the spending without looking for it in the list.
+///
 /// Removes the goal if it was this medal. Throws [MedalUnavailable] if the
 /// progression is not finished or already has gold, and [NotEnoughSteps]
 /// if the reserve is short.
-Progress buyNextMedal(
+({Progress progress, Spending spending}) buyNextMedal(
   Progress progress,
   Progression progression, {
   required DateTime now,
@@ -42,16 +45,17 @@ Progress buyNextMedal(
 
   final wasGoal =
       progress.goal == Goal.medal(progressionId: progression.id, medal: next);
-  return progress.copyWith(
-    spendings: [
-      ...progress.spendings,
-      Spending.medal(
-        progressionId: progression.id,
-        medal: next,
-        price: price,
-        at: now.toUtc(),
-      ),
-    ],
-    goal: wasGoal ? null : progress.goal,
+  final spending = Spending.medal(
+    progressionId: progression.id,
+    medal: next,
+    price: price,
+    at: now.toUtc(),
+  );
+  return (
+    progress: progress.copyWith(
+      spendings: [...progress.spendings, spending],
+      goal: wasGoal ? null : progress.goal,
+    ),
+    spending: spending,
   );
 }
