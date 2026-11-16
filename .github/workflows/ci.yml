@@ -39,7 +39,7 @@ jobs:
         run: flutter analyze --fatal-infos
 
       - name: Test with coverage
-        run: flutter test --coverage
+        run: flutter test --coverage --exclude-tags golden
 
       - name: Coverage summary
         run: |

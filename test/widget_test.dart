@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:walks/app/app.dart';
+import 'package:walks/ui/kit/kit_bottom_navigation.dart';
 import 'package:walks/ui/today/today_view.dart';
 
 void main() {
@@ -9,6 +9,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(TodayView), findsOneWidget);
-    expect(find.byType(NavigationBar), findsOneWidget);
+    expect(find.byType(KitBottomNavigation), findsOneWidget);
   });
 }
