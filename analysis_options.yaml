@@ -2,6 +2,7 @@ analyzer:
   exclude:
     - build/**
     - '**/*.g.dart'
+    - lib/ui/l10n/generated/**
     - android/**
     - ios/**
 include: package:very_good_analysis/analysis_options.yaml

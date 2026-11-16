@@ -1,0 +1,23 @@
+{
+  "@@locale": "ru",
+  "appTitle": "Stepfold",
+  "@appTitle": {
+    "description": "App name in the task switcher. Not translated."
+  },
+  "tabToday": "Сегодня",
+  "@tabToday": {
+    "description": "Bottom bar tab: today's goal and steps."
+  },
+  "tabCatalog": "Каталог",
+  "@tabCatalog": {
+    "description": "Bottom bar tab: kinds and progressions to choose from."
+  },
+  "tabWorld": "Мир",
+  "@tabWorld": {
+    "description": "Bottom bar tab: the world the user has unfolded."
+  },
+  "tabAlbum": "Альбом",
+  "@tabAlbum": {
+    "description": "Bottom bar tab: rewards by kind."
+  }
+}
