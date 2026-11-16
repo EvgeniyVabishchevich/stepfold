@@ -35,9 +35,12 @@ bool isFinished(Progress progress, Progression progression) =>
 /// If it was the goal, the goal moves to the next chapter with the strict
 /// order and is removed with the free order or after the last chapter.
 ///
+/// Returns the new progress and the spending added to it, so the caller
+/// saves the spending without looking for it in the list.
+///
 /// Throws [ChapterUnavailable] if the chapter cannot be opened next, and
 /// [NotEnoughSteps] if the reserve is short.
-Progress openChapter(
+({Progress progress, Spending spending}) openChapter(
   Progress progress,
   Progression progression,
   String chapterId, {
@@ -52,23 +55,25 @@ Progress openChapter(
     throw NotEnoughSteps(price: chapter.price, reserve: progress.reserve);
   }
 
+  final spending = Spending.chapter(
+    progressionId: progression.id,
+    chapterId: chapterId,
+    price: chapter.price,
+    at: now.toUtc(),
+  );
   final opened = progress.copyWith(
-    spendings: [
-      ...progress.spendings,
-      Spending.chapter(
-        progressionId: progression.id,
-        chapterId: chapterId,
-        price: chapter.price,
-        at: now.toUtc(),
-      ),
-    ],
+    spendings: [...progress.spendings, spending],
   );
 
   final wasGoal =
       progress.goal ==
       Goal.chapter(progressionId: progression.id, chapterId: chapterId);
-  if (!wasGoal) return opened;
-  return opened.copyWith(goal: _goalAfterChapter(opened, progression));
+  return (
+    progress: wasGoal
+        ? opened.copyWith(goal: _goalAfterChapter(opened, progression))
+        : opened,
+    spending: spending,
+  );
 }
 
 Goal? _goalAfterChapter(Progress progress, Progression progression) {

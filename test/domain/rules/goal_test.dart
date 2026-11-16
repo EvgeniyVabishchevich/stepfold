@@ -33,7 +33,12 @@ void main() {
     });
 
     test('an opened chapter cannot be a goal', () {
-      final progress = openChapter(withSteps(1000), free, 't1', now: now);
+      final progress = openChapter(
+        withSteps(1000),
+        free,
+        't1',
+        now: now,
+      ).progress;
 
       expect(
         () => selectGoal(progress, t1, free),
@@ -55,7 +60,7 @@ void main() {
     test('only the next medal can be a goal', () {
       var finished = withSteps(20000);
       for (final id in ['c1', 'c2', 'c3']) {
-        finished = openChapter(finished, strict, id, now: now);
+        finished = openChapter(finished, strict, id, now: now).progress;
       }
 
       expect(
@@ -90,7 +95,7 @@ void main() {
         free,
         't1',
         now: now,
-      ).recordAutoSteps(installDay, 500);
+      ).progress.recordAutoSteps(installDay, 500);
 
       expect(stepsLeft(selectGoal(inDebt, t2, free), free), 2500);
     });
@@ -98,7 +103,7 @@ void main() {
     test('a medal goal costs its share of the route', () {
       var finished = withSteps(11000);
       for (final id in ['c1', 'c2', 'c3']) {
-        finished = openChapter(finished, strict, id, now: now);
+        finished = openChapter(finished, strict, id, now: now).progress;
       }
       final progress = selectGoal(
         finished,

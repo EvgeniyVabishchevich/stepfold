@@ -3,6 +3,7 @@ import 'package:walks/domain/failures/progress_failure.dart';
 import 'package:walks/domain/models/goal.dart';
 import 'package:walks/domain/models/medal.dart';
 import 'package:walks/domain/models/progress.dart';
+import 'package:walks/domain/models/spending.dart';
 import 'package:walks/domain/rules/chapters.dart';
 import 'package:walks/domain/rules/goal.dart';
 import 'package:walks/domain/rules/medals.dart';
@@ -14,16 +15,22 @@ void main() {
   Progress finished([int steps = 20000]) {
     var progress = withSteps(steps);
     for (final id in ['c1', 'c2', 'c3']) {
-      progress = openChapter(progress, strict, id, now: now);
+      progress = openChapter(progress, strict, id, now: now).progress;
     }
     return progress;
   }
 
-  Progress buy(Progress progress) => buyNextMedal(progress, strict, now: now);
+  Progress buy(Progress progress) =>
+      buyNextMedal(progress, strict, now: now).progress;
 
   group('medalOf', () {
     test('no medal until every chapter is opened', () {
-      final progress = openChapter(withSteps(9000), strict, 'c1', now: now);
+      final progress = openChapter(
+        withSteps(9000),
+        strict,
+        'c1',
+        now: now,
+      ).progress;
 
       expect(medalOf(progress, strict), isNull);
     });
@@ -45,6 +52,16 @@ void main() {
       expect(silver.reserve, 9000 - 1100);
       expect(medalOf(gold, strict), Medal.gold);
       expect(gold.reserve, 9000 - 1100 - 3300);
+    });
+
+    test('returns the spending it added, for the caller to save', () {
+      final bought = buyNextMedal(finished(), strict, now: now);
+
+      expect(bought.progress.spendings, contains(bought.spending));
+      expect(
+        bought.spending,
+        isA<MedalBought>().having((s) => s.medal, 'medal', Medal.silver),
+      );
     });
 
     test('nothing to buy after gold', () {

@@ -9,13 +9,22 @@ import 'package:walks/data/repositories/catalog/fake_catalog.dart';
 import 'package:walks/data/repositories/crash/crashlytics_crash_reporter.dart';
 import 'package:walks/data/repositories/crash/fake_crash_reporter.dart';
 import 'package:walks/data/repositories/permissions/fake_permission_service.dart';
+import 'package:walks/data/repositories/progress/drift_progress_repository.dart';
+import 'package:walks/data/repositories/progress/fake_progress_repository.dart';
 import 'package:walks/data/repositories/steps/fake_step_source.dart';
 import 'package:walks/data/services/method_channel_native_crasher.dart';
+import 'package:walks/domain/models/day.dart';
 import 'package:walks/domain/repositories/catalog.dart';
 import 'package:walks/domain/repositories/crash_reporter.dart';
 import 'package:walks/domain/repositories/native_crasher.dart';
 import 'package:walks/domain/repositories/permission_service.dart';
+import 'package:walks/domain/repositories/progress_repository.dart';
 import 'package:walks/domain/repositories/step_source.dart';
+import 'package:walks/domain/use_cases/add_manual_steps.dart';
+import 'package:walks/domain/use_cases/buy_medal.dart';
+import 'package:walks/domain/use_cases/open_chapter.dart';
+import 'package:walks/domain/use_cases/set_goal.dart';
+import 'package:walks/domain/use_cases/sync_steps.dart';
 import 'package:walks/ui/dev_menu/bloc/dev_menu_cubit.dart';
 
 /// The container of the app's dependencies.
@@ -55,6 +64,21 @@ Future<void> configureDependencies(Implementations implementations) async {
   getIt
     ..registerLazySingleton<PermissionService>(FakePermissionService.new)
     ..registerLazySingleton<StepSource>(FakeStepSource.new);
+
+  getIt.registerLazySingleton<ProgressRepository>(
+    () => switch (implementations.progress) {
+      ProgressImpl.fake => FakeProgressRepository.installedOn(Day.today()),
+      ProgressImpl.drift => DriftProgressRepository.onDevice(),
+    },
+  );
+
+  // Use cases hold no state of their own: a new one each time.
+  getIt
+    ..registerFactory(() => OpenChapter(getIt()))
+    ..registerFactory(() => BuyMedal(getIt()))
+    ..registerFactory(() => SetGoal(getIt()))
+    ..registerFactory(() => AddManualSteps(getIt()))
+    ..registerFactory(() => SyncSteps(progress: getIt(), source: getIt()));
 
   // Developer tools.
   getIt

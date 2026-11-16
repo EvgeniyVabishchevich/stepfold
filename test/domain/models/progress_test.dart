@@ -56,7 +56,7 @@ void main() {
         strict,
         'c1',
         now: now,
-      ).recordAutoSteps(installDay, 600);
+      ).progress.recordAutoSteps(installDay, 600);
 
       expect(progress.reserve, -400);
       expect(progress.isOpened('story', 'c1'), isTrue);
@@ -68,7 +68,7 @@ void main() {
         strict,
         'c1',
         now: now,
-      ).recordManualSteps(installDay, 0);
+      ).progress.recordManualSteps(installDay, 0);
 
       expect(progress.reserve, -1000);
       expect(progress.isOpened('story', 'c1'), isTrue);
@@ -80,7 +80,7 @@ void main() {
         strict,
         'c1',
         now: now,
-      ).recordAutoSteps(installDay, 600);
+      ).progress.recordAutoSteps(installDay, 600);
 
       expect(inDebt.recordAutoSteps(installDay + 1, 1000).reserve, 600);
     });
