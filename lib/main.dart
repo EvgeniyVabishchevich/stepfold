@@ -5,6 +5,7 @@ import 'package:walks/app/app.dart';
 import 'package:walks/app/di.dart';
 import 'package:walks/app/error_handlers.dart';
 import 'package:walks/app/implementations.dart';
+import 'package:walks/app/licenses.dart';
 import 'package:walks/domain/repositories/crash_reporter.dart';
 
 // The order is forced: platform channels need the binding, Crashlytics needs
@@ -27,5 +28,6 @@ Future<void> main() async {
     await crashReporter.setKey(key, value);
   }
 
+  registerAssetLicenses();
   runApp(const StepfoldApp());
 }

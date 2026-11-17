@@ -1,0 +1,4 @@
+tags:
+  # Pixel comparisons. Text antialiasing differs between macOS and Linux,
+  # so goldens are made and checked on macOS, and CI skips them.
+  golden:

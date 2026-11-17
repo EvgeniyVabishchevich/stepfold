@@ -1,4 +1,6 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:walks/ui/kit/kit_bottom_navigation.dart';
+import 'package:walks/ui/kit/kit_icon.dart';
 import 'package:walks/ui/l10n/l10n.dart';
 
 /// The frame around the four tabs: the open tab and the bottom bar.
@@ -26,21 +28,18 @@ class HomeShellView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    // The standard bar until the UI kit brings its own; icons come with it.
     return Scaffold(
       body: child,
-      bottomNavigationBar: NavigationBar(
+      bottomNavigationBar: KitBottomNavigation(
         selectedIndex: currentIndex,
-        onDestinationSelected: onTabSelected,
-        destinations: [
-          NavigationDestination(icon: _noIcon, label: l10n.tabToday),
-          NavigationDestination(icon: _noIcon, label: l10n.tabCatalog),
-          NavigationDestination(icon: _noIcon, label: l10n.tabWorld),
-          NavigationDestination(icon: _noIcon, label: l10n.tabAlbum),
+        onSelected: onTabSelected,
+        tabs: [
+          KitTab(icon: KitIcons.footprints, label: l10n.tabToday),
+          KitTab(icon: KitIcons.books, label: l10n.tabCatalog),
+          KitTab(icon: KitIcons.globeHemisphereWest, label: l10n.tabWorld),
+          KitTab(icon: KitIcons.cards, label: l10n.tabAlbum),
         ],
       ),
     );
   }
 }
-
-const Widget _noIcon = SizedBox.shrink();

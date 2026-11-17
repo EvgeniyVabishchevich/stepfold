@@ -7,7 +7,9 @@ import 'package:walks/app/router.dart';
 import 'package:walks/ui/catalog/catalog_view.dart';
 import 'package:walks/ui/core/routes.dart';
 import 'package:walks/ui/dev_menu/dev_menu_view.dart';
+import 'package:walks/ui/kit/kit_bottom_navigation.dart';
 import 'package:walks/ui/l10n/l10n.dart';
+import 'package:walks/ui/theme/stepfold_theme.dart';
 import 'package:walks/ui/today/today_view.dart';
 
 void main() {
@@ -21,6 +23,7 @@ void main() {
     addTearDown(router.dispose);
     await tester.pumpWidget(
       MaterialApp.router(
+        theme: StepfoldTheme.light,
         localizationsDelegates: appLocalizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         routerConfig: router,
@@ -29,8 +32,9 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  int selectedTab(WidgetTester tester) =>
-      tester.widget<NavigationBar>(find.byType(NavigationBar)).selectedIndex;
+  int selectedTab(WidgetTester tester) => tester
+      .widget<KitBottomNavigation>(find.byType(KitBottomNavigation))
+      .selectedIndex;
 
   String location() => router.routerDelegate.currentConfiguration.uri.path;
 
@@ -106,7 +110,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(DevMenuView), findsOneWidget);
-      expect(find.byType(NavigationBar), findsNothing);
+      expect(find.byType(KitBottomNavigation), findsNothing);
 
       // Not pageBack: it looks for the back button of the old
       // package:flutter/material.dart, ours comes from material_ui.
@@ -114,7 +118,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(TodayView), findsOneWidget);
-      expect(find.byType(NavigationBar), findsOneWidget);
+      expect(find.byType(KitBottomNavigation), findsOneWidget);
     });
   });
 }

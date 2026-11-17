@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:walks/ui/home/home_shell_view.dart';
+import 'package:walks/ui/kit/kit_bottom_navigation.dart';
 
 import '../../helpers/pump_view.dart';
 
@@ -29,8 +30,14 @@ void main() {
       ),
     );
 
-    final bar = tester.widget<NavigationBar>(find.byType(NavigationBar));
+    final bar = tester.widget<KitBottomNavigation>(
+      find.byType(KitBottomNavigation),
+    );
     expect(bar.selectedIndex, 2);
+    expect(
+      tester.getSemantics(find.bySemanticsLabel('Мир')),
+      isSemantics(isSelected: true, isButton: true),
+    );
   });
 
   testWidgets('reports the index of the tapped tab', (tester) async {
