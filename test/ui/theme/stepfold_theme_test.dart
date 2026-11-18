@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:walks/ui/theme/stepfold_colors.dart';
-import 'package:walks/ui/theme/stepfold_theme.dart';
+import 'package:walks/ui/theme/theme.dart';
 
 /// WCAG contrast ratio of two opaque colors, from 1 to 21.
 double contrast(Color a, Color b) {

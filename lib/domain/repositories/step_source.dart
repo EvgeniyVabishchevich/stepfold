@@ -1,6 +1,4 @@
-import 'package:walks/domain/models/app_permission.dart';
-import 'package:walks/domain/models/day.dart';
-import 'package:walks/domain/models/day_count.dart';
+import 'package:walks/domain/models/models.dart';
 
 /// Steps counted by the phone: its sensor or the health store.
 ///

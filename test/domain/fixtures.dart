@@ -1,6 +1,4 @@
-import 'package:walks/domain/models/day.dart';
-import 'package:walks/domain/models/progress.dart';
-import 'package:walks/domain/models/progression.dart';
+import 'package:walks/domain/models/models.dart';
 
 /// The day the app was installed in domain tests.
 final installDay = Day(2026, 11, 1);

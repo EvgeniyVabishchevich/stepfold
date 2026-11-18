@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:walks/domain/repositories/crash_reporter.dart';
+import 'package:walks/domain/repositories/repositories.dart';
 
 /// Sends every error nobody else handled to [reporter].
 ///

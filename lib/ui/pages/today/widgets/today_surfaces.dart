@@ -1,24 +1,38 @@
-part of '../today_page.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:walks/ui/kit/kit.dart';
+import 'package:walks/ui/theme/theme.dart';
 
-class _Notice extends StatelessWidget {
-  const _Notice({
+/// Displays a message with an optional action on the Today screen.
+class TodayNotice extends StatelessWidget {
+  /// Creates a notice.
+  const TodayNotice({
     required this.title,
     required this.message,
     this.actionLabel,
     this.onAction,
     this.primary = false,
+    super.key,
   });
 
+  /// The notice heading.
   final String title;
+
+  /// The text below the heading.
   final String message;
+
+  /// The button label, if the notice has a button.
   final String? actionLabel;
+
+  /// Called when the button is pressed.
   final VoidCallback? onAction;
+
+  /// Whether the button uses the primary style.
   final bool primary;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return _Surface(
+    return TodaySurface(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: Spacing.s8,
@@ -45,9 +59,12 @@ class _Notice extends StatelessWidget {
   }
 }
 
-class _Surface extends StatelessWidget {
-  const _Surface({required this.child});
+/// Provides the common card background and padding on the Today screen.
+class TodaySurface extends StatelessWidget {
+  /// Creates a surface around [child].
+  const TodaySurface({required this.child, super.key});
 
+  /// The content inside the card.
   final Widget child;
 
   @override

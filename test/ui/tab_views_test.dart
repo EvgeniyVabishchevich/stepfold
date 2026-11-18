@@ -1,8 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:walks/ui/pages/album/album_page.dart';
-import 'package:walks/ui/pages/catalog/catalog_page.dart';
-import 'package:walks/ui/pages/world/world_page.dart';
+import 'package:walks/ui/pages/pages.dart';
 
 import '../helpers/pump_view.dart';
 

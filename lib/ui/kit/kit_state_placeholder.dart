@@ -1,8 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:walks/ui/kit/kit_button.dart';
 import 'package:walks/ui/kit/kit_icon.dart';
-import 'package:walks/ui/theme/dimens.dart';
-import 'package:walks/ui/theme/stepfold_colors.dart';
+import 'package:walks/ui/theme/theme.dart';
 
 /// What a screen shows instead of its content: empty, loading or failed.
 class KitStatePlaceholder extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:walks/ui/kit/kit_progress_bar.dart';
+import 'package:walks/ui/kit/kit.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 

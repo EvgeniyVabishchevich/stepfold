@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/domain/models/medal.dart';
+import 'package:walks/domain/models/models.dart';
 
 void main() {
   group('Medal', () {

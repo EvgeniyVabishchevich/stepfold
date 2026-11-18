@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/domain/models/manual_entry_lock.dart';
+import 'package:walks/domain/models/models.dart';
 
 void main() {
   final now = DateTime.utc(2026, 11, 12, 15);

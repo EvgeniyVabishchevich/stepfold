@@ -1,11 +1,6 @@
 import 'dart:async';
 
-import 'package:walks/domain/failures/storage_failure.dart';
-import 'package:walks/domain/models/day.dart';
-import 'package:walks/domain/models/goal.dart';
-import 'package:walks/domain/models/progress.dart';
-import 'package:walks/domain/models/spending.dart';
-import 'package:walks/domain/repositories/progress_repository.dart';
+import 'package:walks/domain/domain.dart';
 
 /// A [ProgressRepository] in memory, driven by the test.
 class FakeProgressRepository implements ProgressRepository {

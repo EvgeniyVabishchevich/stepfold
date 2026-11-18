@@ -1,8 +1,11 @@
-part of '../dev_menu_page.dart';
+import 'package:material_ui/material_ui.dart';
 
-class _SectionTitle extends StatelessWidget {
-  const _SectionTitle(this.text);
+/// Labels a group of actions in the developer menu.
+class DevMenuSectionTitle extends StatelessWidget {
+  /// Creates a heading with the given [text].
+  const DevMenuSectionTitle(this.text, {super.key});
 
+  /// The heading text.
   final String text;
 
   @override

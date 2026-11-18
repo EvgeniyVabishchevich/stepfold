@@ -1,5 +1,5 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:walks/ui/core/placeholder_view.dart';
+import 'package:walks/ui/core/core.dart';
 import 'package:walks/ui/l10n/l10n.dart';
 
 /// The Album tab: gives [AlbumView] what it needs.

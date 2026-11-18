@@ -2,11 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:walks/domain/repositories/crash_reporter.dart';
-import 'package:walks/domain/repositories/native_crasher.dart';
+import 'package:walks/domain/repositories/repositories.dart';
 import 'package:walks/ui/pages/dev_menu/bloc/dev_menu_state.dart';
-
-export 'package:walks/ui/pages/dev_menu/bloc/dev_menu_state.dart';
 
 /// Produces test errors to check crash reporting end to end.
 class DevMenuBloc extends Bloc<DevMenuAction, DevMenuState> {

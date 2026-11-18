@@ -1,5 +1,5 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:walks/ui/theme/stepfold_colors.dart';
+import 'package:walks/ui/theme/theme.dart';
 
 /// A thin bar of progress toward a goal, 8 tall, fully rounded.
 ///

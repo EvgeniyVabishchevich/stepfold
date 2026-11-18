@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/data/repositories/crash/fake_crash_reporter.dart';
-import 'package:walks/domain/repositories/native_crasher.dart';
-import 'package:walks/ui/pages/dev_menu/bloc/dev_menu_bloc.dart';
+import 'package:walks/data/repositories/crash/crash.dart';
+import 'package:walks/domain/repositories/repositories.dart';
+import 'package:walks/ui/pages/dev_menu/bloc/bloc.dart';
 
 class _FakeNativeCrasher implements NativeCrasher {
   int crashes = 0;

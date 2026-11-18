@@ -1,6 +1,6 @@
 import 'package:drift/isolate.dart' show DriftRemoteException;
 import 'package:sqlite3/common.dart' show SqlError, SqliteException;
-import 'package:walks/domain/failures/storage_failure.dart';
+import 'package:walks/domain/failures/failures.dart';
 
 /// Translates an [error] of SQLite into a [StorageFailure].
 ///

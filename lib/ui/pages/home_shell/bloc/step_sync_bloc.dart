@@ -1,17 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:walks/domain/failures/step_source_failure.dart';
-import 'package:walks/domain/failures/storage_failure.dart';
-import 'package:walks/domain/models/app_permission.dart';
-import 'package:walks/domain/models/day_count.dart';
-import 'package:walks/domain/repositories/crash_reporter.dart';
-import 'package:walks/domain/repositories/permission_service.dart';
-import 'package:walks/domain/repositories/step_source.dart';
-import 'package:walks/domain/use_cases/sync_steps.dart';
+import 'package:walks/domain/domain.dart';
 import 'package:walks/ui/pages/home_shell/bloc/step_sync_state.dart';
-
-export 'package:walks/ui/pages/home_shell/bloc/step_sync_state.dart';
 
 /// A command from the shell lifecycle or the steps controls.
 sealed class StepSyncEvent {

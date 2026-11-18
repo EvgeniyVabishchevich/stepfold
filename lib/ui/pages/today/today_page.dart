@@ -1,40 +1,16 @@
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:walks/domain/failures/progress_failure.dart';
-import 'package:walks/domain/failures/storage_failure.dart';
-import 'package:walks/domain/models/app_permission.dart';
-import 'package:walks/domain/models/day.dart';
-import 'package:walks/domain/models/day_steps.dart';
-import 'package:walks/domain/models/goal.dart';
-import 'package:walks/domain/models/medal.dart';
-import 'package:walks/domain/models/progress.dart';
-import 'package:walks/domain/repositories/catalog.dart';
-import 'package:walks/domain/repositories/crash_reporter.dart';
-import 'package:walks/domain/repositories/progress_repository.dart';
-import 'package:walks/domain/rules/streak.dart';
-import 'package:walks/domain/use_cases/buy_medal.dart';
-import 'package:walks/domain/use_cases/open_chapter.dart';
-import 'package:walks/ui/core/app_resume_listener.dart';
-import 'package:walks/ui/core/routes.dart';
-import 'package:walks/ui/kit/kit_button.dart';
-import 'package:walks/ui/kit/kit_progress_bar.dart';
-import 'package:walks/ui/kit/kit_state_placeholder.dart';
+import 'package:walks/domain/domain.dart';
+import 'package:walks/ui/core/core.dart';
+import 'package:walks/ui/kit/kit.dart';
 import 'package:walks/ui/l10n/l10n.dart';
-import 'package:walks/ui/pages/home_shell/bloc/step_sync_bloc.dart';
-import 'package:walks/ui/pages/today/bloc/today_bloc.dart';
-import 'package:walks/ui/theme/dimens.dart';
-import 'package:walks/ui/theme/stepfold_colors.dart';
-
-part 'widgets/daily_summary.dart';
-part 'widgets/day_heading.dart';
-part 'widgets/goal_card.dart';
-part 'widgets/today_content.dart';
-part 'widgets/today_surfaces.dart';
+import 'package:walks/ui/pages/home_shell/bloc/bloc.dart';
+import 'package:walks/ui/pages/today/bloc/bloc.dart';
+import 'package:walks/ui/pages/today/widgets/widgets.dart';
+import 'package:walks/ui/theme/theme.dart';
 
 /// The Today tab and its navigation.
 class TodayPage extends StatelessWidget {
@@ -140,7 +116,7 @@ class TodayView extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.all(Spacing.s16),
         children: [
-          _Heading(day: state.day, onLongPress: onOpenDevMenu),
+          TodayHeading(day: state.day, onLongPress: onOpenDevMenu),
           const SizedBox(height: Spacing.s16),
           if (state.progressFailure case final failure?)
             KitStatePlaceholder.error(
@@ -154,9 +130,9 @@ class TodayView extends StatelessWidget {
           else if (progress == null)
             const KitStatePlaceholder.loading()
           else ...[
-            _DailySummary(progress: progress, day: state.day),
+            TodayDailySummary(progress: progress, day: state.day),
             const SizedBox(height: Spacing.s16),
-            _GoalCard(
+            TodayGoalCard(
               progress: progress,
               state: state,
               onOpenCatalog: onOpenCatalog,
@@ -177,24 +153,24 @@ class TodayView extends StatelessWidget {
     final l10n = context.l10n;
     if (sync.checking) return null;
     return switch (sync.permission) {
-      PermissionStatus.canRequest => _Notice(
+      PermissionStatus.canRequest => TodayNotice(
         title: l10n.todayAllowSteps,
         message: l10n.todayAllowStepsMessage,
         actionLabel: l10n.todayAllow,
         onAction: onRequestSteps,
       ),
-      PermissionStatus.blocked => _Notice(
+      PermissionStatus.blocked => TodayNotice(
         title: l10n.todayStepsBlocked,
         message: l10n.todayStepsBlockedMessage,
         actionLabel: l10n.todayOpenSettings,
         onAction: onOpenStepSettings,
       ),
-      PermissionStatus.unavailable => _Notice(
+      PermissionStatus.unavailable => TodayNotice(
         title: l10n.todayStepsUnavailable,
         message: l10n.todayStepsUnavailableMessage,
       ),
       _ when sync.storageFailure != null || sync.sourceFailure != null =>
-        _Notice(
+        TodayNotice(
           title: l10n.todayStepSyncError,
           message: sync.storageFailure is StorageFull
               ? l10n.storageFull
@@ -205,4 +181,59 @@ class TodayView extends StatelessWidget {
       _ => null,
     };
   }
+}
+
+class _TodayContent extends StatefulWidget {
+  const _TodayContent({required this.canOpenDevMenu});
+
+  final bool canOpenDevMenu;
+
+  @override
+  State<_TodayContent> createState() => _TodayContentState();
+}
+
+class _TodayContentState extends State<_TodayContent> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final language = Localizations.localeOf(context).languageCode;
+    context.read<TodayBloc>().add(LoadToday(language));
+  }
+
+  @override
+  Widget build(BuildContext context) => BlocConsumer<TodayBloc, TodayState>(
+    listenWhen: (previous, current) =>
+        current.openedChapter != null &&
+        current.openedChapter != previous.openedChapter,
+    listener: (context, state) {
+      final chapter = state.openedChapter!;
+      unawaited(
+        context.push<void>(
+          Routes.chapterLocation(chapter.progressionId, chapter.chapterId),
+        ),
+      );
+    },
+    builder: (context, state) => BlocBuilder<StepSyncBloc, StepSyncState>(
+      builder: (context, sync) => TodayView(
+        state: state,
+        sync: sync,
+        onOpenCatalog: () => context.go(Routes.catalog),
+        onOpenDevMenu: widget.canOpenDevMenu
+            ? () => context.push(Routes.devMenu)
+            : null,
+        onSpend: (goal) =>
+            context.read<TodayBloc>().add(SpendOnTodayGoal(goal)),
+        onRetryProgress: () =>
+            context.read<TodayBloc>().add(const RetryTodayProgress()),
+        onRetryCatalog: () =>
+            context.read<TodayBloc>().add(const RetryTodayCatalog()),
+        onRequestSteps: () =>
+            context.read<StepSyncBloc>().add(const RequestStepPermission()),
+        onOpenStepSettings: () =>
+            context.read<StepSyncBloc>().add(const OpenStepSettings()),
+        onRetrySync: () =>
+            context.read<StepSyncBloc>().add(const CheckStepSync()),
+      ),
+    ),
+  );
 }

@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:walks/domain/models/chapter_content.dart';
+import 'package:walks/domain/models/models.dart';
 
 part 'chapter_state.freezed.dart';
 

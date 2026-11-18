@@ -1,7 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/domain/models/catalog_index.dart';
-import 'package:walks/domain/models/progression.dart';
-import 'package:walks/domain/rules/length.dart';
+import 'package:walks/domain/domain.dart';
 
 void main() {
   const short = LengthGroup(id: 'short', title: 'Short', maxSteps: 30000);

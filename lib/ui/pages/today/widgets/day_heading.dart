@@ -1,11 +1,20 @@
-part of '../today_page.dart';
+import 'dart:math' as math;
 
-DateTime _calendarDate(Day day) => DateTime.utc(day.year, day.month, day.day);
+import 'package:intl/intl.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:walks/domain/models/models.dart';
+import 'package:walks/ui/l10n/l10n.dart';
+import 'package:walks/ui/theme/theme.dart';
 
-class _Heading extends StatelessWidget {
-  const _Heading({required this.day, required this.onLongPress});
+/// Displays the date and title of the Today screen.
+class TodayHeading extends StatelessWidget {
+  /// Creates the heading for the given [day].
+  const TodayHeading({required this.day, required this.onLongPress, super.key});
 
+  /// The date to display.
   final Day day;
+
+  /// Opens the developer menu when available.
   final VoidCallback? onLongPress;
 
   @override
@@ -15,7 +24,7 @@ class _Heading extends StatelessWidget {
     final date = DateFormat(
       'EEEE, d MMMM',
       l10n.localeName,
-    ).format(_calendarDate(day));
+    ).format(DateTime.utc(day.year, day.month, day.day));
     return Padding(
       padding: const EdgeInsetsDirectional.only(start: Spacing.s4),
       child: Row(

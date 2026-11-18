@@ -1,9 +1,8 @@
 import 'package:clock/clock.dart';
-import 'package:walks/domain/failures/progress_failure.dart';
-import 'package:walks/domain/models/medal.dart';
-import 'package:walks/domain/models/progression.dart';
-import 'package:walks/domain/repositories/progress_repository.dart';
-import 'package:walks/domain/rules/medals.dart';
+import 'package:walks/domain/failures/failures.dart';
+import 'package:walks/domain/models/models.dart';
+import 'package:walks/domain/repositories/repositories.dart';
+import 'package:walks/domain/rules/rules.dart';
 
 /// Buys the next medal of a finished progression and saves it.
 class BuyMedal {

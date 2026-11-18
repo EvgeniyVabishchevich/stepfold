@@ -1,18 +1,7 @@
 import 'package:clock/clock.dart' show Clock, withClock;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/data/repositories/progress/fake_progress_repository.dart';
-import 'package:walks/domain/failures/manual_entry_failure.dart';
-import 'package:walks/domain/failures/progress_failure.dart';
-import 'package:walks/domain/failures/storage_failure.dart';
-import 'package:walks/domain/models/goal.dart';
-import 'package:walks/domain/models/manual_entry_lock.dart';
-import 'package:walks/domain/models/medal.dart';
-import 'package:walks/domain/models/spending.dart';
-import 'package:walks/domain/rules/manual_entry.dart';
-import 'package:walks/domain/use_cases/add_manual_steps.dart';
-import 'package:walks/domain/use_cases/buy_medal.dart';
-import 'package:walks/domain/use_cases/open_chapter.dart';
-import 'package:walks/domain/use_cases/set_goal.dart';
+import 'package:walks/data/repositories/progress/progress.dart';
+import 'package:walks/domain/domain.dart';
 
 import '../fixtures.dart';
 

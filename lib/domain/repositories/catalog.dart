@@ -1,5 +1,4 @@
-import 'package:walks/domain/models/catalog_index.dart';
-import 'package:walks/domain/models/chapter_content.dart';
+import 'package:walks/domain/models/models.dart';
 
 /// Everything the user can open: kinds, progressions, chapters.
 ///

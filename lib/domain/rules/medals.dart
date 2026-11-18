@@ -1,9 +1,5 @@
-import 'package:walks/domain/failures/progress_failure.dart';
-import 'package:walks/domain/models/goal.dart';
-import 'package:walks/domain/models/medal.dart';
-import 'package:walks/domain/models/progress.dart';
-import 'package:walks/domain/models/progression.dart';
-import 'package:walks/domain/models/spending.dart';
+import 'package:walks/domain/failures/failures.dart';
+import 'package:walks/domain/models/models.dart';
 import 'package:walks/domain/rules/chapters.dart';
 
 /// The best medal of [progression], or `null` while it is not finished.

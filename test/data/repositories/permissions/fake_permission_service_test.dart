@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/data/repositories/permissions/fake_permission_service.dart';
-import 'package:walks/domain/models/app_permission.dart';
+import 'package:walks/data/repositories/permissions/permissions.dart';
+import 'package:walks/domain/models/models.dart';
 
 import '../../../contracts/permission_service_contract.dart';
 

@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/domain/models/day.dart';
-import 'package:walks/domain/models/day_steps.dart';
+import 'package:walks/domain/models/models.dart';
 
 void main() {
   final day = Day(2026, 11, 12);

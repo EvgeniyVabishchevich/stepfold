@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:walks/ui/kit/kit_icon.dart';
-import 'package:walks/ui/theme/stepfold_colors.dart';
+import 'package:walks/ui/kit/kit.dart';
+import 'package:walks/ui/theme/theme.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 

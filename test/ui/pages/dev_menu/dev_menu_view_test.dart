@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:walks/ui/pages/dev_menu/bloc/dev_menu_bloc.dart';
-import 'package:walks/ui/pages/dev_menu/dev_menu_page.dart';
+import 'package:walks/ui/pages/dev_menu/bloc/bloc.dart';
+import 'package:walks/ui/pages/dev_menu/dev_menu.dart';
 
 class _MockDevMenuBloc extends MockBloc<DevMenuAction, DevMenuState>
     implements DevMenuBloc {}

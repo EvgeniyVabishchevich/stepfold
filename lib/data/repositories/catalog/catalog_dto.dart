@@ -1,7 +1,7 @@
 // The shape of the catalog files. Only the asset catalog reads these; the
 // rest of the app sees the domain models they turn into.
 import 'package:json_annotation/json_annotation.dart';
-import 'package:walks/domain/models/progression.dart';
+import 'package:walks/domain/models/models.dart';
 
 part 'catalog_dto.g.dart';
 

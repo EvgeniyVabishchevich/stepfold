@@ -2,8 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:walks/app/app.dart';
 import 'package:walks/app/di.dart';
 import 'package:walks/app/implementations.dart';
-import 'package:walks/ui/kit/kit_bottom_navigation.dart';
-import 'package:walks/ui/pages/today/today_page.dart';
+import 'package:walks/ui/kit/kit.dart';
+import 'package:walks/ui/pages/today/today.dart';
 
 void main() {
   setUp(() => configureDependencies(Implementations.fakes));

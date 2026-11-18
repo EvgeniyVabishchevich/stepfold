@@ -3,11 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:walks/data/repositories/catalog/catalog_dto.dart';
 import 'package:walks/data/repositories/catalog/catalog_format_error.dart';
-import 'package:walks/domain/failures/catalog_failure.dart';
-import 'package:walks/domain/models/catalog_index.dart';
-import 'package:walks/domain/models/chapter_content.dart';
-import 'package:walks/domain/models/progression.dart';
-import 'package:walks/domain/repositories/catalog.dart';
+import 'package:walks/domain/domain.dart';
 
 /// The [Catalog] built into the app, read from JSON files in [root].
 ///

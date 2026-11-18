@@ -1,6 +1,5 @@
-import 'package:walks/domain/failures/manual_entry_failure.dart';
-import 'package:walks/domain/models/day.dart';
-import 'package:walks/domain/models/manual_entry_lock.dart';
+import 'package:walks/domain/failures/failures.dart';
+import 'package:walks/domain/models/models.dart';
 
 /// Adding more steps by hand than this asks the user to confirm it.
 const manualEntryConfirmAbove = 50000;

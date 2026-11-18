@@ -1,17 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:walks/app/di.dart';
 import 'package:walks/app/implementations.dart';
-import 'package:walks/domain/repositories/catalog.dart';
-import 'package:walks/domain/repositories/crash_reporter.dart';
-import 'package:walks/domain/repositories/native_crasher.dart';
-import 'package:walks/domain/repositories/permission_service.dart';
-import 'package:walks/domain/repositories/progress_repository.dart';
-import 'package:walks/domain/repositories/step_source.dart';
-import 'package:walks/domain/use_cases/add_manual_steps.dart';
-import 'package:walks/domain/use_cases/buy_medal.dart';
-import 'package:walks/domain/use_cases/open_chapter.dart';
-import 'package:walks/domain/use_cases/set_goal.dart';
-import 'package:walks/domain/use_cases/sync_steps.dart';
+import 'package:walks/domain/domain.dart';
 
 void main() {
   // On fakes: real SDKs cannot start in a unit test.

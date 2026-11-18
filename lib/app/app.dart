@@ -2,7 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:walks/app/router.dart';
 import 'package:walks/ui/l10n/l10n.dart';
-import 'package:walks/ui/theme/stepfold_theme.dart';
+import 'package:walks/ui/theme/theme.dart';
 
 /// Root widget of the Stepfold app.
 ///

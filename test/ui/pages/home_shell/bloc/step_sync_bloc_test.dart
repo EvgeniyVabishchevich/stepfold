@@ -1,14 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/data/repositories/crash/fake_crash_reporter.dart';
-import 'package:walks/data/repositories/permissions/fake_permission_service.dart';
-import 'package:walks/data/repositories/progress/fake_progress_repository.dart';
-import 'package:walks/data/repositories/steps/fake_step_source.dart';
-import 'package:walks/domain/failures/step_source_failure.dart';
-import 'package:walks/domain/failures/storage_failure.dart';
-import 'package:walks/domain/models/app_permission.dart';
-import 'package:walks/domain/models/day.dart';
-import 'package:walks/domain/use_cases/sync_steps.dart';
-import 'package:walks/ui/pages/home_shell/bloc/step_sync_bloc.dart';
+import 'package:walks/data/repositories/repositories.dart';
+import 'package:walks/domain/domain.dart';
+import 'package:walks/ui/pages/home_shell/bloc/bloc.dart';
 
 void main() {
   late FakePermissionService permission;

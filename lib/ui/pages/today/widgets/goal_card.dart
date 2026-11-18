@@ -1,18 +1,36 @@
-part of '../today_page.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:walks/domain/domain.dart';
+import 'package:walks/ui/kit/kit.dart';
+import 'package:walks/ui/l10n/l10n.dart';
+import 'package:walks/ui/pages/today/bloc/bloc.dart';
+import 'package:walks/ui/pages/today/widgets/today_surfaces.dart';
+import 'package:walks/ui/theme/theme.dart';
 
-class _GoalCard extends StatelessWidget {
-  const _GoalCard({
+/// Displays the current goal and the action available for it.
+class TodayGoalCard extends StatelessWidget {
+  /// Creates the card for the current goal.
+  const TodayGoalCard({
     required this.progress,
     required this.state,
     required this.onOpenCatalog,
     required this.onRetryCatalog,
     required this.onSpend,
+    super.key,
   });
 
+  /// Progress and available steps.
   final Progress progress;
+
+  /// The goal, catalog, and spending state.
   final TodayState state;
+
+  /// Opens the goal catalog.
   final VoidCallback onOpenCatalog;
+
+  /// Reloads the goal catalog.
   final VoidCallback onRetryCatalog;
+
+  /// Spends steps on the displayed goal.
   final ValueChanged<Goal> onSpend;
 
   @override
@@ -32,7 +50,7 @@ class _GoalCard extends StatelessWidget {
     );
 
     if (progress.goal == null) {
-      return _Notice(
+      return TodayNotice(
         title: l10n.todayChooseGoal,
         message: reserveText,
         actionLabel: l10n.todayToCatalog,
@@ -43,7 +61,7 @@ class _GoalCard extends StatelessWidget {
     if (state.catalogLoading) return const KitStatePlaceholder.loading();
     final target = state.target;
     if (target == null) {
-      return _Notice(
+      return TodayNotice(
         title: l10n.todayGoalUnavailable,
         message: state.catalogFailure == null
             ? reserveText
@@ -75,7 +93,7 @@ class _GoalCard extends StatelessWidget {
         null => null,
       },
     };
-    return _Surface(
+    return TodaySurface(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: Spacing.s12,

@@ -1,7 +1,7 @@
 import 'dart:collection';
 import 'dart:developer' as developer;
 
-import 'package:walks/domain/repositories/crash_reporter.dart';
+import 'package:walks/domain/repositories/repositories.dart';
 
 /// One error recorded by [FakeCrashReporter], with the context it was sent
 /// with.

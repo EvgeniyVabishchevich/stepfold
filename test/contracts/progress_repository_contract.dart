@@ -1,14 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/domain/failures/progress_failure.dart';
-import 'package:walks/domain/models/day.dart';
-import 'package:walks/domain/models/day_steps.dart';
-import 'package:walks/domain/models/goal.dart';
-import 'package:walks/domain/models/medal.dart';
-import 'package:walks/domain/models/progress.dart';
-import 'package:walks/domain/models/spending.dart';
-import 'package:walks/domain/repositories/progress_repository.dart';
-import 'package:walks/domain/use_cases/buy_medal.dart';
-import 'package:walks/domain/use_cases/open_chapter.dart';
+import 'package:walks/domain/domain.dart';
 
 import '../domain/fixtures.dart' show free, strict;
 

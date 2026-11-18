@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/data/repositories/catalog/fake_catalog.dart';
-import 'package:walks/domain/failures/catalog_failure.dart';
+import 'package:walks/data/repositories/catalog/catalog.dart';
+import 'package:walks/domain/failures/failures.dart';
 
 import '../../../contracts/catalog_contract.dart';
 

@@ -1,14 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:walks/domain/repositories/crash_reporter.dart';
-import 'package:walks/domain/repositories/permission_service.dart';
-import 'package:walks/domain/repositories/step_source.dart';
-import 'package:walks/domain/use_cases/sync_steps.dart';
-import 'package:walks/ui/core/app_resume_listener.dart';
-import 'package:walks/ui/kit/kit_bottom_navigation.dart';
-import 'package:walks/ui/kit/kit_icon.dart';
+import 'package:walks/domain/domain.dart';
+import 'package:walks/ui/core/core.dart';
+import 'package:walks/ui/kit/kit.dart';
 import 'package:walks/ui/l10n/l10n.dart';
-import 'package:walks/ui/pages/home_shell/bloc/step_sync_bloc.dart';
+import 'package:walks/ui/pages/home_shell/bloc/bloc.dart';
 
 /// Gives the tab shell one step sync bloc for its entire lifetime.
 class HomeShellPage extends StatelessWidget {
