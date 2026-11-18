@@ -51,7 +51,7 @@ class DriftProgressRepository implements ProgressRepository {
         },
       )
       .watch()
-      .asyncMap((_) => _read())
+      .asyncMap((_) => _db.transaction(_read))
       .transform(
         StreamTransformer.fromHandlers(
           handleError: (error, stackTrace, sink) =>
@@ -79,36 +79,38 @@ class DriftProgressRepository implements ProgressRepository {
   );
 
   @override
-  Future<void> addSpending(Spending spending, {required Goal? goalAfter}) =>
-      guardStorage(
-        () => _db.transaction(() async {
-          switch (spending) {
-            case ChapterOpened():
-              await _db
-                  .into(_db.openedChapters)
-                  .insert(
-                    OpenedChaptersCompanion.insert(
-                      progressionId: spending.progressionId,
-                      chapterId: spending.chapterId,
-                      price: spending.price,
-                      at: spending.at,
-                    ),
-                  );
-            case MedalBought():
-              await _db
-                  .into(_db.boughtMedals)
-                  .insert(
-                    BoughtMedalsCompanion.insert(
-                      progressionId: spending.progressionId,
-                      medal: spending.medal,
-                      price: spending.price,
-                      at: spending.at,
-                    ),
-                  );
-          }
-          await _writeGoal(goalAfter);
-        }),
-      );
+  Future<void> addSpending(
+    ({Spending spending, Goal? goalAfter}) Function(Progress current) decide,
+  ) => guardStorage(
+    () => _db.transaction(() async {
+      final (:spending, :goalAfter) = decide(await _read());
+      switch (spending) {
+        case ChapterOpened():
+          await _db
+              .into(_db.openedChapters)
+              .insert(
+                OpenedChaptersCompanion.insert(
+                  progressionId: spending.progressionId,
+                  chapterId: spending.chapterId,
+                  price: spending.price,
+                  at: spending.at,
+                ),
+              );
+        case MedalBought():
+          await _db
+              .into(_db.boughtMedals)
+              .insert(
+                BoughtMedalsCompanion.insert(
+                  progressionId: spending.progressionId,
+                  medal: spending.medal,
+                  price: spending.price,
+                  at: spending.at,
+                ),
+              );
+      }
+      await _writeGoal(goalAfter);
+    }),
+  );
 
   @override
   Future<void> saveGoal(Goal? goal) => guardStorage(() => _writeGoal(goal));
@@ -151,8 +153,8 @@ class DriftProgressRepository implements ProgressRepository {
         ),
       });
 
-  // One transaction, so the parts come from the same moment.
-  Future<Progress> _read() => _db.transaction(() async {
+  // Called inside a transaction so the parts come from the same moment.
+  Future<Progress> _read() async {
     final state = await _db.select(_db.progressState).getSingle();
     final days = await _db.select(_db.dayStepsTable).get();
     final chapters = await _db.select(_db.openedChapters).get();
@@ -182,7 +184,7 @@ class DriftProgressRepository implements ProgressRepository {
       spendings: spendings,
       goal: _goalOf(state),
     );
-  });
+  }
 
   static Goal? _goalOf(StateRow state) {
     final progressionId = state.goalProgressionId;

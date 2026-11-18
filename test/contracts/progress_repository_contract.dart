@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:walks/domain/failures/progress_failure.dart';
 import 'package:walks/domain/models/day.dart';
 import 'package:walks/domain/models/day_steps.dart';
 import 'package:walks/domain/models/goal.dart';
@@ -6,6 +7,10 @@ import 'package:walks/domain/models/medal.dart';
 import 'package:walks/domain/models/progress.dart';
 import 'package:walks/domain/models/spending.dart';
 import 'package:walks/domain/repositories/progress_repository.dart';
+import 'package:walks/domain/use_cases/buy_medal.dart';
+import 'package:walks/domain/use_cases/open_chapter.dart';
+
+import '../domain/fixtures.dart' show free, strict;
 
 /// The behaviour every [ProgressRepository] must share.
 ///
@@ -26,6 +31,13 @@ void progressRepositoryContract(
     tearDown(() => dispose?.call(repository));
 
     Future<Progress> current() => repository.watch().first;
+
+    Future<void> recordSpending(
+      Spending spending, {
+      required Goal? goalAfter,
+    }) => repository.addSpending(
+      (_) => (spending: spending, goalAfter: goalAfter),
+    );
 
     ChapterOpened chapter(String id, DateTime at) => ChapterOpened(
       progressionId: 'story',
@@ -96,8 +108,8 @@ void progressRepositoryContract(
         at: evening,
       );
 
-      await repository.addSpending(chapter('c1', morning), goalAfter: null);
-      await repository.addSpending(medal, goalAfter: null);
+      await recordSpending(chapter('c1', morning), goalAfter: null);
+      await recordSpending(medal, goalAfter: null);
 
       final spendings = (await current()).spendings;
       expect(spendings, [chapter('c1', morning), medal]);
@@ -105,8 +117,8 @@ void progressRepositoryContract(
     });
 
     test('spendings come in the order they were made', () async {
-      await repository.addSpending(chapter('c2', evening), goalAfter: null);
-      await repository.addSpending(chapter('c1', morning), goalAfter: null);
+      await recordSpending(chapter('c2', evening), goalAfter: null);
+      await recordSpending(chapter('c1', morning), goalAfter: null);
 
       expect((await current()).spendings, [
         chapter('c1', morning),
@@ -120,20 +132,20 @@ void progressRepositoryContract(
         const Goal.chapter(progressionId: 'story', chapterId: 'c1'),
       );
 
-      await repository.addSpending(chapter('c1', morning), goalAfter: next);
+      await recordSpending(chapter('c1', morning), goalAfter: next);
       expect((await current()).goal, next);
 
-      await repository.addSpending(chapter('c2', evening), goalAfter: null);
+      await recordSpending(chapter('c2', evening), goalAfter: null);
       expect((await current()).goal, isNull);
     });
 
     test('the same chapter twice throws StateError and changes '
         'nothing', () async {
-      await repository.addSpending(chapter('c1', morning), goalAfter: null);
+      await recordSpending(chapter('c1', morning), goalAfter: null);
       final before = await current();
 
       await expectLater(
-        repository.addSpending(
+        recordSpending(
           chapter('c1', evening),
           goalAfter: const Goal.chapter(progressionId: 'story', chapterId: 'x'),
         ),
@@ -149,10 +161,10 @@ void progressRepositoryContract(
         price: 2000,
         at: morning,
       );
-      await repository.addSpending(medal, goalAfter: null);
+      await recordSpending(medal, goalAfter: null);
 
       await expectLater(
-        repository.addSpending(medal, goalAfter: null),
+        recordSpending(medal, goalAfter: null),
         throwsStateError,
       );
     });
@@ -176,7 +188,7 @@ void progressRepositoryContract(
 
       await repository.saveAutoSteps(installDay, 1200);
       await pumpUntil(() => emitted.last.totalSteps == 1200);
-      await repository.addSpending(chapter('c1', morning), goalAfter: null);
+      await recordSpending(chapter('c1', morning), goalAfter: null);
       await pumpUntil(() => emitted.last.spendings.isNotEmpty);
 
       expect(emitted.first, Progress(installDay: installDay));
@@ -184,10 +196,34 @@ void progressRepositoryContract(
       await subscription.cancel();
     });
 
+    test(
+      'concurrent chapter and medal purchases use the same reserve',
+      () async {
+        final open = OpenChapter(repository);
+        final buy = BuyMedal(repository);
+        await repository.saveAutoSteps(installDay, 4000);
+        await open(free, 't1');
+        await open(free, 't2');
+
+        Future<Object?> outcome(Future<void> spending) => spending
+            .then<Object?>((_) => null, onError: (Object error) => error);
+
+        final results = await Future.wait([
+          outcome(open(strict, 'c1')),
+          outcome(buy(free)),
+        ]);
+
+        expect(results, unorderedEquals([null, isA<NotEnoughSteps>()]));
+        final progress = await current();
+        expect(progress.spendings, hasLength(3));
+        expect(progress.reserve, anyOf(0, 700));
+      },
+    );
+
     test('two writes at once do not undo each other', () async {
       await Future.wait([
         repository.saveAutoSteps(installDay, 5000),
-        repository.addSpending(chapter('c1', morning), goalAfter: null),
+        recordSpending(chapter('c1', morning), goalAfter: null),
         repository.saveManualSteps(installDay, 500),
         repository.saveGoal(
           const Goal.chapter(progressionId: 'story', chapterId: 'c2'),

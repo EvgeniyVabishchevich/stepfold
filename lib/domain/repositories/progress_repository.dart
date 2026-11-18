@@ -32,12 +32,17 @@ abstract interface class ProgressRepository {
   /// Throws an [ArgumentError] when [steps] is negative.
   Future<void> saveManualSteps(Day day, int steps);
 
-  /// Records [spending] and sets the goal to [goalAfter] in one step: an
-  /// opened chapter or a bought medal may move or remove the goal.
+  /// Runs [decide] on the current progress and records the resulting
+  /// spending and goal in the same atomic operation.
+  ///
+  /// [decide] is a synchronous domain rule. If it throws, nothing is saved
+  /// and its error is propagated to the caller.
   ///
   /// Throws a [StateError] when the same chapter or medal is recorded
   /// again: that is a bug in the caller.
-  Future<void> addSpending(Spending spending, {required Goal? goalAfter});
+  Future<void> addSpending(
+    ({Spending spending, Goal? goalAfter}) Function(Progress current) decide,
+  );
 
   /// Sets the goal; `null` removes it.
   Future<void> saveGoal(Goal? goal);

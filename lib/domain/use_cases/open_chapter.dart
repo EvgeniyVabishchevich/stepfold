@@ -14,14 +14,14 @@ class OpenChapter {
   ///
   /// Throws a `ProgressFailure` when the rules refuse it and a
   /// `StorageFailure` when it cannot be saved.
-  Future<void> call(Progression progression, String chapterId) async {
-    final current = await _progress.watch().first;
-    final (:progress, :spending) = openChapter(
-      current,
-      progression,
-      chapterId,
-      now: clock.now(),
-    );
-    await _progress.addSpending(spending, goalAfter: progress.goal);
-  }
+  Future<void> call(Progression progression, String chapterId) =>
+      _progress.addSpending((current) {
+        final (:progress, :spending) = openChapter(
+          current,
+          progression,
+          chapterId,
+          now: clock.now(),
+        );
+        return (spending: spending, goalAfter: progress.goal);
+      });
 }
