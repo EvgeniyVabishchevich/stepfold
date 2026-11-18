@@ -12,7 +12,6 @@ import 'package:walks/domain/use_cases/buy_medal.dart';
 import 'package:walks/domain/use_cases/open_chapter.dart';
 import 'package:walks/domain/use_cases/set_goal.dart';
 import 'package:walks/domain/use_cases/sync_steps.dart';
-import 'package:walks/ui/dev_menu/bloc/dev_menu_cubit.dart';
 
 void main() {
   // On fakes: real SDKs cannot start in a unit test.
@@ -35,6 +34,5 @@ void main() {
     expect(getIt.get<SetGoal>, returnsNormally);
     expect(getIt.get<AddManualSteps>, returnsNormally);
     expect(getIt.get<SyncSteps>, returnsNormally);
-    expect(getIt.get<DevMenuCubit>, returnsNormally);
   });
 }

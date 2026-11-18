@@ -46,7 +46,9 @@ class FakeProgressRepository implements ProgressRepository {
       onDone: listener.close,
     );
     listener
-      ..onCancel = subscription.cancel
+      ..onCancel = () {
+        unawaited(subscription.cancel());
+      }
       ..add(_progress);
   });
 
@@ -64,9 +66,9 @@ class FakeProgressRepository implements ProgressRepository {
 
   @override
   Future<void> addSpending(
-    Spending spending, {
-    required Goal? goalAfter,
-  }) async {
+    ({Spending spending, Goal? goalAfter}) Function(Progress current) decide,
+  ) async {
+    final (:spending, :goalAfter) = decide(_progress);
     if (_progress.spendings.any((s) => _sameItem(s, spending))) {
       throw StateError('already recorded: $spending');
     }

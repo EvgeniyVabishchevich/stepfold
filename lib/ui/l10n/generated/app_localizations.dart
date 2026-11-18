@@ -123,6 +123,270 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'Альбом'**
   String get tabAlbum;
+
+  /// No description provided for @todaySteps.
+  ///
+  /// In ru, this message translates to:
+  /// **'Шаги сегодня'**
+  String get todaySteps;
+
+  /// No description provided for @todayUnknownSteps.
+  ///
+  /// In ru, this message translates to:
+  /// **'—'**
+  String get todayUnknownSteps;
+
+  /// No description provided for @todayStreak.
+  ///
+  /// In ru, this message translates to:
+  /// **'Серия'**
+  String get todayStreak;
+
+  /// No description provided for @todayStreakDays.
+  ///
+  /// In ru, this message translates to:
+  /// **'{days, plural, one{{days} день} few{{days} дня} many{{days} дней} other{{days} дня}}'**
+  String todayStreakDays(int days);
+
+  /// No description provided for @todayStreakThreshold.
+  ///
+  /// In ru, this message translates to:
+  /// **'Дни с {steps}+ шагов'**
+  String todayStreakThreshold(int steps);
+
+  /// No description provided for @todayStreakReached.
+  ///
+  /// In ru, this message translates to:
+  /// **'{day}, порог серии достигнут'**
+  String todayStreakReached(String day);
+
+  /// No description provided for @todayStreakMissed.
+  ///
+  /// In ru, this message translates to:
+  /// **'{day}, порог серии ещё не достигнут'**
+  String todayStreakMissed(String day);
+
+  /// No description provided for @todayChooseGoal.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выберите цель'**
+  String get todayChooseGoal;
+
+  /// No description provided for @todayToCatalog.
+  ///
+  /// In ru, this message translates to:
+  /// **'В каталог'**
+  String get todayToCatalog;
+
+  /// No description provided for @todayReserve.
+  ///
+  /// In ru, this message translates to:
+  /// **'В запасе {steps}'**
+  String todayReserve(String steps);
+
+  /// No description provided for @todayDebt.
+  ///
+  /// In ru, this message translates to:
+  /// **'Долг {steps}'**
+  String todayDebt(String steps);
+
+  /// No description provided for @todayGoalPrice.
+  ///
+  /// In ru, this message translates to:
+  /// **'Цена {steps}'**
+  String todayGoalPrice(String steps);
+
+  /// No description provided for @todayStepsLeft.
+  ///
+  /// In ru, this message translates to:
+  /// **'Осталось {steps}'**
+  String todayStepsLeft(String steps);
+
+  /// No description provided for @stepCount.
+  ///
+  /// In ru, this message translates to:
+  /// **'{steps, plural, one{{steps} шаг} few{{steps} шага} many{{steps} шагов} other{{steps} шага}}'**
+  String stepCount(int steps);
+
+  /// No description provided for @todayReady.
+  ///
+  /// In ru, this message translates to:
+  /// **'Шагов хватает'**
+  String get todayReady;
+
+  /// No description provided for @todayOpenChapter.
+  ///
+  /// In ru, this message translates to:
+  /// **'Открыть главу'**
+  String get todayOpenChapter;
+
+  /// No description provided for @todayBuyMedal.
+  ///
+  /// In ru, this message translates to:
+  /// **'Купить медаль'**
+  String get todayBuyMedal;
+
+  /// No description provided for @todaySilverMedal.
+  ///
+  /// In ru, this message translates to:
+  /// **'Серебряная медаль'**
+  String get todaySilverMedal;
+
+  /// No description provided for @todayGoldMedal.
+  ///
+  /// In ru, this message translates to:
+  /// **'Золотая медаль'**
+  String get todayGoldMedal;
+
+  /// No description provided for @todayBronzeMedal.
+  ///
+  /// In ru, this message translates to:
+  /// **'Бронзовая медаль'**
+  String get todayBronzeMedal;
+
+  /// No description provided for @todayCatalogError.
+  ///
+  /// In ru, this message translates to:
+  /// **'Не удалось загрузить каталог'**
+  String get todayCatalogError;
+
+  /// No description provided for @todayGoalUnavailable.
+  ///
+  /// In ru, this message translates to:
+  /// **'Цель недоступна'**
+  String get todayGoalUnavailable;
+
+  /// No description provided for @todayProgressError.
+  ///
+  /// In ru, this message translates to:
+  /// **'Не удалось загрузить прогресс'**
+  String get todayProgressError;
+
+  /// No description provided for @todayProgressRetryMessage.
+  ///
+  /// In ru, this message translates to:
+  /// **'Попробуйте загрузить его ещё раз.'**
+  String get todayProgressRetryMessage;
+
+  /// No description provided for @todaySpendingFailed.
+  ///
+  /// In ru, this message translates to:
+  /// **'Не удалось сохранить трату шагов.'**
+  String get todaySpendingFailed;
+
+  /// No description provided for @todayReserveChanged.
+  ///
+  /// In ru, this message translates to:
+  /// **'Запас изменился. Проверьте, сколько шагов осталось.'**
+  String get todayReserveChanged;
+
+  /// No description provided for @todayAllowSteps.
+  ///
+  /// In ru, this message translates to:
+  /// **'Подключите подсчёт шагов'**
+  String get todayAllowSteps;
+
+  /// No description provided for @todayAllowStepsMessage.
+  ///
+  /// In ru, this message translates to:
+  /// **'Так шаги будут добавляться автоматически.'**
+  String get todayAllowStepsMessage;
+
+  /// No description provided for @todayAllow.
+  ///
+  /// In ru, this message translates to:
+  /// **'Разрешить'**
+  String get todayAllow;
+
+  /// No description provided for @todayStepsBlocked.
+  ///
+  /// In ru, this message translates to:
+  /// **'Доступ к шагам выключен'**
+  String get todayStepsBlocked;
+
+  /// No description provided for @todayStepsBlockedMessage.
+  ///
+  /// In ru, this message translates to:
+  /// **'Разрешение можно дать в настройках телефона.'**
+  String get todayStepsBlockedMessage;
+
+  /// No description provided for @todayOpenSettings.
+  ///
+  /// In ru, this message translates to:
+  /// **'Открыть настройки'**
+  String get todayOpenSettings;
+
+  /// No description provided for @todayStepsUnavailable.
+  ///
+  /// In ru, this message translates to:
+  /// **'Счётчик недоступен'**
+  String get todayStepsUnavailable;
+
+  /// No description provided for @todayStepsUnavailableMessage.
+  ///
+  /// In ru, this message translates to:
+  /// **'Сохранённые шаги остаются доступны.'**
+  String get todayStepsUnavailableMessage;
+
+  /// No description provided for @todayStepSyncError.
+  ///
+  /// In ru, this message translates to:
+  /// **'Не удалось обновить шаги'**
+  String get todayStepSyncError;
+
+  /// No description provided for @storageFull.
+  ///
+  /// In ru, this message translates to:
+  /// **'Освободите место на устройстве и повторите попытку.'**
+  String get storageFull;
+
+  /// No description provided for @retry.
+  ///
+  /// In ru, this message translates to:
+  /// **'Повторить'**
+  String get retry;
+
+  /// No description provided for @chapterReader.
+  ///
+  /// In ru, this message translates to:
+  /// **'Чтение главы'**
+  String get chapterReader;
+
+  /// No description provided for @chapterBack.
+  ///
+  /// In ru, this message translates to:
+  /// **'Назад'**
+  String get chapterBack;
+
+  /// No description provided for @chapterEmpty.
+  ///
+  /// In ru, this message translates to:
+  /// **'В этой главе пока нет содержимого'**
+  String get chapterEmpty;
+
+  /// No description provided for @chapterUnavailable.
+  ///
+  /// In ru, this message translates to:
+  /// **'Глава недоступна'**
+  String get chapterUnavailable;
+
+  /// No description provided for @chapterReadError.
+  ///
+  /// In ru, this message translates to:
+  /// **'Не удалось загрузить главу'**
+  String get chapterReadError;
+
+  /// No description provided for @chapterRetryMessage.
+  ///
+  /// In ru, this message translates to:
+  /// **'Попробуйте загрузить её ещё раз.'**
+  String get chapterRetryMessage;
+
+  /// No description provided for @chapterImageError.
+  ///
+  /// In ru, this message translates to:
+  /// **'Изображение недоступно'**
+  String get chapterImageError;
 }
 
 class _AppLocalizationsDelegate

@@ -63,10 +63,12 @@ void main() {
         price: 1000,
         at: DateTime.utc(2026, 11, 12),
       );
-      await repository.addSpending(spending, goalAfter: null);
+      await repository.addSpending(
+        (_) => (spending: spending, goalAfter: null),
+      );
 
       await expectLater(
-        repository.addSpending(spending, goalAfter: null),
+        repository.addSpending((_) => (spending: spending, goalAfter: null)),
         throwsStateError,
       );
       await repository.close();

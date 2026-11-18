@@ -15,6 +15,14 @@ abstract final class Routes {
   /// The Album tab.
   static const album = '/album';
 
+  /// A chapter reader on the root navigator.
+  static const chapter = '/chapter/:progressionId/:chapterId';
+
+  /// Path for a concrete chapter in the catalog.
+  static String chapterLocation(String progressionId, String chapterId) =>
+      '/chapter/${Uri.encodeComponent(progressionId)}/'
+      '${Uri.encodeComponent(chapterId)}';
+
   /// The developer menu, over the tabs. Absent in release.
   static const devMenu = '/dev';
 }

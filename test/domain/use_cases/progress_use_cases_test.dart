@@ -91,6 +91,21 @@ void main() {
         throwsA(isA<MedalUnavailable>()),
       );
     });
+
+    testNow('a stale silver button cannot buy gold', () async {
+      final open = OpenChapter(repository);
+      final buy = BuyMedal(repository);
+      await open(free, 't1');
+      await open(free, 't2');
+      await buy(free, expected: Medal.silver);
+      final before = repository.progress;
+
+      await expectLater(
+        buy(free, expected: Medal.silver),
+        throwsA(isA<MedalUnavailable>()),
+      );
+      expect(repository.progress, before);
+    });
   });
 
   group('SetGoal', () {
