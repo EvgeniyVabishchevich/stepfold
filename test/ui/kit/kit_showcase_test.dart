@@ -1,13 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:walks/ui/kit/kit_bottom_navigation.dart';
-import 'package:walks/ui/kit/kit_button.dart';
-import 'package:walks/ui/kit/kit_icon.dart';
-import 'package:walks/ui/kit/kit_progress_bar.dart';
-import 'package:walks/ui/kit/kit_state_placeholder.dart';
-import 'package:walks/ui/kit/kit_top_bar.dart';
-import 'package:walks/ui/theme/stepfold_colors.dart';
-import 'package:walks/ui/theme/stepfold_theme.dart';
+import 'package:walks/ui/kit/kit.dart';
+import 'package:walks/ui/theme/theme.dart';
 
 /// The whole kit, as the showcase in Penpot draws it.
 class _Showcase extends StatelessWidget {

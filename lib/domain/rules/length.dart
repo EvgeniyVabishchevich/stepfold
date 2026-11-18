@@ -1,5 +1,4 @@
-import 'package:walks/domain/models/catalog_index.dart';
-import 'package:walks/domain/models/progression.dart';
+import 'package:walks/domain/models/models.dart';
 
 /// The length group of [progression]: the first of [groups] whose
 /// `maxSteps` its route price fits, or the last group, which has no limit.

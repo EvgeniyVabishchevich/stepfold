@@ -1,14 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:walks/app/di.dart';
-import 'package:walks/ui/core/routes.dart';
-import 'package:walks/ui/pages/album/album_page.dart';
-import 'package:walks/ui/pages/catalog/catalog_page.dart';
-import 'package:walks/ui/pages/chapter/chapter_page.dart';
-import 'package:walks/ui/pages/dev_menu/dev_menu_page.dart';
-import 'package:walks/ui/pages/home_shell/home_shell_page.dart';
-import 'package:walks/ui/pages/today/today_page.dart';
-import 'package:walks/ui/pages/world/world_page.dart';
+import 'package:walks/ui/core/core.dart';
+import 'package:walks/ui/pages/pages.dart';
 
 /// Creates the router of the app.
 ///

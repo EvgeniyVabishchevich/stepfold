@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqlite3/common.dart';
-import 'package:walks/data/repositories/progress/storage_errors.dart';
-import 'package:walks/domain/failures/storage_failure.dart';
+import 'package:walks/data/repositories/progress/progress.dart';
+import 'package:walks/domain/failures/failures.dart';
 
 void main() {
   SqliteException sqlite(int code) =>

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:walks/domain/repositories/crash_reporter.dart';
+import 'package:walks/domain/repositories/repositories.dart';
 
 /// A [CrashReporter] backed by Firebase Crashlytics.
 ///

@@ -1,10 +1,6 @@
 import 'dart:async';
 
-import 'package:walks/domain/failures/step_source_failure.dart';
-import 'package:walks/domain/models/app_permission.dart';
-import 'package:walks/domain/models/day.dart';
-import 'package:walks/domain/models/day_count.dart';
-import 'package:walks/domain/repositories/step_source.dart';
+import 'package:walks/domain/domain.dart';
 
 /// A [StepSource] in memory, driven by the test or the developer menu.
 ///

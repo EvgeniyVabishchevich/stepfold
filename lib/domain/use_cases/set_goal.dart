@@ -1,7 +1,6 @@
-import 'package:walks/domain/models/goal.dart';
-import 'package:walks/domain/models/progression.dart';
-import 'package:walks/domain/repositories/progress_repository.dart';
-import 'package:walks/domain/rules/goal.dart';
+import 'package:walks/domain/models/models.dart';
+import 'package:walks/domain/repositories/repositories.dart';
+import 'package:walks/domain/rules/rules.dart';
 
 /// Chooses or removes the goal and saves it.
 class SetGoal {

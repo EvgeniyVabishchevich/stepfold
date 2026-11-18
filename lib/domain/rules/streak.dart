@@ -1,5 +1,4 @@
-import 'package:walks/domain/models/day.dart';
-import 'package:walks/domain/models/progress.dart';
+import 'package:walks/domain/models/models.dart';
 
 /// Days in a row, up to [today], that reached `streakDayThreshold`.
 ///

@@ -1,4 +1,4 @@
-import 'package:walks/domain/models/app_permission.dart';
+import 'package:walks/domain/models/models.dart';
 
 /// Checks and asks for the permissions of the whole app.
 ///

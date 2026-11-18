@@ -1,7 +1,4 @@
-import 'package:walks/domain/models/day.dart';
-import 'package:walks/domain/models/goal.dart';
-import 'package:walks/domain/models/progress.dart';
-import 'package:walks/domain/models/spending.dart';
+import 'package:walks/domain/models/models.dart';
 
 /// The user's progress, kept on the device.
 ///

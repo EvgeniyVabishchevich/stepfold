@@ -1,9 +1,8 @@
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:walks/ui/kit/kit_icon.dart';
-import 'package:walks/ui/theme/stepfold_colors.dart';
-import 'package:walks/ui/theme/stepfold_theme.dart';
+import 'package:walks/ui/kit/kit.dart';
+import 'package:walks/ui/theme/theme.dart';
 
 void main() {
   testWidgets('a duotone icon draws its fill under its line', (tester) async {

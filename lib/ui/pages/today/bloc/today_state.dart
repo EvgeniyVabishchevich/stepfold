@@ -1,11 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:walks/domain/failures/catalog_failure.dart';
-import 'package:walks/domain/failures/progress_failure.dart';
-import 'package:walks/domain/failures/storage_failure.dart';
-import 'package:walks/domain/models/day.dart';
-import 'package:walks/domain/models/goal.dart';
-import 'package:walks/domain/models/progress.dart';
-import 'package:walks/domain/models/progression.dart';
+import 'package:walks/domain/domain.dart';
 
 part 'today_state.freezed.dart';
 

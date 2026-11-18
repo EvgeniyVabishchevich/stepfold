@@ -3,11 +3,8 @@ import 'dart:io';
 import 'package:drift/isolate.dart' show DriftRemoteException;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/data/repositories/progress/drift_progress_repository.dart';
-import 'package:walks/data/repositories/progress/progress_database.dart';
-import 'package:walks/domain/failures/storage_failure.dart';
-import 'package:walks/domain/models/day.dart';
-import 'package:walks/domain/models/spending.dart';
+import 'package:walks/data/repositories/progress/progress.dart';
+import 'package:walks/domain/domain.dart';
 
 import '../../../contracts/progress_repository_contract.dart';
 

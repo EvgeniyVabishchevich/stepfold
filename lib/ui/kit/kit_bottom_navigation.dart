@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:material_ui/material_ui.dart';
 import 'package:walks/ui/kit/kit_icon.dart';
-import 'package:walks/ui/theme/stepfold_colors.dart';
+import 'package:walks/ui/theme/theme.dart';
 
 /// A tab of [KitBottomNavigation].
 class KitTab {

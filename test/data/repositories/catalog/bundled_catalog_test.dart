@@ -5,8 +5,8 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/data/repositories/catalog/asset_catalog.dart';
-import 'package:walks/domain/models/chapter_content.dart';
+import 'package:walks/data/repositories/catalog/catalog.dart';
+import 'package:walks/domain/models/models.dart';
 
 /// Every progression and chapter ever published, as `progression` and
 /// `progression/chapter`.

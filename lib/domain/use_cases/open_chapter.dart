@@ -1,7 +1,7 @@
 import 'package:clock/clock.dart';
-import 'package:walks/domain/models/progression.dart';
-import 'package:walks/domain/repositories/progress_repository.dart';
-import 'package:walks/domain/rules/chapters.dart';
+import 'package:walks/domain/models/models.dart';
+import 'package:walks/domain/repositories/repositories.dart';
+import 'package:walks/domain/rules/rules.dart';
 
 /// Opens a chapter, paying from the reserve, and saves it.
 class OpenChapter {

@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:walks/ui/kit/kit_bottom_navigation.dart';
-import 'package:walks/ui/pages/home_shell/home_shell_page.dart';
+import 'package:walks/ui/kit/kit.dart';
+import 'package:walks/ui/pages/home_shell/home_shell.dart';
 
 import '../../../helpers/pump_view.dart';
 

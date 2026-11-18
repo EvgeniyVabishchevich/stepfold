@@ -1,5 +1,4 @@
-import 'package:walks/domain/models/app_permission.dart';
-import 'package:walks/domain/repositories/permission_service.dart';
+import 'package:walks/domain/domain.dart';
 
 /// A [PermissionService] in memory, set up by the test or the developer
 /// menu.

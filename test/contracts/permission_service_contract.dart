@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/domain/models/app_permission.dart';
-import 'package:walks/domain/repositories/permission_service.dart';
+import 'package:walks/domain/domain.dart';
 
 /// The behaviour every [PermissionService] must share, whatever state the
 /// device is in.

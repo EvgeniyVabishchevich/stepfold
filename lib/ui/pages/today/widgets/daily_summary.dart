@@ -1,9 +1,23 @@
-part of '../today_page.dart';
+import 'package:intl/intl.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:walks/domain/domain.dart';
+import 'package:walks/ui/l10n/l10n.dart';
+import 'package:walks/ui/pages/today/widgets/today_surfaces.dart';
+import 'package:walks/ui/theme/theme.dart';
 
-class _DailySummary extends StatelessWidget {
-  const _DailySummary({required this.progress, required this.day});
+/// Displays the day's step count and the seven-day streak.
+class TodayDailySummary extends StatelessWidget {
+  /// Creates the summary for the given [day].
+  const TodayDailySummary({
+    required this.progress,
+    required this.day,
+    super.key,
+  });
 
+  /// Progress used to count steps and streak days.
   final Progress progress;
+
+  /// The last day shown in the streak.
   final Day day;
 
   @override
@@ -14,7 +28,7 @@ class _DailySummary extends StatelessWidget {
     final count = record.auto == null && !record.isManual
         ? l10n.todayUnknownSteps
         : NumberFormat.decimalPattern(l10n.localeName).format(record.counted);
-    return _Surface(
+    return TodaySurface(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: Spacing.s12,
@@ -118,7 +132,7 @@ class _StreakDay extends StatelessWidget {
     final l10n = context.l10n;
     final theme = Theme.of(context);
     final colors = StepfoldColors.of(context);
-    final date = _calendarDate(day);
+    final date = DateTime.utc(day.year, day.month, day.day);
     final dayLabel = DateFormat.EEEE(l10n.localeName).format(date);
     return Semantics(
       label: reached

@@ -1,6 +1,5 @@
 import 'package:drift/drift.dart';
-import 'package:walks/domain/models/day.dart';
-import 'package:walks/domain/models/medal.dart';
+import 'package:walks/domain/models/models.dart';
 
 part 'progress_database.g.dart';
 

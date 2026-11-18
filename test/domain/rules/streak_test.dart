@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/domain/models/progress.dart';
-import 'package:walks/domain/rules/streak.dart';
+import 'package:walks/domain/domain.dart';
 
 import '../fixtures.dart';
 

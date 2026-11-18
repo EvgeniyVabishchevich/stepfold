@@ -1,7 +1,7 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:walks/data/repositories/crash/crashlytics_crash_reporter.dart';
+import 'package:walks/data/repositories/crash/crash.dart';
 
 import '../../../contracts/crash_reporter_contract.dart';
 

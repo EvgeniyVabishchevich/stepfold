@@ -1,10 +1,7 @@
 import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/data/repositories/steps/fake_step_source.dart';
-import 'package:walks/domain/failures/step_source_failure.dart';
-import 'package:walks/domain/models/app_permission.dart';
-import 'package:walks/domain/models/day.dart';
-import 'package:walks/domain/models/day_count.dart';
+import 'package:walks/data/repositories/steps/steps.dart';
+import 'package:walks/domain/domain.dart';
 
 import '../../../contracts/step_source_contract.dart';
 

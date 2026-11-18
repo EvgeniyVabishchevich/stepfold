@@ -1,8 +1,14 @@
-part of '../chapter_page.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:walks/domain/models/models.dart';
+import 'package:walks/ui/core/core.dart';
+import 'package:walks/ui/theme/theme.dart';
 
-class _ChapterBlockView extends StatelessWidget {
-  const _ChapterBlockView({required this.block});
+/// Renders one block in the chapter reader.
+class ChapterBlockView extends StatelessWidget {
+  /// Creates a view for the given [block].
+  const ChapterBlockView({required this.block, super.key});
 
+  /// The catalog content to display.
   final ContentBlock block;
 
   @override

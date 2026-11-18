@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:walks/domain/repositories/native_crasher.dart';
+import 'package:walks/domain/repositories/repositories.dart';
 
 /// A [NativeCrasher] that asks the platform code over a method channel.
 ///

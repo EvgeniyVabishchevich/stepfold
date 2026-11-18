@@ -1,10 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/domain/failures/progress_failure.dart';
-import 'package:walks/domain/models/goal.dart';
-import 'package:walks/domain/models/progress.dart';
-import 'package:walks/domain/models/spending.dart';
-import 'package:walks/domain/rules/chapters.dart';
-import 'package:walks/domain/rules/goal.dart';
+import 'package:walks/domain/domain.dart';
 
 import '../fixtures.dart';
 

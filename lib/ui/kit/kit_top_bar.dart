@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:walks/ui/kit/kit_icon.dart';
-import 'package:walks/ui/theme/dimens.dart';
+import 'package:walks/ui/theme/theme.dart';
 
 /// An action on the right of [KitTopBar].
 class KitTopBarAction {

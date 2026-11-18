@@ -1,9 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/data/repositories/catalog/asset_catalog.dart';
-import 'package:walks/data/repositories/catalog/catalog_format_error.dart';
-import 'package:walks/domain/models/chapter_content.dart';
+import 'package:walks/data/repositories/catalog/catalog.dart';
+import 'package:walks/domain/models/models.dart';
 
 import '../../../contracts/catalog_contract.dart';
 import 'map_asset_bundle.dart';

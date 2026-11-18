@@ -1,7 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:walks/domain/failures/step_source_failure.dart';
-import 'package:walks/domain/failures/storage_failure.dart';
-import 'package:walks/domain/models/app_permission.dart';
+import 'package:walks/domain/domain.dart';
 
 part 'step_sync_state.freezed.dart';
 

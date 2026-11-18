@@ -1,8 +1,4 @@
-import 'package:walks/domain/failures/catalog_failure.dart';
-import 'package:walks/domain/models/catalog_index.dart';
-import 'package:walks/domain/models/chapter_content.dart';
-import 'package:walks/domain/models/progression.dart';
-import 'package:walks/domain/repositories/catalog.dart';
+import 'package:walks/domain/domain.dart';
 
 /// A [Catalog] in memory, driven by the test.
 ///

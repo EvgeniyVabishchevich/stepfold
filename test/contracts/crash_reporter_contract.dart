@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/domain/repositories/crash_reporter.dart';
+import 'package:walks/domain/repositories/repositories.dart';
 
 /// The behaviour every [CrashReporter] must share.
 ///

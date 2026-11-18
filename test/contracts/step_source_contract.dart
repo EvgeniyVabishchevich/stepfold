@@ -1,8 +1,6 @@
 import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/domain/models/day.dart';
-import 'package:walks/domain/models/day_count.dart';
-import 'package:walks/domain/repositories/step_source.dart';
+import 'package:walks/domain/domain.dart';
 
 /// The behaviour every [StepSource] must share.
 ///

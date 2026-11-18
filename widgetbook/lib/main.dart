@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart' as m;
 import 'package:walks/ui/l10n/l10n.dart';
-import 'package:walks/ui/theme/stepfold_theme.dart';
+import 'package:walks/ui/theme/theme.dart';
 import 'package:walks_widgetbook/main.directories.g.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;

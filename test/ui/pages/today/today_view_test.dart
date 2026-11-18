@@ -1,9 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/domain/models/day.dart';
-import 'package:walks/domain/models/progress.dart';
-import 'package:walks/ui/pages/home_shell/bloc/step_sync_bloc.dart';
-import 'package:walks/ui/pages/today/bloc/today_bloc.dart';
-import 'package:walks/ui/pages/today/today_page.dart';
+import 'package:walks/domain/models/models.dart';
+import 'package:walks/ui/pages/home_shell/bloc/bloc.dart';
+import 'package:walks/ui/pages/today/bloc/bloc.dart';
+import 'package:walks/ui/pages/today/today.dart';
 
 import '../../../helpers/pump_view.dart';
 

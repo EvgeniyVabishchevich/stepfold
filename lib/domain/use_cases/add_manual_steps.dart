@@ -1,8 +1,7 @@
 import 'package:clock/clock.dart';
-import 'package:walks/domain/models/day.dart';
-import 'package:walks/domain/models/manual_entry_lock.dart';
-import 'package:walks/domain/repositories/progress_repository.dart';
-import 'package:walks/domain/rules/manual_entry.dart';
+import 'package:walks/domain/models/models.dart';
+import 'package:walks/domain/repositories/repositories.dart';
+import 'package:walks/domain/rules/rules.dart';
 
 /// Checks steps added by hand and saves them.
 class AddManualSteps {

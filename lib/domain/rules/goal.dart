@@ -1,9 +1,7 @@
 import 'dart:math';
 
-import 'package:walks/domain/failures/progress_failure.dart';
-import 'package:walks/domain/models/goal.dart';
-import 'package:walks/domain/models/progress.dart';
-import 'package:walks/domain/models/progression.dart';
+import 'package:walks/domain/failures/failures.dart';
+import 'package:walks/domain/models/models.dart';
 import 'package:walks/domain/rules/chapters.dart';
 import 'package:walks/domain/rules/medals.dart';
 

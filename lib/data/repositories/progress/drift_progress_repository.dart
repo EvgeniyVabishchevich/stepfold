@@ -5,12 +5,7 @@ import 'package:drift/native.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:walks/data/repositories/progress/progress_database.dart';
 import 'package:walks/data/repositories/progress/storage_errors.dart';
-import 'package:walks/domain/models/day.dart';
-import 'package:walks/domain/models/day_steps.dart';
-import 'package:walks/domain/models/goal.dart';
-import 'package:walks/domain/models/progress.dart';
-import 'package:walks/domain/models/spending.dart';
-import 'package:walks/domain/repositories/progress_repository.dart';
+import 'package:walks/domain/domain.dart';
 
 /// A [ProgressRepository] in a SQLite database, through drift.
 class DriftProgressRepository implements ProgressRepository {

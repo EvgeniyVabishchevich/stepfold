@@ -1,11 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:walks/domain/repositories/crash_reporter.dart';
-import 'package:walks/domain/repositories/native_crasher.dart';
-import 'package:walks/ui/pages/dev_menu/bloc/dev_menu_bloc.dart';
-
-part 'widgets/section_title.dart';
+import 'package:walks/domain/repositories/repositories.dart';
+import 'package:walks/ui/pages/dev_menu/bloc/bloc.dart';
+import 'package:walks/ui/pages/dev_menu/widgets/widgets.dart';
 
 /// Whether the build has the developer menu.
 const bool devMenuEnabled = !kReleaseMode;
@@ -49,7 +47,7 @@ class DevMenuView extends StatelessWidget {
       appBar: AppBar(title: const Text('Меню разработчика')),
       body: ListView(
         children: [
-          const _SectionTitle('Отчёты о падениях'),
+          const DevMenuSectionTitle('Отчёты о падениях'),
           ListTile(
             leading: const Icon(Icons.report_outlined),
             title: const Text('Нефатальная ошибка'),

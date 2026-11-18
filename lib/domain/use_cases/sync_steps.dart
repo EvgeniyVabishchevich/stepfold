@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:walks/domain/models/day.dart';
-import 'package:walks/domain/models/day_count.dart';
-import 'package:walks/domain/repositories/progress_repository.dart';
-import 'package:walks/domain/repositories/step_source.dart';
+import 'package:walks/domain/models/models.dart';
+import 'package:walks/domain/repositories/repositories.dart';
 
 /// How many days back are read again on each catch-up: the health store
 /// may correct them late, after a watch syncs.

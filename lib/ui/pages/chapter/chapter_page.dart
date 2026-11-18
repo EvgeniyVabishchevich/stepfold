@@ -1,20 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:walks/domain/models/chapter_content.dart';
-import 'package:walks/domain/repositories/catalog.dart';
-import 'package:walks/domain/repositories/crash_reporter.dart';
-import 'package:walks/domain/repositories/progress_repository.dart';
-import 'package:walks/ui/core/catalog_image.dart';
-import 'package:walks/ui/core/routes.dart';
-import 'package:walks/ui/kit/kit_state_placeholder.dart';
-import 'package:walks/ui/kit/kit_top_bar.dart';
+import 'package:walks/domain/domain.dart';
+import 'package:walks/ui/core/core.dart';
+import 'package:walks/ui/kit/kit.dart';
 import 'package:walks/ui/l10n/l10n.dart';
-import 'package:walks/ui/pages/chapter/bloc/chapter_bloc.dart';
-import 'package:walks/ui/theme/dimens.dart';
-
-part 'widgets/chapter_block_view.dart';
-part 'widgets/chapter_content_frame.dart';
+import 'package:walks/ui/pages/chapter/bloc/bloc.dart';
+import 'package:walks/ui/pages/chapter/widgets/widgets.dart';
+import 'package:walks/ui/theme/theme.dart';
 
 /// Full-screen reader for the chapter identified by the route.
 class ChapterPage extends StatelessWidget {
@@ -135,7 +128,7 @@ class ChapterView extends StatelessWidget {
                 for (final block in blocks)
                   Padding(
                     padding: const EdgeInsets.only(bottom: Spacing.s24),
-                    child: _ChapterBlockView(block: block),
+                    child: ChapterBlockView(block: block),
                   ),
             ],
           ],
@@ -143,4 +136,58 @@ class ChapterView extends StatelessWidget {
       ),
     );
   }
+}
+
+class _ChapterContentFrame extends StatefulWidget {
+  const _ChapterContentFrame({
+    required this.progressionId,
+    required this.chapterId,
+  });
+
+  final String progressionId;
+  final String chapterId;
+
+  @override
+  State<_ChapterContentFrame> createState() => _ChapterContentFrameState();
+}
+
+class _ChapterContentFrameState extends State<_ChapterContentFrame> {
+  String? _language;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final language = Localizations.localeOf(context).languageCode;
+    if (_language == language) return;
+    _language = language;
+    _load();
+  }
+
+  @override
+  void didUpdateWidget(_ChapterContentFrame oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.progressionId != oldWidget.progressionId ||
+        widget.chapterId != oldWidget.chapterId) {
+      _load();
+    }
+  }
+
+  void _load() => context.read<ChapterBloc>().add(
+    LoadChapter(widget.progressionId, widget.chapterId, _language!),
+  );
+
+  @override
+  Widget build(BuildContext context) => BlocBuilder<ChapterBloc, ChapterState>(
+    builder: (context, state) => ChapterView(
+      state: state,
+      onRetry: _load,
+      onBack: () {
+        if (context.canPop()) {
+          context.pop();
+        } else {
+          context.go(Routes.today);
+        }
+      },
+    ),
+  );
 }

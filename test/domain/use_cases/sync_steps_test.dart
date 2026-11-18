@@ -3,14 +3,8 @@ import 'dart:async';
 import 'package:clock/clock.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/data/repositories/progress/fake_progress_repository.dart';
-import 'package:walks/data/repositories/steps/fake_step_source.dart';
-import 'package:walks/domain/failures/step_source_failure.dart';
-import 'package:walks/domain/failures/storage_failure.dart';
-import 'package:walks/domain/models/day.dart';
-import 'package:walks/domain/models/day_count.dart';
-import 'package:walks/domain/models/progress.dart';
-import 'package:walks/domain/use_cases/sync_steps.dart';
+import 'package:walks/data/repositories/repositories.dart';
+import 'package:walks/domain/domain.dart';
 
 void main() {
   final today = Day(2026, 11, 12);

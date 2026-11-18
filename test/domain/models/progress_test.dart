@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:walks/domain/rules/chapters.dart';
+import 'package:walks/domain/rules/rules.dart';
 
 import '../fixtures.dart';
 
