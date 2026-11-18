@@ -143,12 +143,19 @@ abstract final class StepfoldTheme {
     );
   }
 
-  /// The six styles of the kit, put on the closest Material 3 roles.
+  /// The styles of the kit, put on the closest Material 3 roles.
   ///
   /// The other roles keep Material sizes and the Inter family from
   /// `fontFamily` above.
   static TextTheme _textTheme(TextTheme base) {
     return base.copyWith(
+      // ScreenTitle: the Today heading.
+      displayLarge: _style(
+        base.displayLarge,
+        44,
+        49.28,
+        FontWeight.w700,
+      )?.copyWith(letterSpacing: -1.5),
       // Headline: the one main phrase of a screen.
       headlineMedium: _style(base.headlineMedium, 28, 36, FontWeight.w600),
       // Title: section and app bar titles.

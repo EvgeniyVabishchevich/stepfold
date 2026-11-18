@@ -42,21 +42,24 @@ class KitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final child = _Label(label: label, loading: loading);
-    // While loading, taps do nothing, but the button keeps its enabled look.
+    // Retain the loading appearance from the kit while blocking activation.
     final onPressed = loading ? _ignore : this.onPressed;
+    final button = switch (kind) {
+      KitButtonKind.primary => FilledButton(onPressed: onPressed, child: child),
+      KitButtonKind.secondary => OutlinedButton(
+        onPressed: onPressed,
+        child: child,
+      ),
+      KitButtonKind.text => TextButton(onPressed: onPressed, child: child),
+    };
+    if (!loading) return button;
+
     return Semantics(
-      label: loading ? label : null,
-      child: switch (kind) {
-        KitButtonKind.primary => FilledButton(
-          onPressed: onPressed,
-          child: child,
-        ),
-        KitButtonKind.secondary => OutlinedButton(
-          onPressed: onPressed,
-          child: child,
-        ),
-        KitButtonKind.text => TextButton(onPressed: onPressed, child: child),
-      },
+      label: label,
+      button: true,
+      enabled: false,
+      excludeSemantics: true,
+      child: AbsorbPointer(child: ExcludeFocus(child: button)),
     );
   }
 }

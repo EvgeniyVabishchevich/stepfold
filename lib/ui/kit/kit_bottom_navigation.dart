@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:material_ui/material_ui.dart';
 import 'package:walks/ui/kit/kit_icon.dart';
 import 'package:walks/ui/theme/stepfold_colors.dart';
@@ -35,7 +37,12 @@ class KitBottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final label = theme.textTheme.labelMedium;
+    final labelHeight =
+        MediaQuery.textScalerOf(context).scale(label?.fontSize ?? 13) *
+        (label?.height ?? 18 / 13);
     return DecoratedBox(
       decoration: BoxDecoration(
         color: scheme.surface,
@@ -44,7 +51,8 @@ class KitBottomNavigation extends StatelessWidget {
       child: SafeArea(
         top: false,
         child: SizedBox(
-          height: 80,
+          // At larger text sizes allow two lines below the 24 px icon.
+          height: math.max(80, 40 + 2 * labelHeight),
           child: Row(
             children: [
               for (final (index, tab) in tabs.indexed)
@@ -97,6 +105,9 @@ class _NavItem extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               tab.label,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
               style: theme.textTheme.labelMedium?.copyWith(
                 color: selected ? colors.primaryText : scheme.onSurfaceVariant,
               ),

@@ -1,19 +1,34 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:walks/app/di.dart';
 import 'package:walks/app/implementations.dart';
 import 'package:walks/app/router.dart';
-import 'package:walks/ui/catalog/catalog_view.dart';
+import 'package:walks/data/repositories/permissions/fake_permission_service.dart';
+import 'package:walks/data/repositories/progress/fake_progress_repository.dart';
+import 'package:walks/data/repositories/steps/fake_step_source.dart';
+import 'package:walks/domain/models/app_permission.dart';
+import 'package:walks/domain/models/day.dart';
+import 'package:walks/domain/models/goal.dart';
+import 'package:walks/domain/repositories/permission_service.dart';
+import 'package:walks/domain/repositories/progress_repository.dart';
+import 'package:walks/domain/repositories/step_source.dart';
 import 'package:walks/ui/core/routes.dart';
-import 'package:walks/ui/dev_menu/dev_menu_view.dart';
 import 'package:walks/ui/kit/kit_bottom_navigation.dart';
 import 'package:walks/ui/l10n/l10n.dart';
+import 'package:walks/ui/pages/catalog/catalog_page.dart';
+import 'package:walks/ui/pages/chapter/chapter_page.dart';
+import 'package:walks/ui/pages/dev_menu/dev_menu_page.dart';
+import 'package:walks/ui/pages/home_shell/bloc/step_sync_bloc.dart';
+import 'package:walks/ui/pages/today/bloc/today_bloc.dart';
+import 'package:walks/ui/pages/today/today_page.dart';
 import 'package:walks/ui/theme/stepfold_theme.dart';
-import 'package:walks/ui/today/today_view.dart';
 
 void main() {
   late GoRouter router;
+  setUp(() => configureDependencies(Implementations.fakes));
+  tearDown(getIt.reset);
 
   Future<void> pumpRouter(
     WidgetTester tester, {
@@ -99,10 +114,137 @@ void main() {
     expect(find.byType(CatalogView, skipOffstage: false), findsOneWidget);
   });
 
-  group('developer menu', () {
-    setUp(() => configureDependencies(Implementations.fakes));
-    tearDown(getIt.reset);
+  testWidgets('the shell provider syncs on direct entry and owns its bloc', (
+    tester,
+  ) async {
+    final source = (getIt<StepSource>() as FakeStepSource)
+      ..setSteps(Day.today(), 1200);
+    (getIt<PermissionService>() as FakePermissionService).setStatus(
+      source.requiredPermission,
+      PermissionStatus.granted,
+    );
 
+    await pumpRouter(tester, initialLocation: Routes.catalog);
+
+    final shellBloc = tester
+        .element(find.byType(CatalogView))
+        .read<StepSyncBloc>();
+    final progress =
+        (getIt<ProgressRepository>() as FakeProgressRepository).progress;
+    expect(progress.reserve, 1200);
+    expect(find.byType(TodayView, skipOffstage: false), findsNothing);
+
+    await tester.tap(find.text('Сегодня'));
+    await tester.pumpAndSettle();
+    final todayContext = tester.element(find.byType(TodayView));
+    final todayBloc = todayContext.read<TodayBloc>();
+    expect(todayContext.read<StepSyncBloc>(), same(shellBloc));
+
+    await tester.pumpWidget(const SizedBox.shrink());
+    // Cancellation of the step stream can finish outside the frame queue.
+    await tester.runAsync(() => Future<void>(() {}));
+    await tester.pumpAndSettle();
+
+    expect(shellBloc.isClosed, isTrue);
+    expect(todayBloc.isClosed, isTrue);
+  });
+
+  testWidgets('steps fund a chapter and the reader returns to the next goal', (
+    tester,
+  ) async {
+    final repository = getIt<ProgressRepository>();
+    await repository.saveGoal(
+      const Goal.chapter(progressionId: 'sample', chapterId: 'c1'),
+    );
+    (getIt<StepSource>() as FakeStepSource).setSteps(Day.today(), 1200);
+    await pumpRouter(tester, initialLocation: Routes.catalog);
+    await tester.tap(find.text('Сегодня').first);
+    await tester.pumpAndSettle();
+
+    final allow = find.text('Разрешить');
+    final scrollable = find.descendant(
+      of: find.byType(TodayView),
+      matching: find.byType(Scrollable),
+    );
+    await tester.scrollUntilVisible(
+      allow.hitTestable(),
+      100,
+      scrollable: scrollable,
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(allow);
+    await tester.pumpAndSettle();
+
+    final open = find.text('Открыть главу');
+    await tester.scrollUntilVisible(
+      open.hitTestable(),
+      100,
+      scrollable: scrollable,
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(open);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ChapterView), findsOneWidget);
+    expect(find.text('Первая глава.'), findsOneWidget);
+    expect(find.byType(KitBottomNavigation), findsNothing);
+    await tester.tap(find.byTooltip('Назад'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ChapterView), findsNothing);
+    expect(find.text('Конец'), findsOneWidget);
+    expect(find.text('В запасе 200 шагов'), findsOneWidget);
+    expect(
+      (repository as FakeProgressRepository).progress.spendings,
+      hasLength(1),
+    );
+  });
+
+  testWidgets('a link cannot reveal a locked chapter or spend steps', (
+    tester,
+  ) async {
+    await pumpRouter(
+      tester,
+      initialLocation: Routes.chapterLocation('sample', 'c1'),
+    );
+
+    expect(location(), '/chapter/sample/c1');
+    await tester.pumpAndSettle();
+    expect(find.text('Глава недоступна'), findsOneWidget);
+    expect(find.text('Первая глава.'), findsNothing);
+    final progress =
+        (getIt<ProgressRepository>() as FakeProgressRepository).progress;
+    expect(progress.spendings, isEmpty);
+  });
+
+  testWidgets('the goal remains readable at double text size', (tester) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(360, 760);
+    tester.platformDispatcher.textScaleFactorTestValue = 2;
+    addTearDown(tester.view.resetDevicePixelRatio);
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+    final repository = getIt<ProgressRepository>();
+    await repository.saveAutoSteps(Day.today(), 1200);
+    await repository.saveGoal(
+      const Goal.chapter(progressionId: 'sample', chapterId: 'c1'),
+    );
+    await pumpRouter(tester);
+
+    final open = find.text('Открыть главу').hitTestable();
+    await tester.scrollUntilVisible(
+      open,
+      120,
+      scrollable: find.descendant(
+        of: find.byType(TodayView),
+        matching: find.byType(Scrollable),
+      ),
+    );
+    expect(open, findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  group('developer menu', () {
     testWidgets('opens over the tabs and goes back to Today', (tester) async {
       await pumpRouter(tester);
 

@@ -25,7 +25,6 @@ import 'package:walks/domain/use_cases/buy_medal.dart';
 import 'package:walks/domain/use_cases/open_chapter.dart';
 import 'package:walks/domain/use_cases/set_goal.dart';
 import 'package:walks/domain/use_cases/sync_steps.dart';
-import 'package:walks/ui/dev_menu/bloc/dev_menu_cubit.dart';
 
 /// The container of the app's dependencies.
 final GetIt getIt = GetIt.instance;
@@ -35,7 +34,7 @@ final GetIt getIt = GetIt.instance;
 ///
 /// Firebase is initialized only when a chosen implementation needs it, so
 /// tests on fakes run without it. Repositories and services are lazy
-/// singletons, blocs are factories.
+/// singletons, use cases are factories.
 Future<void> configureDependencies(Implementations implementations) async {
   if (implementations.usesFirebase) {
     await Firebase.initializeApp(
@@ -80,10 +79,5 @@ Future<void> configureDependencies(Implementations implementations) async {
     ..registerFactory(() => AddManualSteps(getIt()))
     ..registerFactory(() => SyncSteps(progress: getIt(), source: getIt()));
 
-  // Developer tools.
-  getIt
-    ..registerLazySingleton<NativeCrasher>(MethodChannelNativeCrasher.new)
-    ..registerFactory(
-      () => DevMenuCubit(crashReporter: getIt(), nativeCrasher: getIt()),
-    );
+  getIt.registerLazySingleton<NativeCrasher>(MethodChannelNativeCrasher.new);
 }

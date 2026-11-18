@@ -1,0 +1,37 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:walks/domain/failures/catalog_failure.dart';
+import 'package:walks/domain/failures/progress_failure.dart';
+import 'package:walks/domain/failures/storage_failure.dart';
+import 'package:walks/domain/models/day.dart';
+import 'package:walks/domain/models/goal.dart';
+import 'package:walks/domain/models/progress.dart';
+import 'package:walks/domain/models/progression.dart';
+
+part 'today_state.freezed.dart';
+
+/// A goal resolved against the catalog and current progress.
+typedef TodayGoal = ({
+  Goal goal,
+  Progression progression,
+  String? chapterTitle,
+  int price,
+  int left,
+});
+
+/// The progress snapshot and the transient state of Today.
+@freezed
+abstract class TodayState with _$TodayState {
+  /// Creates a Today snapshot.
+  const factory TodayState({
+    required Day day,
+    Progress? progress,
+    StorageFailure? progressFailure,
+    TodayGoal? target,
+    @Default(true) bool catalogLoading,
+    CatalogFailure? catalogFailure,
+    Goal? spendingGoal,
+    ProgressFailure? spendingFailure,
+    StorageFailure? spendingStorageFailure,
+    ChapterGoal? openedChapter,
+  }) = _TodayState;
+}

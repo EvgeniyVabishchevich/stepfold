@@ -1,12 +1,14 @@
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:walks/ui/album/album_page.dart';
-import 'package:walks/ui/catalog/catalog_page.dart';
+import 'package:walks/app/di.dart';
 import 'package:walks/ui/core/routes.dart';
-import 'package:walks/ui/dev_menu/dev_menu_page.dart';
-import 'package:walks/ui/home/home_shell_view.dart';
-import 'package:walks/ui/today/today_page.dart';
-import 'package:walks/ui/world/world_page.dart';
+import 'package:walks/ui/pages/album/album_page.dart';
+import 'package:walks/ui/pages/catalog/catalog_page.dart';
+import 'package:walks/ui/pages/chapter/chapter_page.dart';
+import 'package:walks/ui/pages/dev_menu/dev_menu_page.dart';
+import 'package:walks/ui/pages/home_shell/home_shell_page.dart';
+import 'package:walks/ui/pages/today/today_page.dart';
+import 'package:walks/ui/pages/world/world_page.dart';
 
 /// Creates the router of the app.
 ///
@@ -20,14 +22,14 @@ import 'package:walks/ui/world/world_page.dart';
 /// │  ├─ /catalog
 /// │  ├─ /world
 /// │  └─ /album
-/// ├─ /chapter/:id           (full screen over the tabs)
+/// ├─ /chapter/:progressionId/:chapterId (full screen over the tabs)
 /// ├─ /paywall               (modal over the tabs)
 /// ├─ /settings              (over the tabs)
 /// └─ /dev                   (developer menu, not in release)
 /// ```
 ///
-/// A notification opens one of these locations: "chapter ready" opens
-/// `/chapter/:id`, a reminder `/today`, the weekly summary the history.
+/// A reminder opens `/today`, and the weekly summary opens the history.
+/// The reader opens a chapter that has already been unlocked.
 GoRouter createRouter({String initialLocation = Routes.today}) {
   return GoRouter(
     navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'root'),
@@ -35,32 +37,58 @@ GoRouter createRouter({String initialLocation = Routes.today}) {
     redirect: (context, state) => state.uri.path == '/' ? Routes.today : null,
     routes: [
       StatefulShellRoute.indexedStack(
-        builder: (context, state, shell) => HomeShellView(
+        builder: (context, state, shell) => HomeShellPage(
           currentIndex: shell.currentIndex,
           // Tapping the open tab again takes it back to its first screen.
           onTabSelected: (index) => shell.goBranch(
             index,
             initialLocation: index == shell.currentIndex,
           ),
+          permissions: getIt(),
+          stepSource: getIt(),
+          syncSteps: getIt(),
+          crashReporter: getIt(),
           child: shell,
         ),
         branches: [
-          _tab(Routes.today, const TodayPage()),
-          _tab(Routes.catalog, const CatalogPage()),
-          _tab(Routes.world, const WorldPage()),
-          _tab(Routes.album, const AlbumPage()),
+          _tab(
+            Routes.today,
+            (context, state) => TodayPage(
+              progress: getIt(),
+              catalog: getIt(),
+              openChapter: getIt(),
+              buyMedal: getIt(),
+              crashReporter: getIt(),
+              canOpenDevMenu: devMenuEnabled,
+            ),
+          ),
+          _tab(Routes.catalog, (context, state) => const CatalogPage()),
+          _tab(Routes.world, (context, state) => const WorldPage()),
+          _tab(Routes.album, (context, state) => const AlbumPage()),
         ],
       ),
       // Routes outside the shell go on the root navigator, over the tabs.
+      GoRoute(
+        path: Routes.chapter,
+        builder: (context, state) => ChapterPage(
+          progressionId: state.pathParameters['progressionId']!,
+          chapterId: state.pathParameters['chapterId']!,
+          catalog: getIt(),
+          progress: getIt(),
+          crashReporter: getIt(),
+        ),
+      ),
       if (devMenuEnabled)
         GoRoute(
           path: Routes.devMenu,
-          builder: (context, state) => const DevMenuPage(),
+          builder: (context, state) =>
+              DevMenuPage(crashReporter: getIt(), nativeCrasher: getIt()),
         ),
     ],
   );
 }
 
-StatefulShellBranch _tab(String path, Widget page) => StatefulShellBranch(
-  routes: [GoRoute(path: path, builder: (context, state) => page)],
-);
+StatefulShellBranch _tab(String path, GoRouterWidgetBuilder builder) =>
+    StatefulShellBranch(
+      routes: [GoRoute(path: path, builder: builder)],
+    );

@@ -19,5 +19,114 @@
   "tabAlbum": "Альбом",
   "@tabAlbum": {
     "description": "Bottom bar tab: rewards by kind."
+  },
+  "todaySteps": "Шаги сегодня",
+  "todayUnknownSteps": "—",
+  "todayStreak": "Серия",
+  "todayStreakDays": "{days, plural, one{{days} день} few{{days} дня} many{{days} дней} other{{days} дня}}",
+  "@todayStreakDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "todayStreakThreshold": "Дни с {steps}+ шагов",
+  "todayStreakReached": "{day}, порог серии достигнут",
+  "@todayStreakReached": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      }
+    }
+  },
+  "todayStreakMissed": "{day}, порог серии ещё не достигнут",
+  "@todayStreakMissed": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      }
+    }
+  },
+  "todayChooseGoal": "Выберите цель",
+  "todayToCatalog": "В каталог",
+  "todayReserve": "В запасе {steps}",
+  "todayDebt": "Долг {steps}",
+  "todayGoalPrice": "Цена {steps}",
+  "todayStepsLeft": "Осталось {steps}",
+  "stepCount": "{steps, plural, one{{steps} шаг} few{{steps} шага} many{{steps} шагов} other{{steps} шага}}",
+  "@stepCount": {
+    "placeholders": {
+      "steps": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "todayReady": "Шагов хватает",
+  "todayOpenChapter": "Открыть главу",
+  "todayBuyMedal": "Купить медаль",
+  "todaySilverMedal": "Серебряная медаль",
+  "todayGoldMedal": "Золотая медаль",
+  "todayBronzeMedal": "Бронзовая медаль",
+  "todayCatalogError": "Не удалось загрузить каталог",
+  "todayGoalUnavailable": "Цель недоступна",
+  "todayProgressError": "Не удалось загрузить прогресс",
+  "todayProgressRetryMessage": "Попробуйте загрузить его ещё раз.",
+  "todaySpendingFailed": "Не удалось сохранить трату шагов.",
+  "todayReserveChanged": "Запас изменился. Проверьте, сколько шагов осталось.",
+  "todayAllowSteps": "Подключите подсчёт шагов",
+  "todayAllowStepsMessage": "Так шаги будут добавляться автоматически.",
+  "todayAllow": "Разрешить",
+  "todayStepsBlocked": "Доступ к шагам выключен",
+  "todayStepsBlockedMessage": "Разрешение можно дать в настройках телефона.",
+  "todayOpenSettings": "Открыть настройки",
+  "todayStepsUnavailable": "Счётчик недоступен",
+  "todayStepsUnavailableMessage": "Сохранённые шаги остаются доступны.",
+  "todayStepSyncError": "Не удалось обновить шаги",
+  "storageFull": "Освободите место на устройстве и повторите попытку.",
+  "retry": "Повторить",
+  "chapterReader": "Чтение главы",
+  "chapterBack": "Назад",
+  "chapterEmpty": "В этой главе пока нет содержимого",
+  "chapterUnavailable": "Глава недоступна",
+  "chapterReadError": "Не удалось загрузить главу",
+  "chapterRetryMessage": "Попробуйте загрузить её ещё раз.",
+  "chapterImageError": "Изображение недоступно",
+  "@todayStreakThreshold": {
+    "placeholders": {
+      "steps": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "@todayReserve": {
+    "placeholders": {
+      "steps": {
+        "type": "String"
+      }
+    }
+  },
+  "@todayDebt": {
+    "placeholders": {
+      "steps": {
+        "type": "String"
+      }
+    }
+  },
+  "@todayGoalPrice": {
+    "placeholders": {
+      "steps": {
+        "type": "String"
+      }
+    }
+  },
+  "@todayStepsLeft": {
+    "placeholders": {
+      "steps": {
+        "type": "String"
+      }
+    }
   }
 }
