@@ -49,3 +49,6 @@ app.*.map.json
 
 # Claude Code local settings
 CLAUDE.local.md
+
+# Codex local settings
+.codex/config.toml
