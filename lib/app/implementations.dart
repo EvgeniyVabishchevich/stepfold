@@ -3,6 +3,8 @@
 /// Change [chosenImplementations] and restart the app to switch.
 library;
 
+import 'package:flutter/foundation.dart';
+
 /// Implementations of `CrashReporter`.
 enum CrashReporterImpl {
   /// In memory, printed to the console.
@@ -30,6 +32,21 @@ enum ProgressImpl {
   drift,
 }
 
+/// Implementations of the step source and its permissions.
+enum StepsImpl {
+  /// In memory, controlled by the developer menu.
+  fake,
+
+  /// Prefer Health Connect and use the phone's steps if it is unavailable.
+  androidAutomatic,
+
+  /// Health Connect on Android.
+  androidHealthConnect,
+
+  /// Phone steps via Recording API or the hardware counter on Android.
+  androidSensor,
+}
+
 /// One implementation per area.
 class Implementations {
   /// Creates a set of implementations.
@@ -37,6 +54,7 @@ class Implementations {
     required this.crashReporter,
     required this.catalog,
     required this.progress,
+    required this.steps,
   });
 
   /// Every area on its fake: no SDK, no network. Used by tests.
@@ -44,6 +62,7 @@ class Implementations {
     crashReporter: CrashReporterImpl.fake,
     catalog: CatalogImpl.fake,
     progress: ProgressImpl.fake,
+    steps: StepsImpl.fake,
   );
 
   /// The `CrashReporter`.
@@ -55,6 +74,15 @@ class Implementations {
   /// The `ProgressRepository`.
   final ProgressImpl progress;
 
+  /// The requested step source. Non-Android builds use the fake for now.
+  final StepsImpl steps;
+
+  /// The source available on the current platform.
+  StepsImpl get activeSteps =>
+      !kIsWeb && defaultTargetPlatform == TargetPlatform.android
+      ? steps
+      : StepsImpl.fake;
+
   /// Whether any chosen implementation needs `Firebase.initializeApp`.
   bool get usesFirebase => crashReporter == CrashReporterImpl.crashlytics;
 
@@ -64,6 +92,7 @@ class Implementations {
     'impl_crash_reporter': crashReporter.name,
     'impl_catalog': catalog.name,
     'impl_progress': progress.name,
+    'impl_steps': activeSteps.name,
   };
 }
 
@@ -72,4 +101,5 @@ const chosenImplementations = Implementations(
   crashReporter: CrashReporterImpl.crashlytics,
   catalog: CatalogImpl.assets,
   progress: ProgressImpl.drift,
+  steps: StepsImpl.androidAutomatic,
 );

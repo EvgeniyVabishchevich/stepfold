@@ -1,0 +1,4 @@
+<resources>
+    <string name="health_steps_title">Stepfold и данные о шагах</string>
+    <string name="health_steps_rationale">Stepfold читает число шагов за день из Health Connect, чтобы обновлять прогресс и открывать главы и медали. Прогресс хранится на этом устройстве. Доступ можно отозвать в настройках Health Connect.</string>
+</resources>

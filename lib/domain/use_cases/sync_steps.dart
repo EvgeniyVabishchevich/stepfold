@@ -49,7 +49,7 @@ class SyncSteps {
     if (from.isBefore(progress.installDay)) from = progress.installDay;
     if (from.isAfter(today)) return;
     for (final count in await _source.stepsByDay(from, today)) {
-      await _progress.saveAutoSteps(count.day, count.steps);
+      await _saveAutoSteps(count);
     }
   }
 
@@ -58,8 +58,8 @@ class SyncSteps {
   /// The first count is saved at once; later ones at most once per
   /// [writeInterval], the latest of them. A count of a new day saves the
   /// pending count of the old day first. Cancelling saves the pending
-  /// count. Emits each count after it is saved; errors of the source and
-  /// the storage come through the stream.
+  /// count. Emits each count after handing it to storage. Errors from the
+  /// source and storage come through the stream.
   Stream<DayCount> followToday() {
     late StreamController<DayCount> controller;
     StreamSubscription<DayCount>? subscription;
@@ -73,7 +73,7 @@ class SyncSteps {
       return writing = writing.then((_) async {
         if (count == saved) return;
         try {
-          await _progress.saveAutoSteps(count.day, count.steps);
+          await _saveAutoSteps(count);
           saved = count;
           if (!controller.isClosed) controller.add(count);
         } on Object catch (error, stackTrace) {
@@ -122,4 +122,7 @@ class SyncSteps {
     );
     return controller.stream;
   }
+
+  Future<void> _saveAutoSteps(DayCount count) =>
+      _progress.saveAutoSteps(count.day, count.steps, origin: _source.origin);
 }

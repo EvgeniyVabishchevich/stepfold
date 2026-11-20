@@ -7,6 +7,9 @@ import 'package:walks/domain/models/models.dart';
 ///
 /// Reading fails with a `StepSourceFailure`.
 abstract interface class StepSource {
+  /// The origin to persist alongside automatic day totals.
+  AutoStepOrigin? get origin;
+
   /// The permission this source needs. The caller checks it with
   /// `PermissionService` before reading.
   AppPermission get requiredPermission;

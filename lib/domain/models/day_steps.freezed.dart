@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DaySteps {
 
- Day get day; int? get auto; int? get manual;
+ Day get day; int? get auto; int? get manual; AutoStepOrigin? get autoOrigin;
 /// Create a copy of DaySteps
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,20 +27,20 @@ $DayStepsCopyWith<DaySteps> get copyWith => _$DayStepsCopyWithImpl<DaySteps>(thi
 @override
 bool operator ==(Object other) {
   final _this = this as DaySteps;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DaySteps&&(identical(other.day, _this.day) || other.day == _this.day)&&(identical(other.auto, _this.auto) || other.auto == _this.auto)&&(identical(other.manual, _this.manual) || other.manual == _this.manual));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DaySteps&&(identical(other.day, _this.day) || other.day == _this.day)&&(identical(other.auto, _this.auto) || other.auto == _this.auto)&&(identical(other.manual, _this.manual) || other.manual == _this.manual)&&(identical(other.autoOrigin, _this.autoOrigin) || other.autoOrigin == _this.autoOrigin));
 }
 
 
 @override
 int get hashCode {
   final _this = this as DaySteps;
-  return Object.hash(runtimeType,_this.day,_this.auto,_this.manual);
+  return Object.hash(runtimeType,_this.day,_this.auto,_this.manual,_this.autoOrigin);
 }
 
 @override
 String toString() {
   final _this = this as DaySteps;
-  return 'DaySteps(day: ${_this.day}, auto: ${_this.auto}, manual: ${_this.manual})';
+  return 'DaySteps(day: ${_this.day}, auto: ${_this.auto}, manual: ${_this.manual}, autoOrigin: ${_this.autoOrigin})';
 }
 
 
@@ -51,7 +51,7 @@ abstract mixin class $DayStepsCopyWith<$Res>  {
   factory $DayStepsCopyWith(DaySteps value, $Res Function(DaySteps) _then) = _$DayStepsCopyWithImpl;
 @useResult
 $Res call({
- Day day, int? auto, int? manual
+ Day day, int? auto, int? manual, AutoStepOrigin? autoOrigin
 });
 
 
@@ -68,12 +68,13 @@ class _$DayStepsCopyWithImpl<$Res>
 
 /// Create a copy of DaySteps
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? day = null,Object? auto = freezed,Object? manual = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? day = null,Object? auto = freezed,Object? manual = freezed,Object? autoOrigin = freezed,}) {
   return _then(DaySteps(
 day: null == day ? _self.day : day // ignore: cast_nullable_to_non_nullable
 as Day,auto: freezed == auto ? _self.auto : auto // ignore: cast_nullable_to_non_nullable
 as int?,manual: freezed == manual ? _self.manual : manual // ignore: cast_nullable_to_non_nullable
-as int?,
+as int?,autoOrigin: freezed == autoOrigin ? _self.autoOrigin : autoOrigin // ignore: cast_nullable_to_non_nullable
+as AutoStepOrigin?,
   ));
 }
 
@@ -158,10 +159,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Day day,  int? auto,  int? manual)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Day day,  int? auto,  int? manual,  AutoStepOrigin? autoOrigin)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DaySteps() when $default != null:
-return $default(_that.day,_that.auto,_that.manual);case _:
+return $default(_that.day,_that.auto,_that.manual,_that.autoOrigin);case _:
   return orElse();
 
 }
@@ -179,10 +180,10 @@ return $default(_that.day,_that.auto,_that.manual);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Day day,  int? auto,  int? manual)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Day day,  int? auto,  int? manual,  AutoStepOrigin? autoOrigin)  $default,) {final _that = this;
 switch (_that) {
 case _DaySteps():
-return $default(_that.day,_that.auto,_that.manual);case _:
+return $default(_that.day,_that.auto,_that.manual,_that.autoOrigin);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -199,10 +200,10 @@ return $default(_that.day,_that.auto,_that.manual);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Day day,  int? auto,  int? manual)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Day day,  int? auto,  int? manual,  AutoStepOrigin? autoOrigin)?  $default,) {final _that = this;
 switch (_that) {
 case _DaySteps() when $default != null:
-return $default(_that.day,_that.auto,_that.manual);case _:
+return $default(_that.day,_that.auto,_that.manual,_that.autoOrigin);case _:
   return null;
 
 }
@@ -214,12 +215,13 @@ return $default(_that.day,_that.auto,_that.manual);case _:
 
 
 class _DaySteps extends DaySteps {
-  const _DaySteps({required this.day, this.auto, this.manual}): super._();
+  const _DaySteps({required this.day, this.auto, this.manual, this.autoOrigin}): super._();
   
 
 @override final  Day day;
 @override final  int? auto;
 @override final  int? manual;
+@override final  AutoStepOrigin? autoOrigin;
 
 /// Create a copy of DaySteps
 /// with the given fields replaced by the non-null parameter values.
@@ -231,18 +233,18 @@ _$DayStepsCopyWith<_DaySteps> get copyWith => __$DayStepsCopyWithImpl<_DaySteps>
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DaySteps&&(identical(other.day, day) || other.day == day)&&(identical(other.auto, auto) || other.auto == auto)&&(identical(other.manual, manual) || other.manual == manual));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DaySteps&&(identical(other.day, day) || other.day == day)&&(identical(other.auto, auto) || other.auto == auto)&&(identical(other.manual, manual) || other.manual == manual)&&(identical(other.autoOrigin, autoOrigin) || other.autoOrigin == autoOrigin));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,day,auto,manual);
+    return Object.hash(runtimeType,day,auto,manual,autoOrigin);
 }
 
 @override
 String toString() {
-    return 'DaySteps(day: $day, auto: $auto, manual: $manual)';
+    return 'DaySteps(day: $day, auto: $auto, manual: $manual, autoOrigin: $autoOrigin)';
 }
 
 
@@ -253,7 +255,7 @@ abstract mixin class _$DayStepsCopyWith<$Res> implements $DayStepsCopyWith<$Res>
   factory _$DayStepsCopyWith(_DaySteps value, $Res Function(_DaySteps) _then) = __$DayStepsCopyWithImpl;
 @override @useResult
 $Res call({
- Day day, int? auto, int? manual
+ Day day, int? auto, int? manual, AutoStepOrigin? autoOrigin
 });
 
 
@@ -270,12 +272,13 @@ class __$DayStepsCopyWithImpl<$Res>
 
 /// Create a copy of DaySteps
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? day = null,Object? auto = freezed,Object? manual = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? day = null,Object? auto = freezed,Object? manual = freezed,Object? autoOrigin = freezed,}) {
   return _then(_DaySteps(
 day: null == day ? _self.day : day // ignore: cast_nullable_to_non_nullable
 as Day,auto: freezed == auto ? _self.auto : auto // ignore: cast_nullable_to_non_nullable
 as int?,manual: freezed == manual ? _self.manual : manual // ignore: cast_nullable_to_non_nullable
-as int?,
+as int?,autoOrigin: freezed == autoOrigin ? _self.autoOrigin : autoOrigin // ignore: cast_nullable_to_non_nullable
+as AutoStepOrigin?,
   ));
 }
 

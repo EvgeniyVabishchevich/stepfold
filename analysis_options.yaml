@@ -2,6 +2,8 @@ analyzer:
   exclude:
     - build/**
     - '**/*.g.dart'
+    - '**/*.g.jni.dart'
+    - tool/pigeon/*_jnigen_config.dart
     - lib/ui/l10n/generated/**
     - android/**
     - ios/**

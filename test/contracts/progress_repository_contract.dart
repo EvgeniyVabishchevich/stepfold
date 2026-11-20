@@ -65,6 +65,41 @@ void progressRepositoryContract(
       );
     });
 
+    test('a fallback cannot take over a day owned by another source', () async {
+      const health = AutoStepOrigin.healthStore;
+      const sensor = AutoStepOrigin.deviceSensor;
+      await repository.saveAutoSteps(installDay, 8000, origin: health);
+      await repository.saveManualSteps(installDay, 500);
+      await repository.saveAutoSteps(installDay, 9000, origin: sensor);
+      expect((await current()).stepsOf(installDay).counted, 8500);
+      await repository.saveAutoSteps(installDay + 1, 1200, origin: sensor);
+      await repository.saveAutoSteps(installDay, 7500, origin: health);
+
+      final progress = await current();
+      expect(
+        progress.stepsOf(installDay),
+        DaySteps(day: installDay, auto: 7500, manual: 500, autoOrigin: health),
+      );
+      expect(
+        progress.stepsOf(installDay + 1),
+        DaySteps(day: installDay + 1, auto: 1200, autoOrigin: sensor),
+      );
+    });
+
+    test(
+      'a legacy total is attributed without losing credited steps',
+      () async {
+        const sensor = AutoStepOrigin.deviceSensor;
+        await repository.saveAutoSteps(installDay, 8000);
+        await repository.saveAutoSteps(installDay, 2000, origin: sensor);
+        expect((await current()).stepsOf(installDay).auto, 8000);
+        expect((await current()).stepsOf(installDay).autoOrigin, isNull);
+
+        await repository.saveAutoSteps(installDay, 8000, origin: sensor);
+        expect((await current()).stepsOf(installDay).autoOrigin, sensor);
+      },
+    );
+
     test('saveManualSteps with zero removes the addition', () async {
       await repository.saveManualSteps(installDay, 3000);
       await repository.saveManualSteps(installDay, 0);

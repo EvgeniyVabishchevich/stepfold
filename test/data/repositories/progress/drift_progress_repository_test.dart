@@ -51,6 +51,38 @@ void main() {
       expect(progress.stepsOf(installDay + 3).auto, 6000);
     });
 
+    test('schema 1 upgrades without losing steps', () async {
+      final database = ProgressDatabase(
+        NativeDatabase(file),
+        installDay: () => installDay,
+      );
+      final legacy = DriftProgressRepository(database);
+      await legacy.saveAutoSteps(installDay, 6000);
+
+      // Restore the version 1 table layout before reopening the file.
+      await database.customStatement(
+        'ALTER TABLE day_steps DROP COLUMN auto_origin',
+      );
+      await database.customStatement('PRAGMA user_version = 1');
+      await legacy.close();
+
+      final upgraded = open();
+      addTearDown(upgraded.close);
+      expect(
+        (await upgraded.watch().first).stepsOf(installDay),
+        DaySteps(day: installDay, auto: 6000),
+      );
+      await upgraded.saveAutoSteps(
+        installDay + 1,
+        2000,
+        origin: AutoStepOrigin.deviceSensor,
+      );
+      expect(
+        (await upgraded.watch().first).stepsOf(installDay + 1).autoOrigin,
+        AutoStepOrigin.deviceSensor,
+      );
+    });
+
     test('in a background isolate a broken constraint is still a '
         'StateError', () async {
       final repository = open(inBackground: true);

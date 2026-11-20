@@ -1,0 +1,4 @@
+<resources>
+    <string name="health_steps_title">Stepfold and step data</string>
+    <string name="health_steps_rationale">Stepfold reads your daily step counts from Health Connect to update your progress and unlock chapters and medals. Your progress is stored on this device. You can remove access in Health Connect settings.</string>
+</resources>
