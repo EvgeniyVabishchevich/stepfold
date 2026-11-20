@@ -73,6 +73,7 @@ class TodayView extends StatelessWidget {
     required this.onRequestSteps,
     required this.onOpenStepSettings,
     required this.onRetrySync,
+    this.onOpenHistory,
     this.onOpenDevMenu,
     super.key,
   });
@@ -85,6 +86,9 @@ class TodayView extends StatelessWidget {
 
   /// Opens the catalog.
   final VoidCallback onOpenCatalog;
+
+  /// Opens the step history within this tab.
+  final VoidCallback? onOpenHistory;
 
   /// Spends steps on the displayed goal.
   final ValueChanged<Goal> onSpend;
@@ -132,6 +136,14 @@ class TodayView extends StatelessWidget {
           else ...[
             TodayDailySummary(progress: progress, day: state.day),
             const SizedBox(height: Spacing.s16),
+            if (onOpenHistory case final onOpenHistory?) ...[
+              KitButton(
+                kind: KitButtonKind.secondary,
+                label: l10n.historyTitle,
+                onPressed: onOpenHistory,
+              ),
+              const SizedBox(height: Spacing.s16),
+            ],
             TodayGoalCard(
               progress: progress,
               state: state,
@@ -218,6 +230,7 @@ class _TodayContentState extends State<_TodayContent> {
         state: state,
         sync: sync,
         onOpenCatalog: () => context.go(Routes.catalog),
+        onOpenHistory: () => context.push(Routes.history),
         onOpenDevMenu: widget.canOpenDevMenu
             ? () => context.push(Routes.devMenu)
             : null,

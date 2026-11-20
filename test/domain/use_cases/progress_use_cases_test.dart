@@ -123,16 +123,11 @@ void main() {
   });
 
   group('AddManualSteps', () {
-    const unlocked = ManualEntryLock();
     // `now` is 12.11, 11 days after the install day.
     final yesterday = installDay + 10;
 
     testNow('saves an addition that passed the checks', () async {
-      final check = await AddManualSteps(repository)(
-        yesterday,
-        3000,
-        lock: unlocked,
-      );
+      final check = await AddManualSteps(repository)(yesterday, 3000);
 
       expect(check, ManualEntryCheck.ok);
       expect(repository.progress.stepsOf(yesterday).manual, 3000);
@@ -141,21 +136,18 @@ void main() {
     testNow('a large addition waits for the confirmation', () async {
       final add = AddManualSteps(repository);
 
-      final check = await add(yesterday, 60000, lock: unlocked);
+      final check = await add(yesterday, 60000);
       expect(check, ManualEntryCheck.needsConfirmation);
       expect(repository.progress.stepsOf(yesterday).manual, isNull);
 
-      await add(yesterday, 60000, lock: unlocked, confirmed: true);
+      expect(await add(yesterday, 60000, confirmed: true), ManualEntryCheck.ok);
       expect(repository.progress.stepsOf(yesterday).manual, 60000);
     });
 
     testNow('a locked entry is refused and not saved', () async {
+      await UpdateManualEntryLock(repository)(locked: true);
       await expectLater(
-        AddManualSteps(repository)(
-          yesterday,
-          3000,
-          lock: const ManualEntryLock(locked: true),
-        ),
+        AddManualSteps(repository)(yesterday, 3000),
         throwsA(isA<ManualEntryLocked>()),
       );
 
@@ -164,7 +156,7 @@ void main() {
 
     testNow('a day more than a week back is refused', () {
       return expectLater(
-        AddManualSteps(repository)(installDay, 3000, lock: unlocked),
+        AddManualSteps(repository)(installDay, 3000),
         throwsA(isA<ManualEntryDayOutOfRange>()),
       );
     });

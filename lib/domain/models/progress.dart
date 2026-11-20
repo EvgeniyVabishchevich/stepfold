@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:walks/domain/models/day.dart';
 import 'package:walks/domain/models/day_steps.dart';
 import 'package:walks/domain/models/goal.dart';
+import 'package:walks/domain/models/manual_entry_lock.dart';
 import 'package:walks/domain/models/spending.dart';
 
 part 'progress.freezed.dart';
@@ -24,6 +25,7 @@ abstract class Progress with _$Progress {
     @Default(<Day, DaySteps>{}) Map<Day, DaySteps> days,
     @Default(<Spending>[]) List<Spending> spendings,
     Goal? goal,
+    @Default(ManualEntryLock()) ManualEntryLock manualEntryLock,
   }) = _Progress;
 
   const Progress._();

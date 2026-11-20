@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:walks/domain/repositories/repositories.dart';
+import 'package:walks/ui/core/core.dart';
 import 'package:walks/ui/pages/dev_menu/bloc/bloc.dart';
 import 'package:walks/ui/pages/dev_menu/widgets/widgets.dart';
 
@@ -47,6 +49,13 @@ class DevMenuView extends StatelessWidget {
       appBar: AppBar(title: const Text('Меню разработчика')),
       body: ListView(
         children: [
+          const DevMenuSectionTitle('История шагов'),
+          ListTile(
+            leading: const Icon(Icons.history),
+            title: const Text('Сгенерировать 1 000 дней'),
+            subtitle: const Text('Открыть историю на тестовых данных'),
+            onTap: () => context.push(Routes.devHistory),
+          ),
           const DevMenuSectionTitle('Отчёты о падениях'),
           ListTile(
             leading: const Icon(Icons.report_outlined),

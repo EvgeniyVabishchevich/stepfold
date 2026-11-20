@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:walks/app/dev_history_preview.dart';
 import 'package:walks/app/di.dart';
 import 'package:walks/ui/core/core.dart';
 import 'package:walks/ui/pages/pages.dart';
@@ -12,7 +13,7 @@ import 'package:walks/ui/pages/pages.dart';
 /// root navigator
 /// ├─ tabs: StatefulShellRoute, one navigator and history per tab
 /// │  ├─ /today
-/// │  │  └─ history          (C5г: pushed inside the tab, bar stays)
+/// │  │  └─ history          (inside the tab, bar stays)
 /// │  ├─ /catalog
 /// │  │  └─ :progressionId (chapters, bar stays)
 /// │  ├─ /world
@@ -56,6 +57,18 @@ GoRouter createRouter({String initialLocation = Routes.today}) {
               crashReporter: getIt(),
               canOpenDevMenu: devMenuEnabled,
             ),
+            routes: [
+              GoRoute(
+                path: Routes.historySegment,
+                builder: (context, state) => HistoryPage(
+                  progress: getIt(),
+                  catalog: getIt(),
+                  addManualSteps: getIt(),
+                  updateLock: getIt(),
+                  crashReporter: getIt(),
+                ),
+              ),
+            ],
           ),
           _tab(
             Routes.catalog,
@@ -88,6 +101,13 @@ GoRouter createRouter({String initialLocation = Routes.today}) {
           path: Routes.devMenu,
           builder: (context, state) =>
               DevMenuPage(crashReporter: getIt(), nativeCrasher: getIt()),
+          routes: [
+            GoRoute(
+              path: Routes.historySegment,
+              builder: (context, state) =>
+                  DevHistoryPreview(crashReporter: getIt(), catalog: getIt()),
+            ),
+          ],
         ),
     ],
   );

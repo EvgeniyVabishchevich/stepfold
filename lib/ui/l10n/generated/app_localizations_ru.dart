@@ -248,4 +248,175 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get catalogGoalSaveError =>
       'Не удалось сохранить цель. Попробуйте ещё раз.';
+
+  @override
+  String get historyTitle => 'История шагов';
+
+  @override
+  String get historyPreview => 'История · 1 000 дней';
+
+  @override
+  String get historyThisWeek => 'На этой неделе';
+
+  @override
+  String get historyToday => 'Сегодня';
+
+  @override
+  String get historyByDay => 'По дням';
+
+  @override
+  String get historyReadError => 'История недоступна';
+
+  @override
+  String get historyEmpty => 'Шагов пока нет';
+
+  @override
+  String get historyEmptyMessage =>
+      'Когда появятся шаги, здесь будет история по дням.';
+
+  @override
+  String get historyAddSteps => 'Добавить шаги';
+
+  @override
+  String get historyEditTitle => 'Исправить добавку';
+
+  @override
+  String get historyDateField => 'Дата';
+
+  @override
+  String get historyAmount => 'Количество шагов';
+
+  @override
+  String get historyInvalidAmount => 'Введите целое число шагов больше нуля.';
+
+  @override
+  String get historySave => 'Сохранить';
+
+  @override
+  String get historyRemove => 'Удалить добавку';
+
+  @override
+  String get historyCancel => 'Отмена';
+
+  @override
+  String get historyConfirmTitle => 'Подтвердить добавку';
+
+  @override
+  String historyConfirmMessage(String steps, String date) {
+    return 'Добавить $steps за $date?';
+  }
+
+  @override
+  String get historyLock => 'Запрет ручного ввода';
+
+  @override
+  String get historyLockOn => 'Ручной ввод запрещён.';
+
+  @override
+  String get historyLockOnSubtitle => 'Снятие запрета займёт 2 часа';
+
+  @override
+  String get historyLockOff => 'Запрет выключен';
+
+  @override
+  String historyLockUntil(String date) {
+    return 'Ручной ввод откроется $date';
+  }
+
+  @override
+  String get historyKeepLock => 'Оставить запрет';
+
+  @override
+  String get historyDateUnavailable =>
+      'За этот день уже нельзя изменить ручные шаги.';
+
+  @override
+  String get historyWriteError => 'Не удалось сохранить. Повторите попытку.';
+
+  @override
+  String historyManualLabel(String auto, String manual) {
+    return '$auto + $manual вручную';
+  }
+
+  @override
+  String historyCountAndDistance(String steps, String distance) {
+    return '$steps (≈$distance км)';
+  }
+
+  @override
+  String historyBestDay(String date, String steps) {
+    return 'Лучший день — $date, $steps';
+  }
+
+  @override
+  String historyOpenedChapters(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Открыто $count глав',
+      few: 'Открыто $count главы',
+      one: 'Открыта $count глава',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String historyBoughtMedals(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Куплено $count медалей',
+      few: 'Куплено $count медали',
+      one: 'Куплена $count медаль',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String historyImprovement(String steps) {
+    return 'На $steps больше, чем за те же дни прошлой недели';
+  }
+
+  @override
+  String get historyNevsky => 'длины Невского проспекта';
+
+  @override
+  String historyOpenedTitle(String title) {
+    return 'Открыта глава «$title»';
+  }
+
+  @override
+  String historyBoughtTitle(String medal, String progression) {
+    return 'Медаль «$medal» за «$progression»';
+  }
+
+  @override
+  String get historyBronze => 'Бронза';
+
+  @override
+  String get historySilver => 'Серебро';
+
+  @override
+  String get historyGold => 'Золото';
+
+  @override
+  String get historyMarathon => 'марафонской дистанции';
+
+  @override
+  String get historyMkad => 'длины МКАД';
+
+  @override
+  String historyFactPercent(String ratio, String reference) {
+    return 'Это примерно $ratio% $reference.';
+  }
+
+  @override
+  String historyFactMultiple(String ratio, String reference) {
+    return 'Это примерно $ratio от $reference.';
+  }
+
+  @override
+  String historyFactUnder(String reference) {
+    return 'Это меньше 0,01% $reference.';
+  }
 }

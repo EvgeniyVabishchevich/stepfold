@@ -58,9 +58,27 @@ class FakeProgressRepository implements ProgressRepository {
   }
 
   @override
-  Future<void> saveManualSteps(Day day, int steps) async {
+  Future<bool> saveManualSteps(
+    Day day,
+    int steps, {
+    bool Function(Day installDay, ManualEntryLock lock)? allow,
+  }) async {
+    if (allow?.call(_progress.installDay, _progress.manualEntryLock) == false) {
+      return false;
+    }
     _checkSteps(steps);
+    if (day.isBefore(_progress.installDay)) return false;
     _write(_progress.recordManualSteps(day, steps));
+    return true;
+  }
+
+  @override
+  Future<void> updateManualEntryLock(
+    ManualEntryLock Function(ManualEntryLock current) update,
+  ) async {
+    final current = _progress.manualEntryLock;
+    final next = update(current);
+    if (current != next) _write(_progress.copyWith(manualEntryLock: next));
   }
 
   @override
