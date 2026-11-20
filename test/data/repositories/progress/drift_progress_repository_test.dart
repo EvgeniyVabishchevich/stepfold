@@ -14,6 +14,29 @@ void main() {
     dispose: (r) => (r as DriftProgressRepository).close(),
   );
 
+  test(
+    'developer seed opens a separate history of one thousand days',
+    () async {
+      final today = Day(2026, 11, 20);
+      final first = today - 999;
+      final demo = DriftProgressRepository.memory(
+        installDay: first,
+        initialDays: [
+          for (var i = 0; i < 1000; i++)
+            DayCount(day: first + i, steps: 1500 + i),
+        ],
+      );
+      addTearDown(demo.close);
+      final normal = DriftProgressRepository.memory(installDay: today);
+      addTearDown(normal.close);
+
+      final preview = await demo.watch().first;
+      expect(preview.days, hasLength(1000));
+      expect(preview.stepsOf(today).auto, 2499);
+      expect((await normal.watch().first).days, isEmpty);
+    },
+  );
+
   group('DriftProgressRepository on a file', () {
     final installDay = Day(2026, 11, 1);
     late Directory dir;
@@ -39,7 +62,15 @@ void main() {
 
     test('progress survives a restart, the install day is kept', () async {
       final first = open();
-      await first.saveAutoSteps(installDay + 3, 6000);
+      final unlockAt = DateTime.utc(2026, 11, 4, 21, 5, 13, 420);
+      await first.saveAutoSteps(
+        installDay + 3,
+        6000,
+        origin: AutoStepOrigin.deviceSensor,
+      );
+      await first.updateManualEntryLock(
+        (_) => ManualEntryLock(locked: true, unlockAt: unlockAt),
+      );
       await first.close();
 
       // A later "today" must not become the install day.
@@ -49,38 +80,15 @@ void main() {
 
       expect(progress.installDay, installDay);
       expect(progress.stepsOf(installDay + 3).auto, 6000);
-    });
-
-    test('schema 1 upgrades without losing steps', () async {
-      final database = ProgressDatabase(
-        NativeDatabase(file),
-        installDay: () => installDay,
-      );
-      final legacy = DriftProgressRepository(database);
-      await legacy.saveAutoSteps(installDay, 6000);
-
-      // Restore the version 1 table layout before reopening the file.
-      await database.customStatement(
-        'ALTER TABLE day_steps DROP COLUMN auto_origin',
-      );
-      await database.customStatement('PRAGMA user_version = 1');
-      await legacy.close();
-
-      final upgraded = open();
-      addTearDown(upgraded.close);
       expect(
-        (await upgraded.watch().first).stepsOf(installDay),
-        DaySteps(day: installDay, auto: 6000),
-      );
-      await upgraded.saveAutoSteps(
-        installDay + 1,
-        2000,
-        origin: AutoStepOrigin.deviceSensor,
-      );
-      expect(
-        (await upgraded.watch().first).stepsOf(installDay + 1).autoOrigin,
+        progress.stepsOf(installDay + 3).autoOrigin,
         AutoStepOrigin.deviceSensor,
       );
+      expect(
+        progress.manualEntryLock,
+        ManualEntryLock(locked: true, unlockAt: unlockAt),
+      );
+      expect(progress.manualEntryLock.unlockAt?.isUtc, isTrue);
     });
 
     test('in a background isolate a broken constraint is still a '

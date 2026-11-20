@@ -29,8 +29,20 @@ abstract interface class ProgressRepository {
   /// Sets the steps of [day] added by hand, replacing the earlier
   /// addition; zero removes it.
   ///
+  /// Evaluates [allow] against the current lock and install day in the same
+  /// operation. Returns false if the check declines the write or the day
+  /// predates installation. A check that throws leaves progress intact.
   /// Throws an [ArgumentError] when [steps] is negative.
-  Future<void> saveManualSteps(Day day, int steps);
+  Future<bool> saveManualSteps(
+    Day day,
+    int steps, {
+    bool Function(Day installDay, ManualEntryLock lock)? allow,
+  });
+
+  /// Reads and changes the manual-entry lock in the same atomic operation.
+  Future<void> updateManualEntryLock(
+    ManualEntryLock Function(ManualEntryLock current) update,
+  );
 
   /// Runs [decide] on the current progress and records the resulting
   /// spending and goal in the same atomic operation.

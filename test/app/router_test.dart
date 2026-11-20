@@ -59,6 +59,91 @@ void main() {
     expect(selectedTab(tester), 2);
   });
 
+  testWidgets('history adds, changes and removes a manual addition', (
+    tester,
+  ) async {
+    await pumpRouter(tester);
+    await tester.tap(find.text('История шагов'));
+    await tester.pumpAndSettle();
+    expect(selectedTab(tester), 0);
+    expect(find.text('Шагов пока нет'), findsOneWidget);
+
+    final repository = getIt<ProgressRepository>() as FakeProgressRepository;
+    final amount = find.byKey(const Key('history-step-amount'));
+    await tester.tap(find.text('Добавить шаги'));
+    await tester.pumpAndSettle();
+    await tester.enterText(amount, '60000');
+    await tester.tap(find.text('Сохранить'));
+    await tester.pumpAndSettle();
+    expect(find.text('Подтвердить добавку'), findsOneWidget);
+    expect(repository.progress.stepsOf(Day.today()).isManual, isFalse);
+
+    await tester.tap(find.text('Сохранить'));
+    await tester.pumpAndSettle();
+    expect(repository.progress.stepsOf(Day.today()).manual, 60000);
+
+    final todayRow = find.widgetWithText(ListTile, 'Сегодня').hitTestable();
+    final list = find.descendant(
+      of: find.byType(HistoryView),
+      matching: find.byType(Scrollable),
+    );
+    await tester.scrollUntilVisible(todayRow, 140, scrollable: list);
+    await tester.pumpAndSettle();
+    await tester.tap(todayRow);
+    await tester.pumpAndSettle();
+    await tester.enterText(amount, '2500');
+    await tester.tap(find.text('Сохранить'));
+    await tester.pumpAndSettle();
+    expect(repository.progress.stepsOf(Day.today()).manual, 2500);
+
+    await tester.scrollUntilVisible(todayRow, 140, scrollable: list);
+    await tester.pumpAndSettle();
+    await tester.tap(todayRow);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Удалить добавку'));
+    await tester.pumpAndSettle();
+    expect(repository.progress.stepsOf(Day.today()).isManual, isFalse);
+    expect(find.text('Шагов пока нет'), findsOneWidget);
+  });
+
+  testWidgets('history locks now and reports the delayed unlock', (
+    tester,
+  ) async {
+    await pumpRouter(tester, initialLocation: Routes.history);
+    final lock = find.byKey(const Key('history-manual-entry-lock'));
+    await tester.ensureVisible(lock);
+    await tester.tap(lock);
+    await tester.pumpAndSettle();
+    expect(find.text('Добавить шаги'), findsNothing);
+    expect(find.text('Снятие запрета займёт 2 часа'), findsOneWidget);
+
+    await tester.ensureVisible(lock);
+    await tester.tap(lock);
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Ручной ввод откроется'), findsOneWidget);
+    expect(find.text('Добавить шаги'), findsNothing);
+
+    await tester.tap(find.text('Оставить запрет'));
+    await tester.pumpAndSettle();
+    expect(lock, findsOneWidget);
+    final repository = getIt<ProgressRepository>() as FakeProgressRepository;
+    expect(repository.progress.manualEntryLock.unlockAt, isNull);
+  });
+
+  testWidgets('weekly history keeps openings after manual steps are removed', (
+    tester,
+  ) async {
+    final repository = getIt<ProgressRepository>();
+    await repository.saveManualSteps(Day.today(), 1400);
+    final index = await getIt<Catalog>().index('ru');
+    await OpenChapter(repository)(index.progressions.single, 'c1');
+    await repository.saveManualSteps(Day.today(), 0);
+
+    await pumpRouter(tester, initialLocation: Routes.history);
+
+    expect(find.text('Открыта глава «Начало»'), findsOneWidget);
+  });
+
   testWidgets('choosing a catalog chapter updates Today without spending', (
     tester,
   ) async {

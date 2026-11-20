@@ -14,30 +14,32 @@ class AddManualSteps {
   ///
   /// An unusually large addition is saved only when [confirmed]; without it
   /// the call saves nothing and returns [ManualEntryCheck.needsConfirmation],
-  /// so the caller asks the user and calls again. [lock] is the user's own
-  /// lock on manual entry.
+  /// so the caller asks the user and calls again. Every call checks the
+  /// lock held in storage before making any change.
   ///
   /// Throws a `ManualEntryFailure` when the entry is refused and a
   /// `StorageFailure` when it cannot be saved.
   Future<ManualEntryCheck> call(
     Day day,
     int steps, {
-    required ManualEntryLock lock,
     bool confirmed = false,
   }) async {
-    final progress = await _progress.watch().first;
-    final check = checkManualEntry(
-      day: day,
-      steps: steps,
-      installDay: progress.installDay,
-      today: Day.today(),
-      lock: lock,
-      now: clock.now(),
+    final saved = await _progress.saveManualSteps(
+      day,
+      steps,
+      allow: (installDay, lock) {
+        final now = clock.now();
+        final check = checkManualEntry(
+          day: day,
+          steps: steps,
+          installDay: installDay,
+          today: Day.fromLocal(now),
+          lock: lock,
+          now: now,
+        );
+        return check == ManualEntryCheck.ok || confirmed;
+      },
     );
-    if (check == ManualEntryCheck.needsConfirmation && !confirmed) {
-      return check;
-    }
-    await _progress.saveManualSteps(day, steps);
-    return check;
+    return saved ? ManualEntryCheck.ok : ManualEntryCheck.needsConfirmation;
   }
 }

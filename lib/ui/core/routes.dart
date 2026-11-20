@@ -6,6 +6,12 @@ abstract final class Routes {
   /// The Today tab, the first screen.
   static const today = '/today';
 
+  /// History under Today or the developer menu.
+  static const historySegment = 'history';
+
+  /// The user's step history within the Today tab.
+  static const history = '$today/$historySegment';
+
   /// The Catalog tab.
   static const catalog = '/catalog';
 
@@ -32,4 +38,7 @@ abstract final class Routes {
 
   /// The developer menu, over the tabs. Absent in release.
   static const devMenu = '/dev';
+
+  /// The isolated generated history in developer builds.
+  static const devHistory = '$devMenu/$historySegment';
 }

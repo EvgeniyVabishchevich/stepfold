@@ -15,7 +15,7 @@ class DayConverter extends TypeConverter<Day, int> {
   int toSql(Day value) => value.number;
 }
 
-/// One row: the install day and the goal.
+/// One row: the install day, the goal and the manual-entry lock.
 @DataClassName('StateRow')
 class ProgressState extends Table {
   /// Always 1: the table has a single row.
@@ -34,6 +34,13 @@ class ProgressState extends Table {
 
   /// The medal when the goal is a medal, by name.
   TextColumn get goalMedal => textEnum<Medal>().nullable()();
+
+  /// Whether the user has enabled the manual-entry lock.
+  BoolColumn get manualEntryLocked =>
+      boolean().withDefault(const Constant(false))();
+
+  /// When a requested unlock takes effect, in UTC.
+  DateTimeColumn get manualEntryUnlockAt => dateTime().nullable()();
 
   @override
   Set<Column<Object>> get primaryKey => {id};
@@ -107,13 +114,17 @@ class BoughtMedals extends Table {
 class ProgressDatabase extends _$ProgressDatabase {
   /// Opens the database on the connection [e]. When it is created, the
   /// install day is [installDay], today by default.
-  ProgressDatabase(super.e, {Day Function()? installDay})
-    : _installDay = installDay ?? Day.today;
+  ProgressDatabase(
+    super.e, {
+    Day Function()? installDay,
+    this._initialDays = const [],
+  }) : _installDay = installDay ?? Day.today;
 
   final Day Function() _installDay;
+  final List<DayCount> _initialDays;
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -125,9 +136,17 @@ class ProgressDatabase extends _$ProgressDatabase {
           installDay: _installDay(),
         ),
       );
-    },
-    onUpgrade: (m, from, to) async {
-      if (from < 2) await m.addColumn(dayStepsTable, dayStepsTable.autoOrigin);
+      if (_initialDays.isNotEmpty) {
+        await batch((batch) {
+          batch.insertAll(dayStepsTable, [
+            for (final day in _initialDays)
+              DayStepsTableCompanion.insert(
+                day: Value(day.day),
+                auto: Value(day.steps),
+              ),
+          ]);
+        });
+      }
     },
   );
 }

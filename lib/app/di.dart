@@ -75,6 +75,7 @@ Future<void> configureDependencies(Implementations implementations) async {
     ..registerFactory(() => BuyMedal(getIt()))
     ..registerFactory(() => SetGoal(getIt()))
     ..registerFactory(() => AddManualSteps(getIt()))
+    ..registerFactory(() => UpdateManualEntryLock(getIt()))
     ..registerFactory(() => SyncSteps(progress: getIt(), source: getIt()));
 
   getIt.registerLazySingleton<NativeCrasher>(MethodChannelNativeCrasher.new);

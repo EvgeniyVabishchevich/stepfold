@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:walks/domain/domain.dart';
 
@@ -105,6 +106,31 @@ void progressRepositoryContract(
       await repository.saveManualSteps(installDay, 0);
 
       expect((await current()).stepsOf(installDay).isManual, isFalse);
+    });
+
+    test('manual entry confirmation uses the current stored lock', () async {
+      final day = Day.fromLocal(morning);
+      final add = AddManualSteps(repository);
+      final updateLock = UpdateManualEntryLock(repository);
+
+      await withClock(Clock.fixed(morning), () async {
+        expect(await add(day, 60000), ManualEntryCheck.needsConfirmation);
+        await updateLock(locked: true);
+        await expectLater(
+          add(day, 60000, confirmed: true),
+          throwsA(isA<ManualEntryLocked>()),
+        );
+        await updateLock(locked: false);
+      });
+
+      final unlockAt = morning.add(manualEntryUnlockDelay);
+      expect((await current()).manualEntryLock.unlockAt, unlockAt);
+      expect((await current()).stepsOf(day).manual, isNull);
+
+      await withClock(Clock.fixed(unlockAt), () async {
+        expect(await add(day, 60000, confirmed: true), ManualEntryCheck.ok);
+      });
+      expect((await current()).stepsOf(day).manual, 60000);
     });
 
     test('days before the install day are ignored', () async {

@@ -19,13 +19,16 @@ class DriftProgressRepository implements ProgressRepository {
   );
 
   /// Opens a database in memory, created on [installDay]: for tests.
-  factory DriftProgressRepository.memory({Day? installDay}) =>
-      DriftProgressRepository(
-        ProgressDatabase(
-          NativeDatabase.memory(),
-          installDay: installDay == null ? null : () => installDay,
-        ),
-      );
+  factory DriftProgressRepository.memory({
+    Day? installDay,
+    List<DayCount> initialDays = const [],
+  }) => DriftProgressRepository(
+    ProgressDatabase(
+      NativeDatabase.memory(),
+      installDay: installDay == null ? null : () => installDay,
+      initialDays: initialDays,
+    ),
+  );
 
   final ProgressDatabase _db;
 
@@ -55,24 +58,33 @@ class DriftProgressRepository implements ProgressRepository {
       );
 
   @override
-  Future<void> saveAutoSteps(Day day, int steps, {AutoStepOrigin? origin}) =>
-      _saveDay(
-        day,
-        steps,
-        insert: DayStepsTableCompanion.insert(
-          day: Value(day),
-          auto: Value(steps),
-          autoOrigin: Value(origin),
-        ),
-        update: DayStepsTableCompanion(
-          auto: Value(steps),
-          autoOrigin: Value(origin),
-        ),
-        accepts: (previous) => previous.acceptsAutoTotal(steps, origin),
-      );
+  Future<void> saveAutoSteps(
+    Day day,
+    int steps, {
+    AutoStepOrigin? origin,
+  }) async {
+    await _saveDay(
+      day,
+      steps,
+      insert: DayStepsTableCompanion.insert(
+        day: Value(day),
+        auto: Value(steps),
+        autoOrigin: Value(origin),
+      ),
+      update: DayStepsTableCompanion(
+        auto: Value(steps),
+        autoOrigin: Value(origin),
+      ),
+      accepts: (previous) => previous.acceptsAutoTotal(steps, origin),
+    );
+  }
 
   @override
-  Future<void> saveManualSteps(Day day, int steps) => _saveDay(
+  Future<bool> saveManualSteps(
+    Day day,
+    int steps, {
+    bool Function(Day installDay, ManualEntryLock lock)? allow,
+  }) => _saveDay(
     day,
     steps,
     insert: DayStepsTableCompanion.insert(
@@ -80,6 +92,28 @@ class DriftProgressRepository implements ProgressRepository {
       manual: Value(steps),
     ),
     update: DayStepsTableCompanion(manual: Value(steps)),
+    allow: allow,
+  );
+
+  @override
+  Future<void> updateManualEntryLock(
+    ManualEntryLock Function(ManualEntryLock current) update,
+  ) => guardStorage(
+    () => _db.transaction(() async {
+      final current = _manualEntryLockOf(
+        await _db.select(_db.progressState).getSingle(),
+      );
+      final next = update(current);
+      if (next == current) return;
+      await _db
+          .update(_db.progressState)
+          .write(
+            ProgressStateCompanion(
+              manualEntryLocked: Value(next.locked),
+              manualEntryUnlockAt: Value(next.unlockAt?.toUtc()),
+            ),
+          );
+    }),
   );
 
   @override
@@ -128,30 +162,33 @@ class DriftProgressRepository implements ProgressRepository {
     });
   });
 
-  Future<void> _saveDay(
+  Future<bool> _saveDay(
     Day day,
     int steps, {
     required DayStepsTableCompanion insert,
     required DayStepsTableCompanion update,
     bool Function(DaySteps previous)? accepts,
-  }) async {
-    if (steps < 0) throw ArgumentError.value(steps, 'steps', 'is negative');
-    await guardStorage(
-      () => _db.transaction(() async {
-        final state = await _db.select(_db.progressState).getSingle();
-        if (day.isBefore(state.installDay)) return;
-        if (accepts != null) {
-          final previous = await (_db.select(
-            _db.dayStepsTable,
-          )..where((row) => row.day.equalsValue(day))).getSingleOrNull();
-          if (previous != null && !accepts(_stepsOfRow(previous))) return;
-        }
-        await _db
-            .into(_db.dayStepsTable)
-            .insert(insert, onConflict: DoUpdate((_) => update));
-      }),
-    );
-  }
+    bool Function(Day installDay, ManualEntryLock lock)? allow,
+  }) => guardStorage(
+    () => _db.transaction(() async {
+      final state = await _db.select(_db.progressState).getSingle();
+      if (allow?.call(state.installDay, _manualEntryLockOf(state)) == false) {
+        return false;
+      }
+      if (steps < 0) throw ArgumentError.value(steps, 'steps', 'is negative');
+      if (day.isBefore(state.installDay)) return false;
+      if (accepts != null) {
+        final previous = await (_db.select(
+          _db.dayStepsTable,
+        )..where((row) => row.day.equalsValue(day))).getSingleOrNull();
+        if (previous != null && !accepts(_stepsOfRow(previous))) return false;
+      }
+      await _db
+          .into(_db.dayStepsTable)
+          .insert(insert, onConflict: DoUpdate((_) => update));
+      return true;
+    }),
+  );
 
   Future<void> _writeGoal(Goal? goal) =>
       _db.update(_db.progressState).write(switch (goal) {
@@ -200,6 +237,7 @@ class DriftProgressRepository implements ProgressRepository {
       days: {for (final day in days) day.day: _stepsOfRow(day)},
       spendings: spendings,
       goal: _goalOf(state),
+      manualEntryLock: _manualEntryLockOf(state),
     );
   }
 
@@ -219,4 +257,9 @@ class DriftProgressRepository implements ProgressRepository {
     }
     return Goal.medal(progressionId: progressionId, medal: state.goalMedal!);
   }
+
+  static ManualEntryLock _manualEntryLockOf(StateRow state) => ManualEntryLock(
+    locked: state.manualEntryLocked,
+    unlockAt: state.manualEntryUnlockAt?.toUtc(),
+  );
 }

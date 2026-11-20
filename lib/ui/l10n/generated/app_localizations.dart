@@ -477,6 +477,264 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'Не удалось сохранить цель. Попробуйте ещё раз.'**
   String get catalogGoalSaveError;
+
+  /// No description provided for @historyTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'История шагов'**
+  String get historyTitle;
+
+  /// No description provided for @historyPreview.
+  ///
+  /// In ru, this message translates to:
+  /// **'История · 1 000 дней'**
+  String get historyPreview;
+
+  /// No description provided for @historyThisWeek.
+  ///
+  /// In ru, this message translates to:
+  /// **'На этой неделе'**
+  String get historyThisWeek;
+
+  /// No description provided for @historyToday.
+  ///
+  /// In ru, this message translates to:
+  /// **'Сегодня'**
+  String get historyToday;
+
+  /// No description provided for @historyByDay.
+  ///
+  /// In ru, this message translates to:
+  /// **'По дням'**
+  String get historyByDay;
+
+  /// No description provided for @historyReadError.
+  ///
+  /// In ru, this message translates to:
+  /// **'История недоступна'**
+  String get historyReadError;
+
+  /// No description provided for @historyEmpty.
+  ///
+  /// In ru, this message translates to:
+  /// **'Шагов пока нет'**
+  String get historyEmpty;
+
+  /// No description provided for @historyEmptyMessage.
+  ///
+  /// In ru, this message translates to:
+  /// **'Когда появятся шаги, здесь будет история по дням.'**
+  String get historyEmptyMessage;
+
+  /// No description provided for @historyAddSteps.
+  ///
+  /// In ru, this message translates to:
+  /// **'Добавить шаги'**
+  String get historyAddSteps;
+
+  /// No description provided for @historyEditTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Исправить добавку'**
+  String get historyEditTitle;
+
+  /// No description provided for @historyDateField.
+  ///
+  /// In ru, this message translates to:
+  /// **'Дата'**
+  String get historyDateField;
+
+  /// No description provided for @historyAmount.
+  ///
+  /// In ru, this message translates to:
+  /// **'Количество шагов'**
+  String get historyAmount;
+
+  /// No description provided for @historyInvalidAmount.
+  ///
+  /// In ru, this message translates to:
+  /// **'Введите целое число шагов больше нуля.'**
+  String get historyInvalidAmount;
+
+  /// No description provided for @historySave.
+  ///
+  /// In ru, this message translates to:
+  /// **'Сохранить'**
+  String get historySave;
+
+  /// No description provided for @historyRemove.
+  ///
+  /// In ru, this message translates to:
+  /// **'Удалить добавку'**
+  String get historyRemove;
+
+  /// No description provided for @historyCancel.
+  ///
+  /// In ru, this message translates to:
+  /// **'Отмена'**
+  String get historyCancel;
+
+  /// No description provided for @historyConfirmTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Подтвердить добавку'**
+  String get historyConfirmTitle;
+
+  /// No description provided for @historyConfirmMessage.
+  ///
+  /// In ru, this message translates to:
+  /// **'Добавить {steps} за {date}?'**
+  String historyConfirmMessage(String steps, String date);
+
+  /// No description provided for @historyLock.
+  ///
+  /// In ru, this message translates to:
+  /// **'Запрет ручного ввода'**
+  String get historyLock;
+
+  /// No description provided for @historyLockOn.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ручной ввод запрещён.'**
+  String get historyLockOn;
+
+  /// No description provided for @historyLockOnSubtitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Снятие запрета займёт 2 часа'**
+  String get historyLockOnSubtitle;
+
+  /// No description provided for @historyLockOff.
+  ///
+  /// In ru, this message translates to:
+  /// **'Запрет выключен'**
+  String get historyLockOff;
+
+  /// No description provided for @historyLockUntil.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ручной ввод откроется {date}'**
+  String historyLockUntil(String date);
+
+  /// No description provided for @historyKeepLock.
+  ///
+  /// In ru, this message translates to:
+  /// **'Оставить запрет'**
+  String get historyKeepLock;
+
+  /// No description provided for @historyDateUnavailable.
+  ///
+  /// In ru, this message translates to:
+  /// **'За этот день уже нельзя изменить ручные шаги.'**
+  String get historyDateUnavailable;
+
+  /// No description provided for @historyWriteError.
+  ///
+  /// In ru, this message translates to:
+  /// **'Не удалось сохранить. Повторите попытку.'**
+  String get historyWriteError;
+
+  /// No description provided for @historyManualLabel.
+  ///
+  /// In ru, this message translates to:
+  /// **'{auto} + {manual} вручную'**
+  String historyManualLabel(String auto, String manual);
+
+  /// No description provided for @historyCountAndDistance.
+  ///
+  /// In ru, this message translates to:
+  /// **'{steps} (≈{distance} км)'**
+  String historyCountAndDistance(String steps, String distance);
+
+  /// No description provided for @historyBestDay.
+  ///
+  /// In ru, this message translates to:
+  /// **'Лучший день — {date}, {steps}'**
+  String historyBestDay(String date, String steps);
+
+  /// No description provided for @historyOpenedChapters.
+  ///
+  /// In ru, this message translates to:
+  /// **'{count, plural, one{Открыта {count} глава} few{Открыто {count} главы} other{Открыто {count} глав}}'**
+  String historyOpenedChapters(int count);
+
+  /// No description provided for @historyBoughtMedals.
+  ///
+  /// In ru, this message translates to:
+  /// **'{count, plural, one{Куплена {count} медаль} few{Куплено {count} медали} other{Куплено {count} медалей}}'**
+  String historyBoughtMedals(int count);
+
+  /// No description provided for @historyImprovement.
+  ///
+  /// In ru, this message translates to:
+  /// **'На {steps} больше, чем за те же дни прошлой недели'**
+  String historyImprovement(String steps);
+
+  /// No description provided for @historyNevsky.
+  ///
+  /// In ru, this message translates to:
+  /// **'длины Невского проспекта'**
+  String get historyNevsky;
+
+  /// No description provided for @historyOpenedTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Открыта глава «{title}»'**
+  String historyOpenedTitle(String title);
+
+  /// No description provided for @historyBoughtTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Медаль «{medal}» за «{progression}»'**
+  String historyBoughtTitle(String medal, String progression);
+
+  /// No description provided for @historyBronze.
+  ///
+  /// In ru, this message translates to:
+  /// **'Бронза'**
+  String get historyBronze;
+
+  /// No description provided for @historySilver.
+  ///
+  /// In ru, this message translates to:
+  /// **'Серебро'**
+  String get historySilver;
+
+  /// No description provided for @historyGold.
+  ///
+  /// In ru, this message translates to:
+  /// **'Золото'**
+  String get historyGold;
+
+  /// No description provided for @historyMarathon.
+  ///
+  /// In ru, this message translates to:
+  /// **'марафонской дистанции'**
+  String get historyMarathon;
+
+  /// No description provided for @historyMkad.
+  ///
+  /// In ru, this message translates to:
+  /// **'длины МКАД'**
+  String get historyMkad;
+
+  /// No description provided for @historyFactPercent.
+  ///
+  /// In ru, this message translates to:
+  /// **'Это примерно {ratio}% {reference}.'**
+  String historyFactPercent(String ratio, String reference);
+
+  /// No description provided for @historyFactMultiple.
+  ///
+  /// In ru, this message translates to:
+  /// **'Это примерно {ratio} от {reference}.'**
+  String historyFactMultiple(String ratio, String reference);
+
+  /// No description provided for @historyFactUnder.
+  ///
+  /// In ru, this message translates to:
+  /// **'Это меньше 0,01% {reference}.'**
+  String historyFactUnder(String reference);
 }
 
 class _AppLocalizationsDelegate

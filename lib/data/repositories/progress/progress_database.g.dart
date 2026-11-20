@@ -60,6 +60,32 @@ class $ProgressStateTable extends ProgressState
         type: DriftSqlType.string,
         requiredDuringInsert: false,
       ).withConverter<Medal?>($ProgressStateTable.$convertergoalMedaln);
+  static const VerificationMeta _manualEntryLockedMeta = const VerificationMeta(
+    'manualEntryLocked',
+  );
+  @override
+  late final GeneratedColumn<bool> manualEntryLocked = GeneratedColumn<bool>(
+    'manual_entry_locked',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("manual_entry_locked" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _manualEntryUnlockAtMeta =
+      const VerificationMeta('manualEntryUnlockAt');
+  @override
+  late final GeneratedColumn<DateTime> manualEntryUnlockAt =
+      GeneratedColumn<DateTime>(
+        'manual_entry_unlock_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -67,6 +93,8 @@ class $ProgressStateTable extends ProgressState
     goalProgressionId,
     goalChapterId,
     goalMedal,
+    manualEntryLocked,
+    manualEntryUnlockAt,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -98,6 +126,24 @@ class $ProgressStateTable extends ProgressState
         goalChapterId.isAcceptableOrUnknown(
           data['goal_chapter_id']!,
           _goalChapterIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('manual_entry_locked')) {
+      context.handle(
+        _manualEntryLockedMeta,
+        manualEntryLocked.isAcceptableOrUnknown(
+          data['manual_entry_locked']!,
+          _manualEntryLockedMeta,
+        ),
+      );
+    }
+    if (data.containsKey('manual_entry_unlock_at')) {
+      context.handle(
+        _manualEntryUnlockAtMeta,
+        manualEntryUnlockAt.isAcceptableOrUnknown(
+          data['manual_entry_unlock_at']!,
+          _manualEntryUnlockAtMeta,
         ),
       );
     }
@@ -134,6 +180,14 @@ class $ProgressStateTable extends ProgressState
           data['${effectivePrefix}goal_medal'],
         ),
       ),
+      manualEntryLocked: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}manual_entry_locked'],
+      )!,
+      manualEntryUnlockAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}manual_entry_unlock_at'],
+      ),
     );
   }
 
@@ -164,12 +218,20 @@ class StateRow extends DataClass implements Insertable<StateRow> {
 
   /// The medal when the goal is a medal, by name.
   final Medal? goalMedal;
+
+  /// Whether the user has enabled the manual-entry lock.
+  final bool manualEntryLocked;
+
+  /// When a requested unlock takes effect, in UTC.
+  final DateTime? manualEntryUnlockAt;
   const StateRow({
     required this.id,
     required this.installDay,
     this.goalProgressionId,
     this.goalChapterId,
     this.goalMedal,
+    required this.manualEntryLocked,
+    this.manualEntryUnlockAt,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -191,6 +253,10 @@ class StateRow extends DataClass implements Insertable<StateRow> {
         $ProgressStateTable.$convertergoalMedaln.toSql(goalMedal),
       );
     }
+    map['manual_entry_locked'] = Variable<bool>(manualEntryLocked);
+    if (!nullToAbsent || manualEntryUnlockAt != null) {
+      map['manual_entry_unlock_at'] = Variable<DateTime>(manualEntryUnlockAt);
+    }
     return map;
   }
 
@@ -207,6 +273,10 @@ class StateRow extends DataClass implements Insertable<StateRow> {
       goalMedal: goalMedal == null && nullToAbsent
           ? const Value.absent()
           : Value(goalMedal),
+      manualEntryLocked: Value(manualEntryLocked),
+      manualEntryUnlockAt: manualEntryUnlockAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(manualEntryUnlockAt),
     );
   }
 
@@ -225,6 +295,10 @@ class StateRow extends DataClass implements Insertable<StateRow> {
       goalMedal: $ProgressStateTable.$convertergoalMedaln.fromJson(
         serializer.fromJson<String?>(json['goalMedal']),
       ),
+      manualEntryLocked: serializer.fromJson<bool>(json['manualEntryLocked']),
+      manualEntryUnlockAt: serializer.fromJson<DateTime?>(
+        json['manualEntryUnlockAt'],
+      ),
     );
   }
   @override
@@ -238,6 +312,8 @@ class StateRow extends DataClass implements Insertable<StateRow> {
       'goalMedal': serializer.toJson<String?>(
         $ProgressStateTable.$convertergoalMedaln.toJson(goalMedal),
       ),
+      'manualEntryLocked': serializer.toJson<bool>(manualEntryLocked),
+      'manualEntryUnlockAt': serializer.toJson<DateTime?>(manualEntryUnlockAt),
     };
   }
 
@@ -247,6 +323,8 @@ class StateRow extends DataClass implements Insertable<StateRow> {
     Value<String?> goalProgressionId = const Value.absent(),
     Value<String?> goalChapterId = const Value.absent(),
     Value<Medal?> goalMedal = const Value.absent(),
+    bool? manualEntryLocked,
+    Value<DateTime?> manualEntryUnlockAt = const Value.absent(),
   }) => StateRow(
     id: id ?? this.id,
     installDay: installDay ?? this.installDay,
@@ -257,6 +335,10 @@ class StateRow extends DataClass implements Insertable<StateRow> {
         ? goalChapterId.value
         : this.goalChapterId,
     goalMedal: goalMedal.present ? goalMedal.value : this.goalMedal,
+    manualEntryLocked: manualEntryLocked ?? this.manualEntryLocked,
+    manualEntryUnlockAt: manualEntryUnlockAt.present
+        ? manualEntryUnlockAt.value
+        : this.manualEntryUnlockAt,
   );
   StateRow copyWithCompanion(ProgressStateCompanion data) {
     return StateRow(
@@ -271,6 +353,12 @@ class StateRow extends DataClass implements Insertable<StateRow> {
           ? data.goalChapterId.value
           : this.goalChapterId,
       goalMedal: data.goalMedal.present ? data.goalMedal.value : this.goalMedal,
+      manualEntryLocked: data.manualEntryLocked.present
+          ? data.manualEntryLocked.value
+          : this.manualEntryLocked,
+      manualEntryUnlockAt: data.manualEntryUnlockAt.present
+          ? data.manualEntryUnlockAt.value
+          : this.manualEntryUnlockAt,
     );
   }
 
@@ -281,14 +369,23 @@ class StateRow extends DataClass implements Insertable<StateRow> {
           ..write('installDay: $installDay, ')
           ..write('goalProgressionId: $goalProgressionId, ')
           ..write('goalChapterId: $goalChapterId, ')
-          ..write('goalMedal: $goalMedal')
+          ..write('goalMedal: $goalMedal, ')
+          ..write('manualEntryLocked: $manualEntryLocked, ')
+          ..write('manualEntryUnlockAt: $manualEntryUnlockAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, installDay, goalProgressionId, goalChapterId, goalMedal);
+  int get hashCode => Object.hash(
+    id,
+    installDay,
+    goalProgressionId,
+    goalChapterId,
+    goalMedal,
+    manualEntryLocked,
+    manualEntryUnlockAt,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -297,7 +394,9 @@ class StateRow extends DataClass implements Insertable<StateRow> {
           other.installDay == this.installDay &&
           other.goalProgressionId == this.goalProgressionId &&
           other.goalChapterId == this.goalChapterId &&
-          other.goalMedal == this.goalMedal);
+          other.goalMedal == this.goalMedal &&
+          other.manualEntryLocked == this.manualEntryLocked &&
+          other.manualEntryUnlockAt == this.manualEntryUnlockAt);
 }
 
 class ProgressStateCompanion extends UpdateCompanion<StateRow> {
@@ -306,12 +405,16 @@ class ProgressStateCompanion extends UpdateCompanion<StateRow> {
   final Value<String?> goalProgressionId;
   final Value<String?> goalChapterId;
   final Value<Medal?> goalMedal;
+  final Value<bool> manualEntryLocked;
+  final Value<DateTime?> manualEntryUnlockAt;
   const ProgressStateCompanion({
     this.id = const Value.absent(),
     this.installDay = const Value.absent(),
     this.goalProgressionId = const Value.absent(),
     this.goalChapterId = const Value.absent(),
     this.goalMedal = const Value.absent(),
+    this.manualEntryLocked = const Value.absent(),
+    this.manualEntryUnlockAt = const Value.absent(),
   });
   ProgressStateCompanion.insert({
     this.id = const Value.absent(),
@@ -319,6 +422,8 @@ class ProgressStateCompanion extends UpdateCompanion<StateRow> {
     this.goalProgressionId = const Value.absent(),
     this.goalChapterId = const Value.absent(),
     this.goalMedal = const Value.absent(),
+    this.manualEntryLocked = const Value.absent(),
+    this.manualEntryUnlockAt = const Value.absent(),
   }) : installDay = Value(installDay);
   static Insertable<StateRow> custom({
     Expression<int>? id,
@@ -326,6 +431,8 @@ class ProgressStateCompanion extends UpdateCompanion<StateRow> {
     Expression<String>? goalProgressionId,
     Expression<String>? goalChapterId,
     Expression<String>? goalMedal,
+    Expression<bool>? manualEntryLocked,
+    Expression<DateTime>? manualEntryUnlockAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -333,6 +440,9 @@ class ProgressStateCompanion extends UpdateCompanion<StateRow> {
       if (goalProgressionId != null) 'goal_progression_id': goalProgressionId,
       if (goalChapterId != null) 'goal_chapter_id': goalChapterId,
       if (goalMedal != null) 'goal_medal': goalMedal,
+      if (manualEntryLocked != null) 'manual_entry_locked': manualEntryLocked,
+      if (manualEntryUnlockAt != null)
+        'manual_entry_unlock_at': manualEntryUnlockAt,
     });
   }
 
@@ -342,6 +452,8 @@ class ProgressStateCompanion extends UpdateCompanion<StateRow> {
     Value<String?>? goalProgressionId,
     Value<String?>? goalChapterId,
     Value<Medal?>? goalMedal,
+    Value<bool>? manualEntryLocked,
+    Value<DateTime?>? manualEntryUnlockAt,
   }) {
     return ProgressStateCompanion(
       id: id ?? this.id,
@@ -349,6 +461,8 @@ class ProgressStateCompanion extends UpdateCompanion<StateRow> {
       goalProgressionId: goalProgressionId ?? this.goalProgressionId,
       goalChapterId: goalChapterId ?? this.goalChapterId,
       goalMedal: goalMedal ?? this.goalMedal,
+      manualEntryLocked: manualEntryLocked ?? this.manualEntryLocked,
+      manualEntryUnlockAt: manualEntryUnlockAt ?? this.manualEntryUnlockAt,
     );
   }
 
@@ -374,6 +488,14 @@ class ProgressStateCompanion extends UpdateCompanion<StateRow> {
         $ProgressStateTable.$convertergoalMedaln.toSql(goalMedal.value),
       );
     }
+    if (manualEntryLocked.present) {
+      map['manual_entry_locked'] = Variable<bool>(manualEntryLocked.value);
+    }
+    if (manualEntryUnlockAt.present) {
+      map['manual_entry_unlock_at'] = Variable<DateTime>(
+        manualEntryUnlockAt.value,
+      );
+    }
     return map;
   }
 
@@ -384,7 +506,9 @@ class ProgressStateCompanion extends UpdateCompanion<StateRow> {
           ..write('installDay: $installDay, ')
           ..write('goalProgressionId: $goalProgressionId, ')
           ..write('goalChapterId: $goalChapterId, ')
-          ..write('goalMedal: $goalMedal')
+          ..write('goalMedal: $goalMedal, ')
+          ..write('manualEntryLocked: $manualEntryLocked, ')
+          ..write('manualEntryUnlockAt: $manualEntryUnlockAt')
           ..write(')'))
         .toString();
   }
@@ -1377,6 +1501,8 @@ typedef $$ProgressStateTableCreateCompanionBuilder =
       Value<String?> goalProgressionId,
       Value<String?> goalChapterId,
       Value<Medal?> goalMedal,
+      Value<bool> manualEntryLocked,
+      Value<DateTime?> manualEntryUnlockAt,
     });
 typedef $$ProgressStateTableUpdateCompanionBuilder =
     ProgressStateCompanion Function({
@@ -1385,6 +1511,8 @@ typedef $$ProgressStateTableUpdateCompanionBuilder =
       Value<String?> goalProgressionId,
       Value<String?> goalChapterId,
       Value<Medal?> goalMedal,
+      Value<bool> manualEntryLocked,
+      Value<DateTime?> manualEntryUnlockAt,
     });
 
 class $$ProgressStateTableFilterComposer
@@ -1422,6 +1550,16 @@ class $$ProgressStateTableFilterComposer
         column: $table.goalMedal,
         builder: (column) => ColumnWithTypeConverterFilters(column),
       );
+
+  ColumnFilters<bool> get manualEntryLocked => $composableBuilder(
+    column: $table.manualEntryLocked,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get manualEntryUnlockAt => $composableBuilder(
+    column: $table.manualEntryUnlockAt,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$ProgressStateTableOrderingComposer
@@ -1457,6 +1595,16 @@ class $$ProgressStateTableOrderingComposer
     column: $table.goalMedal,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<bool> get manualEntryLocked => $composableBuilder(
+    column: $table.manualEntryLocked,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get manualEntryUnlockAt => $composableBuilder(
+    column: $table.manualEntryUnlockAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$ProgressStateTableAnnotationComposer
@@ -1489,6 +1637,16 @@ class $$ProgressStateTableAnnotationComposer
 
   GeneratedColumnWithTypeConverter<Medal?, String> get goalMedal =>
       $composableBuilder(column: $table.goalMedal, builder: (column) => column);
+
+  GeneratedColumn<bool> get manualEntryLocked => $composableBuilder(
+    column: $table.manualEntryLocked,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get manualEntryUnlockAt => $composableBuilder(
+    column: $table.manualEntryUnlockAt,
+    builder: (column) => column,
+  );
 }
 
 class $$ProgressStateTableTableManager
@@ -1529,12 +1687,16 @@ class $$ProgressStateTableTableManager
                 Value<String?> goalProgressionId = const Value.absent(),
                 Value<String?> goalChapterId = const Value.absent(),
                 Value<Medal?> goalMedal = const Value.absent(),
+                Value<bool> manualEntryLocked = const Value.absent(),
+                Value<DateTime?> manualEntryUnlockAt = const Value.absent(),
               }) => ProgressStateCompanion(
                 id: id,
                 installDay: installDay,
                 goalProgressionId: goalProgressionId,
                 goalChapterId: goalChapterId,
                 goalMedal: goalMedal,
+                manualEntryLocked: manualEntryLocked,
+                manualEntryUnlockAt: manualEntryUnlockAt,
               ),
           createCompanionCallback:
               ({
@@ -1543,12 +1705,16 @@ class $$ProgressStateTableTableManager
                 Value<String?> goalProgressionId = const Value.absent(),
                 Value<String?> goalChapterId = const Value.absent(),
                 Value<Medal?> goalMedal = const Value.absent(),
+                Value<bool> manualEntryLocked = const Value.absent(),
+                Value<DateTime?> manualEntryUnlockAt = const Value.absent(),
               }) => ProgressStateCompanion.insert(
                 id: id,
                 installDay: installDay,
                 goalProgressionId: goalProgressionId,
                 goalChapterId: goalChapterId,
                 goalMedal: goalMedal,
+                manualEntryLocked: manualEntryLocked,
+                manualEntryUnlockAt: manualEntryUnlockAt,
               ),
           withReferenceMapper: (p0) => p0
               .map(

@@ -108,6 +108,153 @@
   "catalogChooseGoal": "Выбрать цель",
   "catalogCurrentGoal": "Текущая цель",
   "catalogGoalSaveError": "Не удалось сохранить цель. Попробуйте ещё раз.",
+  "historyTitle": "История шагов",
+  "historyPreview": "История · 1 000 дней",
+  "historyThisWeek": "На этой неделе",
+  "historyToday": "Сегодня",
+  "historyByDay": "По дням",
+  "historyReadError": "История недоступна",
+  "historyEmpty": "Шагов пока нет",
+  "historyEmptyMessage": "Когда появятся шаги, здесь будет история по дням.",
+  "historyAddSteps": "Добавить шаги",
+  "historyEditTitle": "Исправить добавку",
+  "historyDateField": "Дата",
+  "historyAmount": "Количество шагов",
+  "historyInvalidAmount": "Введите целое число шагов больше нуля.",
+  "historySave": "Сохранить",
+  "historyRemove": "Удалить добавку",
+  "historyCancel": "Отмена",
+  "historyConfirmTitle": "Подтвердить добавку",
+  "historyConfirmMessage": "Добавить {steps} за {date}?",
+  "@historyConfirmMessage": {
+    "placeholders": {
+      "steps": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "historyLock": "Запрет ручного ввода",
+  "historyLockOn": "Ручной ввод запрещён.",
+  "historyLockOnSubtitle": "Снятие запрета займёт 2 часа",
+  "historyLockOff": "Запрет выключен",
+  "historyLockUntil": "Ручной ввод откроется {date}",
+  "@historyLockUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "historyKeepLock": "Оставить запрет",
+  "historyDateUnavailable": "За этот день уже нельзя изменить ручные шаги.",
+  "historyWriteError": "Не удалось сохранить. Повторите попытку.",
+  "historyManualLabel": "{auto} + {manual} вручную",
+  "@historyManualLabel": {
+    "placeholders": {
+      "auto": {
+        "type": "String"
+      },
+      "manual": {
+        "type": "String"
+      }
+    }
+  },
+  "historyCountAndDistance": "{steps} (≈{distance} км)",
+  "@historyCountAndDistance": {
+    "placeholders": {
+      "steps": {
+        "type": "String"
+      },
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "historyBestDay": "Лучший день — {date}, {steps}",
+  "@historyBestDay": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "steps": {
+        "type": "String"
+      }
+    }
+  },
+  "historyOpenedChapters": "{count, plural, one{Открыта {count} глава} few{Открыто {count} главы} other{Открыто {count} глав}}",
+  "@historyOpenedChapters": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "historyBoughtMedals": "{count, plural, one{Куплена {count} медаль} few{Куплено {count} медали} other{Куплено {count} медалей}}",
+  "@historyBoughtMedals": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "historyImprovement": "На {steps} больше, чем за те же дни прошлой недели",
+  "@historyImprovement": {
+    "placeholders": {
+      "steps": {
+        "type": "String"
+      }
+    }
+  },
+  "historyNevsky": "длины Невского проспекта",
+  "historyOpenedTitle": "Открыта глава «{title}»",
+  "@historyOpenedTitle": {
+    "placeholders": {"title": {"type": "String"}}
+  },
+  "historyBoughtTitle": "Медаль «{medal}» за «{progression}»",
+  "@historyBoughtTitle": {
+    "placeholders": {
+      "medal": {"type": "String"},
+      "progression": {"type": "String"}
+    }
+  },
+  "historyBronze": "Бронза",
+  "historySilver": "Серебро",
+  "historyGold": "Золото",
+  "historyMarathon": "марафонской дистанции",
+  "historyMkad": "длины МКАД",
+  "historyFactPercent": "Это примерно {ratio}% {reference}.",
+  "@historyFactPercent": {
+    "placeholders": {
+      "ratio": {
+        "type": "String"
+      },
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "historyFactMultiple": "Это примерно {ratio} от {reference}.",
+  "@historyFactMultiple": {
+    "placeholders": {
+      "ratio": {
+        "type": "String"
+      },
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "historyFactUnder": "Это меньше 0,01% {reference}.",
+  "@historyFactUnder": {
+    "placeholders": {
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
   "@todayStreakThreshold": {
     "placeholders": {
       "steps": {

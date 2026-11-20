@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Progress {
 
- Day get installDay; Map<Day, DaySteps> get days; List<Spending> get spendings; Goal? get goal;
+ Day get installDay; Map<Day, DaySteps> get days; List<Spending> get spendings; Goal? get goal; ManualEntryLock get manualEntryLock;
 /// Create a copy of Progress
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,20 +27,20 @@ $ProgressCopyWith<Progress> get copyWith => _$ProgressCopyWithImpl<Progress>(thi
 @override
 bool operator ==(Object other) {
   final _this = this as Progress;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Progress&&(identical(other.installDay, _this.installDay) || other.installDay == _this.installDay)&&const DeepCollectionEquality().equals(other.days, _this.days)&&const DeepCollectionEquality().equals(other.spendings, _this.spendings)&&(identical(other.goal, _this.goal) || other.goal == _this.goal));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Progress&&(identical(other.installDay, _this.installDay) || other.installDay == _this.installDay)&&const DeepCollectionEquality().equals(other.days, _this.days)&&const DeepCollectionEquality().equals(other.spendings, _this.spendings)&&(identical(other.goal, _this.goal) || other.goal == _this.goal)&&(identical(other.manualEntryLock, _this.manualEntryLock) || other.manualEntryLock == _this.manualEntryLock));
 }
 
 
 @override
 int get hashCode {
   final _this = this as Progress;
-  return Object.hash(runtimeType,_this.installDay,const DeepCollectionEquality().hash(_this.days),const DeepCollectionEquality().hash(_this.spendings),_this.goal);
+  return Object.hash(runtimeType,_this.installDay,const DeepCollectionEquality().hash(_this.days),const DeepCollectionEquality().hash(_this.spendings),_this.goal,_this.manualEntryLock);
 }
 
 @override
 String toString() {
   final _this = this as Progress;
-  return 'Progress(installDay: ${_this.installDay}, days: ${_this.days}, spendings: ${_this.spendings}, goal: ${_this.goal})';
+  return 'Progress(installDay: ${_this.installDay}, days: ${_this.days}, spendings: ${_this.spendings}, goal: ${_this.goal}, manualEntryLock: ${_this.manualEntryLock})';
 }
 
 
@@ -51,11 +51,11 @@ abstract mixin class $ProgressCopyWith<$Res>  {
   factory $ProgressCopyWith(Progress value, $Res Function(Progress) _then) = _$ProgressCopyWithImpl;
 @useResult
 $Res call({
- Day installDay, Map<Day, DaySteps> days, List<Spending> spendings, Goal? goal
+ Day installDay, Map<Day, DaySteps> days, List<Spending> spendings, Goal? goal, ManualEntryLock manualEntryLock
 });
 
 
-$GoalCopyWith<$Res>? get goal;
+$GoalCopyWith<$Res>? get goal;$ManualEntryLockCopyWith<$Res> get manualEntryLock;
 
 }
 /// @nodoc
@@ -68,13 +68,14 @@ class _$ProgressCopyWithImpl<$Res>
 
 /// Create a copy of Progress
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? installDay = null,Object? days = null,Object? spendings = null,Object? goal = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? installDay = null,Object? days = null,Object? spendings = null,Object? goal = freezed,Object? manualEntryLock = null,}) {
   return _then(Progress(
 installDay: null == installDay ? _self.installDay : installDay // ignore: cast_nullable_to_non_nullable
 as Day,days: null == days ? _self.days : days // ignore: cast_nullable_to_non_nullable
 as Map<Day, DaySteps>,spendings: null == spendings ? _self.spendings : spendings // ignore: cast_nullable_to_non_nullable
 as List<Spending>,goal: freezed == goal ? _self.goal : goal // ignore: cast_nullable_to_non_nullable
-as Goal?,
+as Goal?,manualEntryLock: null == manualEntryLock ? _self.manualEntryLock : manualEntryLock // ignore: cast_nullable_to_non_nullable
+as ManualEntryLock,
   ));
 }
 /// Create a copy of Progress
@@ -88,6 +89,15 @@ $GoalCopyWith<$Res>? get goal {
 
   return $GoalCopyWith<$Res>(_self.goal!, (value) {
     return _then(_self.copyWith(goal: value));
+  });
+}/// Create a copy of Progress
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ManualEntryLockCopyWith<$Res> get manualEntryLock {
+
+  return $ManualEntryLockCopyWith<$Res>(_self.manualEntryLock, (value) {
+    return _then(_self.copyWith(manualEntryLock: value));
   });
 }
 }
@@ -171,10 +181,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Day installDay,  Map<Day, DaySteps> days,  List<Spending> spendings,  Goal? goal)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Day installDay,  Map<Day, DaySteps> days,  List<Spending> spendings,  Goal? goal,  ManualEntryLock manualEntryLock)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Progress() when $default != null:
-return $default(_that.installDay,_that.days,_that.spendings,_that.goal);case _:
+return $default(_that.installDay,_that.days,_that.spendings,_that.goal,_that.manualEntryLock);case _:
   return orElse();
 
 }
@@ -192,10 +202,10 @@ return $default(_that.installDay,_that.days,_that.spendings,_that.goal);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Day installDay,  Map<Day, DaySteps> days,  List<Spending> spendings,  Goal? goal)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Day installDay,  Map<Day, DaySteps> days,  List<Spending> spendings,  Goal? goal,  ManualEntryLock manualEntryLock)  $default,) {final _that = this;
 switch (_that) {
 case _Progress():
-return $default(_that.installDay,_that.days,_that.spendings,_that.goal);case _:
+return $default(_that.installDay,_that.days,_that.spendings,_that.goal,_that.manualEntryLock);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -212,10 +222,10 @@ return $default(_that.installDay,_that.days,_that.spendings,_that.goal);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Day installDay,  Map<Day, DaySteps> days,  List<Spending> spendings,  Goal? goal)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Day installDay,  Map<Day, DaySteps> days,  List<Spending> spendings,  Goal? goal,  ManualEntryLock manualEntryLock)?  $default,) {final _that = this;
 switch (_that) {
 case _Progress() when $default != null:
-return $default(_that.installDay,_that.days,_that.spendings,_that.goal);case _:
+return $default(_that.installDay,_that.days,_that.spendings,_that.goal,_that.manualEntryLock);case _:
   return null;
 
 }
@@ -227,8 +237,8 @@ return $default(_that.installDay,_that.days,_that.spendings,_that.goal);case _:
 
 
 class _Progress extends Progress {
-  const _Progress({required this.installDay,  Map<Day, DaySteps> days = const <Day, DaySteps>{},  List<Spending> spendings = const <Spending>[], this.goal}): _days = days,_spendings = spendings,super._();
-  
+  const _Progress({required this.installDay,  Map<Day, DaySteps> days = const <Day, DaySteps>{},  List<Spending> spendings = const <Spending>[], this.goal, this.manualEntryLock = const ManualEntryLock()}): _days = days,_spendings = spendings,super._();
+
 
 @override final  Day installDay;
  final  Map<Day, DaySteps> _days;
@@ -246,6 +256,7 @@ class _Progress extends Progress {
 }
 
 @override final  Goal? goal;
+@override@JsonKey() final  ManualEntryLock manualEntryLock;
 
 /// Create a copy of Progress
 /// with the given fields replaced by the non-null parameter values.
@@ -257,18 +268,18 @@ _$ProgressCopyWith<_Progress> get copyWith => __$ProgressCopyWithImpl<_Progress>
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Progress&&(identical(other.installDay, installDay) || other.installDay == installDay)&&const DeepCollectionEquality().equals(other.days, _days)&&const DeepCollectionEquality().equals(other.spendings, _spendings)&&(identical(other.goal, goal) || other.goal == goal));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Progress&&(identical(other.installDay, installDay) || other.installDay == installDay)&&const DeepCollectionEquality().equals(other.days, _days)&&const DeepCollectionEquality().equals(other.spendings, _spendings)&&(identical(other.goal, goal) || other.goal == goal)&&(identical(other.manualEntryLock, manualEntryLock) || other.manualEntryLock == manualEntryLock));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,installDay,const DeepCollectionEquality().hash(_days),const DeepCollectionEquality().hash(_spendings),goal);
+    return Object.hash(runtimeType,installDay,const DeepCollectionEquality().hash(_days),const DeepCollectionEquality().hash(_spendings),goal,manualEntryLock);
 }
 
 @override
 String toString() {
-    return 'Progress(installDay: $installDay, days: $days, spendings: $spendings, goal: $goal)';
+    return 'Progress(installDay: $installDay, days: $days, spendings: $spendings, goal: $goal, manualEntryLock: $manualEntryLock)';
 }
 
 
@@ -279,11 +290,11 @@ abstract mixin class _$ProgressCopyWith<$Res> implements $ProgressCopyWith<$Res>
   factory _$ProgressCopyWith(_Progress value, $Res Function(_Progress) _then) = __$ProgressCopyWithImpl;
 @override @useResult
 $Res call({
- Day installDay, Map<Day, DaySteps> days, List<Spending> spendings, Goal? goal
+ Day installDay, Map<Day, DaySteps> days, List<Spending> spendings, Goal? goal, ManualEntryLock manualEntryLock
 });
 
 
-@override $GoalCopyWith<$Res>? get goal;
+@override $GoalCopyWith<$Res>? get goal;@override $ManualEntryLockCopyWith<$Res> get manualEntryLock;
 
 }
 /// @nodoc
@@ -296,13 +307,14 @@ class __$ProgressCopyWithImpl<$Res>
 
 /// Create a copy of Progress
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? installDay = null,Object? days = null,Object? spendings = null,Object? goal = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? installDay = null,Object? days = null,Object? spendings = null,Object? goal = freezed,Object? manualEntryLock = null,}) {
   return _then(_Progress(
 installDay: null == installDay ? _self.installDay : installDay // ignore: cast_nullable_to_non_nullable
 as Day,days: null == days ? _self._days : days // ignore: cast_nullable_to_non_nullable
 as Map<Day, DaySteps>,spendings: null == spendings ? _self._spendings : spendings // ignore: cast_nullable_to_non_nullable
 as List<Spending>,goal: freezed == goal ? _self.goal : goal // ignore: cast_nullable_to_non_nullable
-as Goal?,
+as Goal?,manualEntryLock: null == manualEntryLock ? _self.manualEntryLock : manualEntryLock // ignore: cast_nullable_to_non_nullable
+as ManualEntryLock,
   ));
 }
 
@@ -317,6 +329,15 @@ $GoalCopyWith<$Res>? get goal {
 
   return $GoalCopyWith<$Res>(_self.goal!, (value) {
     return _then(_self.copyWith(goal: value));
+  });
+}/// Create a copy of Progress
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ManualEntryLockCopyWith<$Res> get manualEntryLock {
+
+  return $ManualEntryLockCopyWith<$Res>(_self.manualEntryLock, (value) {
+    return _then(_self.copyWith(manualEntryLock: value));
   });
 }
 }

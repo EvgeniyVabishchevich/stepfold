@@ -23,6 +23,7 @@ void main() {
     expect(getIt.get<BuyMedal>, returnsNormally);
     expect(getIt.get<SetGoal>, returnsNormally);
     expect(getIt.get<AddManualSteps>, returnsNormally);
+    expect(getIt.get<UpdateManualEntryLock>, returnsNormally);
     expect(getIt.get<SyncSteps>, returnsNormally);
   });
 }
