@@ -20,6 +20,7 @@ import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import com.google.android.gms.common.api.ApiException
 import java.io.IOException
 import java.time.Instant
 import java.time.LocalDate
@@ -32,6 +33,7 @@ import kotlinx.coroutines.withContext
 internal class AndroidStepsHost(private val activity: FragmentActivity) :
     AndroidStepsApi, DefaultLifecycleObserver {
     private val history = SensorStepHistory(activity)
+    private val recording by lazy { RecordingStepHistory(activity.applicationContext, history) }
     private val preferences by lazy {
         activity.getSharedPreferences("step_permission_requests", Context.MODE_PRIVATE)
     }
@@ -122,6 +124,13 @@ internal class AndroidStepsHost(private val activity: FragmentActivity) :
         when (provider) {
             AndroidStepProvider.HEALTH_CONNECT -> readHealthDays(fromDay, toDay)
             AndroidStepProvider.SENSOR -> {
+                if (recording.isAvailable) {
+                    observeSensor = false
+                    if (recording.start()) {
+                        return@onMain recording.readDays(fromDay, toDay)
+                    }
+                }
+                if (recording.hasCutover) throw FlutterError("step-source-unavailable")
                 observeSensor = true
                 if (activity.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED) && !history.start()) {
                     throw FlutterError("step-source-unavailable")
@@ -142,7 +151,8 @@ internal class AndroidStepsHost(private val activity: FragmentActivity) :
                 else -> AndroidStepPermission.CAN_REQUEST
             }
             AndroidStepProvider.SENSOR -> when {
-                !history.isAvailable -> AndroidStepPermission.UNAVAILABLE
+                !recording.isAvailable && (recording.hasCutover || !history.isAvailable) ->
+                    AndroidStepPermission.UNAVAILABLE
                 hasActivityPermission() -> AndroidStepPermission.GRANTED
                 !requested || activity.shouldShowRequestPermissionRationale(Manifest.permission.ACTIVITY_RECOGNITION) ->
                     AndroidStepPermission.CAN_REQUEST
@@ -181,6 +191,9 @@ internal class AndroidStepsHost(private val activity: FragmentActivity) :
             throw error
         } catch (error: SecurityException) {
             throw FlutterError("step-permission-denied", error.message)
+        } catch (error: ApiException) {
+            val code = if (hasActivityPermission()) "step-source-unavailable" else "step-permission-denied"
+            throw FlutterError(code, error.message)
         } catch (error: IOException) {
             throw FlutterError("step-source-unavailable", error.message)
         } catch (error: IllegalStateException) {

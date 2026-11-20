@@ -4,19 +4,19 @@ import 'package:flutter/services.dart' show PlatformException;
 import 'package:walks/data/repositories/steps/android_steps.g.dart';
 import 'package:walks/domain/domain.dart';
 
-/// Reads Health Connect or the hardware step counter through Android JNI.
+/// Reads Health Connect or the phone's step history through Android JNI.
 final class AndroidStepSource implements StepSource {
   /// Creates the historical Health Connect source.
   const AndroidStepSource.healthConnect(this._api)
     : _provider = AndroidStepProvider.healthConnect,
       _refreshInterval = const Duration(seconds: 30);
 
-  /// Creates the source that records deltas from the hardware step counter.
+  /// Creates the phone source backed by Recording API or the hardware sensor.
   const AndroidStepSource.sensor(this._api)
     : _provider = AndroidStepProvider.sensor,
-      _refreshInterval = const Duration(seconds: 2);
+      _refreshInterval = const Duration(seconds: 10);
 
-  /// Uses the hardware sensor when the system health store is unavailable.
+  /// Uses the phone source when the system health store is unavailable.
   static Future<AndroidStepSource> select(AndroidStepsApi api) async {
     try {
       final status = await api.status(AndroidStepProvider.healthConnect);

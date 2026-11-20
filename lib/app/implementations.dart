@@ -37,13 +37,13 @@ enum StepsImpl {
   /// In memory, controlled by the developer menu.
   fake,
 
-  /// Prefer Health Connect and use the hardware if it is unavailable.
+  /// Prefer Health Connect and use the phone's steps if it is unavailable.
   androidAutomatic,
 
   /// Health Connect on Android.
   androidHealthConnect,
 
-  /// Hardware step counter on Android.
+  /// Phone steps via Recording API or the hardware counter on Android.
   androidSensor,
 }
 

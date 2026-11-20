@@ -34,9 +34,10 @@ internal class SensorStepHistory(context: Context) : SensorEventListener {
 
     fun readDays(fromDay: Long, toDay: Long): List<AndroidDayCount> =
         (fromDay..toDay).mapNotNull { day ->
-            val count = days.getLong(day.toString(), -1)
-            if (count < 0) null else AndroidDayCount(day, count)
+            countOn(day)?.let { AndroidDayCount(day, it) }
         }
+
+    fun countOn(day: Long): Long? = days.getLong(day.toString(), -1).takeIf { it >= 0 }
 
     override fun onSensorChanged(event: SensorEvent) {
         if (!listening) return
