@@ -9,6 +9,13 @@ abstract final class Routes {
   /// The Catalog tab.
   static const catalog = '/catalog';
 
+  /// Route segment for a progression within the Catalog tab.
+  static const progression = ':progressionId';
+
+  /// Path for the chapters of a progression.
+  static String progressionLocation(String progressionId) =>
+      '$catalog/${Uri.encodeComponent(progressionId)}';
+
   /// The World tab.
   static const world = '/world';
 

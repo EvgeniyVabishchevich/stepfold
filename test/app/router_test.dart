@@ -59,6 +59,31 @@ void main() {
     expect(selectedTab(tester), 2);
   });
 
+  testWidgets('choosing a catalog chapter updates Today without spending', (
+    tester,
+  ) async {
+    await pumpRouter(tester, initialLocation: Routes.catalog);
+    await tester.tap(find.text('Пробная история'));
+    await tester.pumpAndSettle();
+
+    expect(selectedTab(tester), 1);
+    expect(find.text('По порядку'), findsOneWidget);
+    expect(find.text('Выбрать цель'), findsOneWidget);
+    final repository = getIt<ProgressRepository>() as FakeProgressRepository;
+    await tester.tap(find.text('Выбрать цель'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Текущая цель'), findsOneWidget);
+    expect(
+      repository.progress.goal,
+      const Goal.chapter(progressionId: 'sample', chapterId: 'c1'),
+    );
+    expect(repository.progress.spendings, isEmpty);
+    await tester.tap(find.text('Сегодня'));
+    await tester.pumpAndSettle();
+    expect(find.text('Начало'), findsOneWidget);
+  });
+
   testWidgets('tapping a tab opens it', (tester) async {
     await pumpRouter(tester);
 

@@ -14,6 +14,7 @@ import 'package:walks/ui/pages/pages.dart';
 /// │  ├─ /today
 /// │  │  └─ history          (C5г: pushed inside the tab, bar stays)
 /// │  ├─ /catalog
+/// │  │  └─ :progressionId (chapters, bar stays)
 /// │  ├─ /world
 /// │  └─ /album
 /// ├─ /chapter/:progressionId/:chapterId (full screen over the tabs)
@@ -56,7 +57,17 @@ GoRouter createRouter({String initialLocation = Routes.today}) {
               canOpenDevMenu: devMenuEnabled,
             ),
           ),
-          _tab(Routes.catalog, (context, state) => const CatalogPage()),
+          _tab(
+            Routes.catalog,
+            (context, state) => _catalogPage(),
+            routes: [
+              GoRoute(
+                path: Routes.progression,
+                builder: (context, state) =>
+                    _catalogPage(state.pathParameters['progressionId']),
+              ),
+            ],
+          ),
           _tab(Routes.world, (context, state) => const WorldPage()),
           _tab(Routes.album, (context, state) => const AlbumPage()),
         ],
@@ -82,7 +93,18 @@ GoRouter createRouter({String initialLocation = Routes.today}) {
   );
 }
 
-StatefulShellBranch _tab(String path, GoRouterWidgetBuilder builder) =>
-    StatefulShellBranch(
-      routes: [GoRoute(path: path, builder: builder)],
-    );
+CatalogPage _catalogPage([String? progressionId]) => CatalogPage(
+  catalog: getIt(),
+  progress: getIt(),
+  setGoal: getIt(),
+  crashReporter: getIt(),
+  progressionId: progressionId,
+);
+
+StatefulShellBranch _tab(
+  String path,
+  GoRouterWidgetBuilder builder, {
+  List<RouteBase> routes = const [],
+}) => StatefulShellBranch(
+  routes: [GoRoute(path: path, builder: builder, routes: routes)],
+);

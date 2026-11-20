@@ -117,7 +117,16 @@ class DriftProgressRepository implements ProgressRepository {
   );
 
   @override
-  Future<void> saveGoal(Goal? goal) => guardStorage(() => _writeGoal(goal));
+  Future<void> saveGoal(
+    Goal? goal, {
+    void Function(Progress current)? validate,
+  }) => guardStorage(() {
+    if (validate == null) return _writeGoal(goal);
+    return _db.transaction(() async {
+      validate(await _read());
+      await _writeGoal(goal);
+    });
+  });
 
   Future<void> _saveDay(
     Day day,

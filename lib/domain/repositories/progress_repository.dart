@@ -45,5 +45,10 @@ abstract interface class ProgressRepository {
   );
 
   /// Sets the goal; `null` removes it.
-  Future<void> saveGoal(Goal? goal);
+  /// If [validate] is provided, runs it on current progress in the same
+  /// operation. A validation error is propagated and leaves progress intact.
+  Future<void> saveGoal(
+    Goal? goal, {
+    void Function(Progress current)? validate,
+  });
 }
