@@ -9,11 +9,12 @@ class KitStatePlaceholder extends StatelessWidget {
   const KitStatePlaceholder.empty({
     required String this.title,
     required String this.message,
-    required String this.actionLabel,
-    required VoidCallback this.onAction,
+    this.actionLabel,
+    this.onAction,
     KitIcons this.icon = KitIcons.path,
     super.key,
-  }) : _loading = false,
+  }) : assert((actionLabel == null) == (onAction == null), 'Incomplete action'),
+       _loading = false,
        _actionKind = KitButtonKind.primary;
 
   /// Content is on its way: a skeleton in the shape of the empty state.
@@ -86,12 +87,10 @@ class KitStatePlaceholder extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: Spacing.s24),
-          KitButton(
-            kind: _actionKind,
-            label: actionLabel!,
-            onPressed: onAction,
-          ),
+          if (actionLabel case final label?) ...[
+            const SizedBox(height: Spacing.s24),
+            KitButton(kind: _actionKind, label: label, onPressed: onAction),
+          ],
         ],
       ),
     );

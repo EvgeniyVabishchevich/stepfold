@@ -387,6 +387,96 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'Изображение недоступно'**
   String get chapterImageError;
+
+  /// No description provided for @catalogReadError.
+  ///
+  /// In ru, this message translates to:
+  /// **'Каталог недоступен'**
+  String get catalogReadError;
+
+  /// No description provided for @catalogRetryMessage.
+  ///
+  /// In ru, this message translates to:
+  /// **'Попробуйте загрузить его ещё раз.'**
+  String get catalogRetryMessage;
+
+  /// No description provided for @catalogEmpty.
+  ///
+  /// In ru, this message translates to:
+  /// **'В каталоге пока пусто'**
+  String get catalogEmpty;
+
+  /// No description provided for @catalogEmptyMessage.
+  ///
+  /// In ru, this message translates to:
+  /// **'Прогрессии появятся здесь, когда будут доступны.'**
+  String get catalogEmptyMessage;
+
+  /// No description provided for @catalogFilterEmpty.
+  ///
+  /// In ru, this message translates to:
+  /// **'Прогрессий такой длины пока нет'**
+  String get catalogFilterEmpty;
+
+  /// No description provided for @catalogFilterEmptyMessage.
+  ///
+  /// In ru, this message translates to:
+  /// **'Попробуйте выбрать другую длину.'**
+  String get catalogFilterEmptyMessage;
+
+  /// No description provided for @catalogChangeLength.
+  ///
+  /// In ru, this message translates to:
+  /// **'Изменить длину'**
+  String get catalogChangeLength;
+
+  /// No description provided for @catalogProgressionUnavailable.
+  ///
+  /// In ru, this message translates to:
+  /// **'Прогрессия недоступна'**
+  String get catalogProgressionUnavailable;
+
+  /// No description provided for @catalogStrictOrder.
+  ///
+  /// In ru, this message translates to:
+  /// **'Главы открываются по порядку'**
+  String get catalogStrictOrder;
+
+  /// No description provided for @catalogFreeOrder.
+  ///
+  /// In ru, this message translates to:
+  /// **'Главы открываются в любом порядке'**
+  String get catalogFreeOrder;
+
+  /// No description provided for @catalogChapterOpened.
+  ///
+  /// In ru, this message translates to:
+  /// **'Открыта'**
+  String get catalogChapterOpened;
+
+  /// No description provided for @catalogChapterLocked.
+  ///
+  /// In ru, this message translates to:
+  /// **'По порядку'**
+  String get catalogChapterLocked;
+
+  /// No description provided for @catalogChooseGoal.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выбрать цель'**
+  String get catalogChooseGoal;
+
+  /// No description provided for @catalogCurrentGoal.
+  ///
+  /// In ru, this message translates to:
+  /// **'Текущая цель'**
+  String get catalogCurrentGoal;
+
+  /// No description provided for @catalogGoalSaveError.
+  ///
+  /// In ru, this message translates to:
+  /// **'Не удалось сохранить цель. Попробуйте ещё раз.'**
+  String get catalogGoalSaveError;
 }
 
 class _AppLocalizationsDelegate

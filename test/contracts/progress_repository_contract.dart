@@ -207,6 +207,28 @@ void progressRepositoryContract(
       expect((await current()).goal, isNull);
     });
 
+    test(
+      'choosing a chapter while it opens cannot leave a stale goal',
+      () async {
+        const goal = Goal.chapter(progressionId: 'story', chapterId: 'c1');
+        await repository.saveAutoSteps(installDay, 4000);
+
+        Future<void> choose() async {
+          try {
+            await SetGoal(repository)(goal, strict);
+          } on ChapterUnavailable {
+            // The concurrent opening committed first.
+          }
+        }
+
+        await Future.wait([OpenChapter(repository)(strict, 'c1'), choose()]);
+
+        final progress = await current();
+        expect(progress.isOpened(strict.id, 'c1'), isTrue);
+        expect(progress.goal, isNot(goal));
+      },
+    );
+
     test('watch emits again after each change', () async {
       final emitted = <Progress>[];
       final subscription = repository.watch().listen(emitted.add);

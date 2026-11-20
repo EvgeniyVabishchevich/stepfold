@@ -13,11 +13,10 @@ class SetGoal {
   ///
   /// Throws a `ProgressFailure` when the goal cannot be opened or bought
   /// next, and a `StorageFailure` when it cannot be saved.
-  Future<void> call(Goal goal, Progression progression) async {
-    final progress = await _progress.watch().first;
-    final next = selectGoal(progress, goal, progression);
-    await _progress.saveGoal(next.goal);
-  }
+  Future<void> call(Goal goal, Progression progression) => _progress.saveGoal(
+    goal,
+    validate: (current) => selectGoal(current, goal, progression),
+  );
 
   /// Removes the goal.
   ///

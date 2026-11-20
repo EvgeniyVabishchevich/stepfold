@@ -93,6 +93,21 @@
   "chapterReadError": "Не удалось загрузить главу",
   "chapterRetryMessage": "Попробуйте загрузить её ещё раз.",
   "chapterImageError": "Изображение недоступно",
+  "catalogReadError": "Каталог недоступен",
+  "catalogRetryMessage": "Попробуйте загрузить его ещё раз.",
+  "catalogEmpty": "В каталоге пока пусто",
+  "catalogEmptyMessage": "Прогрессии появятся здесь, когда будут доступны.",
+  "catalogFilterEmpty": "Прогрессий такой длины пока нет",
+  "catalogFilterEmptyMessage": "Попробуйте выбрать другую длину.",
+  "catalogChangeLength": "Изменить длину",
+  "catalogProgressionUnavailable": "Прогрессия недоступна",
+  "catalogStrictOrder": "Главы открываются по порядку",
+  "catalogFreeOrder": "Главы открываются в любом порядке",
+  "catalogChapterOpened": "Открыта",
+  "catalogChapterLocked": "По порядку",
+  "catalogChooseGoal": "Выбрать цель",
+  "catalogCurrentGoal": "Текущая цель",
+  "catalogGoalSaveError": "Не удалось сохранить цель. Попробуйте ещё раз.",
   "@todayStreakThreshold": {
     "placeholders": {
       "steps": {

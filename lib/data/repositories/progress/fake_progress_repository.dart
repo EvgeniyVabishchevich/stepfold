@@ -81,8 +81,13 @@ class FakeProgressRepository implements ProgressRepository {
   }
 
   @override
-  Future<void> saveGoal(Goal? goal) async =>
-      _write(_progress.copyWith(goal: goal));
+  Future<void> saveGoal(
+    Goal? goal, {
+    void Function(Progress current)? validate,
+  }) async {
+    validate?.call(_progress);
+    _write(_progress.copyWith(goal: goal));
+  }
 
   void _write(Progress next) {
     final failure = _failure;

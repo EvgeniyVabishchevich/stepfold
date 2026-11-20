@@ -201,4 +201,51 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get chapterImageError => 'Изображение недоступно';
+
+  @override
+  String get catalogReadError => 'Каталог недоступен';
+
+  @override
+  String get catalogRetryMessage => 'Попробуйте загрузить его ещё раз.';
+
+  @override
+  String get catalogEmpty => 'В каталоге пока пусто';
+
+  @override
+  String get catalogEmptyMessage =>
+      'Прогрессии появятся здесь, когда будут доступны.';
+
+  @override
+  String get catalogFilterEmpty => 'Прогрессий такой длины пока нет';
+
+  @override
+  String get catalogFilterEmptyMessage => 'Попробуйте выбрать другую длину.';
+
+  @override
+  String get catalogChangeLength => 'Изменить длину';
+
+  @override
+  String get catalogProgressionUnavailable => 'Прогрессия недоступна';
+
+  @override
+  String get catalogStrictOrder => 'Главы открываются по порядку';
+
+  @override
+  String get catalogFreeOrder => 'Главы открываются в любом порядке';
+
+  @override
+  String get catalogChapterOpened => 'Открыта';
+
+  @override
+  String get catalogChapterLocked => 'По порядку';
+
+  @override
+  String get catalogChooseGoal => 'Выбрать цель';
+
+  @override
+  String get catalogCurrentGoal => 'Текущая цель';
+
+  @override
+  String get catalogGoalSaveError =>
+      'Не удалось сохранить цель. Попробуйте ещё раз.';
 }
