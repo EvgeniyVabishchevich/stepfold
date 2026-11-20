@@ -51,6 +51,9 @@ class DayStepsTable extends Table {
   /// The total from the phone's step source; `null` when it gave none.
   IntColumn get auto => integer().nullable()();
 
+  /// The source allowed to correct the automatic total of the day.
+  TextColumn get autoOrigin => textEnum<AutoStepOrigin>().nullable()();
+
   /// The steps added by hand.
   IntColumn get manual => integer().nullable()();
 
@@ -110,7 +113,7 @@ class ProgressDatabase extends _$ProgressDatabase {
   final Day Function() _installDay;
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -122,6 +125,9 @@ class ProgressDatabase extends _$ProgressDatabase {
           installDay: _installDay(),
         ),
       );
+    },
+    onUpgrade: (m, from, to) async {
+      if (from < 2) await m.addColumn(dayStepsTable, dayStepsTable.autoOrigin);
     },
   );
 }

@@ -6,11 +6,15 @@ class AppResumeListener extends StatefulWidget {
   const AppResumeListener({
     required this.onResume,
     required this.child,
+    this.onPause,
     super.key,
   });
 
   /// Handles app resume, with access to the inherited widgets.
   final ValueChanged<BuildContext> onResume;
+
+  /// Handles transition to the background.
+  final ValueChanged<BuildContext>? onPause;
 
   /// Content to display.
   final Widget child;
@@ -25,7 +29,10 @@ class _AppResumeListenerState extends State<AppResumeListener> {
   @override
   void initState() {
     super.initState();
-    _listener = AppLifecycleListener(onResume: () => widget.onResume(context));
+    _listener = AppLifecycleListener(
+      onResume: () => widget.onResume(context),
+      onPause: () => widget.onPause?.call(context),
+    );
   }
 
   @override

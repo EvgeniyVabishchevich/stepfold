@@ -414,6 +414,15 @@ class $DayStepsTableTable extends DayStepsTable
     type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
+  @override
+  late final GeneratedColumnWithTypeConverter<AutoStepOrigin?, String>
+  autoOrigin = GeneratedColumn<String>(
+    'auto_origin',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<AutoStepOrigin?>($DayStepsTableTable.$converterautoOriginn);
   static const VerificationMeta _manualMeta = const VerificationMeta('manual');
   @override
   late final GeneratedColumn<int> manual = GeneratedColumn<int>(
@@ -424,7 +433,7 @@ class $DayStepsTableTable extends DayStepsTable
     requiredDuringInsert: false,
   );
   @override
-  List<GeneratedColumn> get $columns => [day, auto, manual];
+  List<GeneratedColumn> get $columns => [day, auto, autoOrigin, manual];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -468,6 +477,12 @@ class $DayStepsTableTable extends DayStepsTable
         DriftSqlType.int,
         data['${effectivePrefix}auto'],
       ),
+      autoOrigin: $DayStepsTableTable.$converterautoOriginn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}auto_origin'],
+        ),
+      ),
       manual: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}manual'],
@@ -481,6 +496,12 @@ class $DayStepsTableTable extends DayStepsTable
   }
 
   static TypeConverter<Day, int> $converterday = const DayConverter();
+  static JsonTypeConverter2<AutoStepOrigin, String, String>
+  $converterautoOrigin = const EnumNameConverter<AutoStepOrigin>(
+    AutoStepOrigin.values,
+  );
+  static JsonTypeConverter2<AutoStepOrigin?, String?, String?>
+  $converterautoOriginn = JsonTypeConverter2.asNullable($converterautoOrigin);
 }
 
 class DayRow extends DataClass implements Insertable<DayRow> {
@@ -490,9 +511,12 @@ class DayRow extends DataClass implements Insertable<DayRow> {
   /// The total from the phone's step source; `null` when it gave none.
   final int? auto;
 
+  /// The source allowed to correct the automatic total of the day.
+  final AutoStepOrigin? autoOrigin;
+
   /// The steps added by hand.
   final int? manual;
-  const DayRow({required this.day, this.auto, this.manual});
+  const DayRow({required this.day, this.auto, this.autoOrigin, this.manual});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -501,6 +525,11 @@ class DayRow extends DataClass implements Insertable<DayRow> {
     }
     if (!nullToAbsent || auto != null) {
       map['auto'] = Variable<int>(auto);
+    }
+    if (!nullToAbsent || autoOrigin != null) {
+      map['auto_origin'] = Variable<String>(
+        $DayStepsTableTable.$converterautoOriginn.toSql(autoOrigin),
+      );
     }
     if (!nullToAbsent || manual != null) {
       map['manual'] = Variable<int>(manual);
@@ -512,6 +541,9 @@ class DayRow extends DataClass implements Insertable<DayRow> {
     return DayStepsTableCompanion(
       day: Value(day),
       auto: auto == null && nullToAbsent ? const Value.absent() : Value(auto),
+      autoOrigin: autoOrigin == null && nullToAbsent
+          ? const Value.absent()
+          : Value(autoOrigin),
       manual: manual == null && nullToAbsent
           ? const Value.absent()
           : Value(manual),
@@ -526,6 +558,9 @@ class DayRow extends DataClass implements Insertable<DayRow> {
     return DayRow(
       day: serializer.fromJson<Day>(json['day']),
       auto: serializer.fromJson<int?>(json['auto']),
+      autoOrigin: $DayStepsTableTable.$converterautoOriginn.fromJson(
+        serializer.fromJson<String?>(json['autoOrigin']),
+      ),
       manual: serializer.fromJson<int?>(json['manual']),
     );
   }
@@ -535,6 +570,9 @@ class DayRow extends DataClass implements Insertable<DayRow> {
     return <String, dynamic>{
       'day': serializer.toJson<Day>(day),
       'auto': serializer.toJson<int?>(auto),
+      'autoOrigin': serializer.toJson<String?>(
+        $DayStepsTableTable.$converterautoOriginn.toJson(autoOrigin),
+      ),
       'manual': serializer.toJson<int?>(manual),
     };
   }
@@ -542,16 +580,21 @@ class DayRow extends DataClass implements Insertable<DayRow> {
   DayRow copyWith({
     Day? day,
     Value<int?> auto = const Value.absent(),
+    Value<AutoStepOrigin?> autoOrigin = const Value.absent(),
     Value<int?> manual = const Value.absent(),
   }) => DayRow(
     day: day ?? this.day,
     auto: auto.present ? auto.value : this.auto,
+    autoOrigin: autoOrigin.present ? autoOrigin.value : this.autoOrigin,
     manual: manual.present ? manual.value : this.manual,
   );
   DayRow copyWithCompanion(DayStepsTableCompanion data) {
     return DayRow(
       day: data.day.present ? data.day.value : this.day,
       auto: data.auto.present ? data.auto.value : this.auto,
+      autoOrigin: data.autoOrigin.present
+          ? data.autoOrigin.value
+          : this.autoOrigin,
       manual: data.manual.present ? data.manual.value : this.manual,
     );
   }
@@ -561,44 +604,51 @@ class DayRow extends DataClass implements Insertable<DayRow> {
     return (StringBuffer('DayRow(')
           ..write('day: $day, ')
           ..write('auto: $auto, ')
+          ..write('autoOrigin: $autoOrigin, ')
           ..write('manual: $manual')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(day, auto, manual);
+  int get hashCode => Object.hash(day, auto, autoOrigin, manual);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DayRow &&
           other.day == this.day &&
           other.auto == this.auto &&
+          other.autoOrigin == this.autoOrigin &&
           other.manual == this.manual);
 }
 
 class DayStepsTableCompanion extends UpdateCompanion<DayRow> {
   final Value<Day> day;
   final Value<int?> auto;
+  final Value<AutoStepOrigin?> autoOrigin;
   final Value<int?> manual;
   const DayStepsTableCompanion({
     this.day = const Value.absent(),
     this.auto = const Value.absent(),
+    this.autoOrigin = const Value.absent(),
     this.manual = const Value.absent(),
   });
   DayStepsTableCompanion.insert({
     this.day = const Value.absent(),
     this.auto = const Value.absent(),
+    this.autoOrigin = const Value.absent(),
     this.manual = const Value.absent(),
   });
   static Insertable<DayRow> custom({
     Expression<int>? day,
     Expression<int>? auto,
+    Expression<String>? autoOrigin,
     Expression<int>? manual,
   }) {
     return RawValuesInsertable({
       if (day != null) 'day': day,
       if (auto != null) 'auto': auto,
+      if (autoOrigin != null) 'auto_origin': autoOrigin,
       if (manual != null) 'manual': manual,
     });
   }
@@ -606,11 +656,13 @@ class DayStepsTableCompanion extends UpdateCompanion<DayRow> {
   DayStepsTableCompanion copyWith({
     Value<Day>? day,
     Value<int?>? auto,
+    Value<AutoStepOrigin?>? autoOrigin,
     Value<int?>? manual,
   }) {
     return DayStepsTableCompanion(
       day: day ?? this.day,
       auto: auto ?? this.auto,
+      autoOrigin: autoOrigin ?? this.autoOrigin,
       manual: manual ?? this.manual,
     );
   }
@@ -626,6 +678,11 @@ class DayStepsTableCompanion extends UpdateCompanion<DayRow> {
     if (auto.present) {
       map['auto'] = Variable<int>(auto.value);
     }
+    if (autoOrigin.present) {
+      map['auto_origin'] = Variable<String>(
+        $DayStepsTableTable.$converterautoOriginn.toSql(autoOrigin.value),
+      );
+    }
     if (manual.present) {
       map['manual'] = Variable<int>(manual.value);
     }
@@ -637,6 +694,7 @@ class DayStepsTableCompanion extends UpdateCompanion<DayRow> {
     return (StringBuffer('DayStepsTableCompanion(')
           ..write('day: $day, ')
           ..write('auto: $auto, ')
+          ..write('autoOrigin: $autoOrigin, ')
           ..write('manual: $manual')
           ..write(')'))
         .toString();
@@ -1530,12 +1588,14 @@ typedef $$DayStepsTableTableCreateCompanionBuilder =
     DayStepsTableCompanion Function({
       Value<Day> day,
       Value<int?> auto,
+      Value<AutoStepOrigin?> autoOrigin,
       Value<int?> manual,
     });
 typedef $$DayStepsTableTableUpdateCompanionBuilder =
     DayStepsTableCompanion Function({
       Value<Day> day,
       Value<int?> auto,
+      Value<AutoStepOrigin?> autoOrigin,
       Value<int?> manual,
     });
 
@@ -1556,6 +1616,12 @@ class $$DayStepsTableTableFilterComposer
   ColumnFilters<int> get auto => $composableBuilder(
     column: $table.auto,
     builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<AutoStepOrigin?, AutoStepOrigin, String>
+  get autoOrigin => $composableBuilder(
+    column: $table.autoOrigin,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
   );
 
   ColumnFilters<int> get manual => $composableBuilder(
@@ -1583,6 +1649,11 @@ class $$DayStepsTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get autoOrigin => $composableBuilder(
+    column: $table.autoOrigin,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get manual => $composableBuilder(
     column: $table.manual,
     builder: (column) => ColumnOrderings(column),
@@ -1603,6 +1674,12 @@ class $$DayStepsTableTableAnnotationComposer
 
   GeneratedColumn<int> get auto =>
       $composableBuilder(column: $table.auto, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<AutoStepOrigin?, String> get autoOrigin =>
+      $composableBuilder(
+        column: $table.autoOrigin,
+        builder: (column) => column,
+      );
 
   GeneratedColumn<int> get manual =>
       $composableBuilder(column: $table.manual, builder: (column) => column);
@@ -1643,17 +1720,24 @@ class $$DayStepsTableTableTableManager
               ({
                 Value<Day> day = const Value.absent(),
                 Value<int?> auto = const Value.absent(),
+                Value<AutoStepOrigin?> autoOrigin = const Value.absent(),
                 Value<int?> manual = const Value.absent(),
-              }) =>
-                  DayStepsTableCompanion(day: day, auto: auto, manual: manual),
+              }) => DayStepsTableCompanion(
+                day: day,
+                auto: auto,
+                autoOrigin: autoOrigin,
+                manual: manual,
+              ),
           createCompanionCallback:
               ({
                 Value<Day> day = const Value.absent(),
                 Value<int?> auto = const Value.absent(),
+                Value<AutoStepOrigin?> autoOrigin = const Value.absent(),
                 Value<int?> manual = const Value.absent(),
               }) => DayStepsTableCompanion.insert(
                 day: day,
                 auto: auto,
+                autoOrigin: autoOrigin,
                 manual: manual,
               ),
           withReferenceMapper: (p0) => p0

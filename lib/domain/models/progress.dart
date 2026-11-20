@@ -51,11 +51,13 @@ abstract class Progress with _$Progress {
 
   /// Records the total of [day] from the phone's step source.
   ///
-  /// Replaces the earlier total of that day, even with a smaller one.
+  /// The same source can replace an earlier total with a smaller one.
   /// Days before [installDay] are ignored.
-  Progress recordAutoSteps(Day day, int steps) {
+  Progress recordAutoSteps(Day day, int steps, {AutoStepOrigin? origin}) {
     if (day.isBefore(installDay)) return this;
-    return _withDay(stepsOf(day).copyWith(auto: steps));
+    final previous = stepsOf(day);
+    if (!previous.acceptsAutoTotal(steps, origin)) return this;
+    return _withDay(previous.copyWith(auto: steps, autoOrigin: origin));
   }
 
   /// Sets the steps of [day] added by hand: walked without the phone.

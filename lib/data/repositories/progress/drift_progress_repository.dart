@@ -55,12 +55,21 @@ class DriftProgressRepository implements ProgressRepository {
       );
 
   @override
-  Future<void> saveAutoSteps(Day day, int steps) => _saveDay(
-    day,
-    steps,
-    insert: DayStepsTableCompanion.insert(day: Value(day), auto: Value(steps)),
-    update: DayStepsTableCompanion(auto: Value(steps)),
-  );
+  Future<void> saveAutoSteps(Day day, int steps, {AutoStepOrigin? origin}) =>
+      _saveDay(
+        day,
+        steps,
+        insert: DayStepsTableCompanion.insert(
+          day: Value(day),
+          auto: Value(steps),
+          autoOrigin: Value(origin),
+        ),
+        update: DayStepsTableCompanion(
+          auto: Value(steps),
+          autoOrigin: Value(origin),
+        ),
+        accepts: (previous) => previous.acceptsAutoTotal(steps, origin),
+      );
 
   @override
   Future<void> saveManualSteps(Day day, int steps) => _saveDay(
@@ -115,12 +124,19 @@ class DriftProgressRepository implements ProgressRepository {
     int steps, {
     required DayStepsTableCompanion insert,
     required DayStepsTableCompanion update,
+    bool Function(DaySteps previous)? accepts,
   }) async {
     if (steps < 0) throw ArgumentError.value(steps, 'steps', 'is negative');
     await guardStorage(
       () => _db.transaction(() async {
         final state = await _db.select(_db.progressState).getSingle();
         if (day.isBefore(state.installDay)) return;
+        if (accepts != null) {
+          final previous = await (_db.select(
+            _db.dayStepsTable,
+          )..where((row) => row.day.equalsValue(day))).getSingleOrNull();
+          if (previous != null && !accepts(_stepsOfRow(previous))) return;
+        }
         await _db
             .into(_db.dayStepsTable)
             .insert(insert, onConflict: DoUpdate((_) => update));
@@ -172,14 +188,18 @@ class DriftProgressRepository implements ProgressRepository {
     ]..sort((a, b) => a.at.compareTo(b.at));
     return Progress(
       installDay: state.installDay,
-      days: {
-        for (final d in days)
-          d.day: DaySteps(day: d.day, auto: d.auto, manual: d.manual),
-      },
+      days: {for (final day in days) day.day: _stepsOfRow(day)},
       spendings: spendings,
       goal: _goalOf(state),
     );
   }
+
+  static DaySteps _stepsOfRow(DayRow row) => DaySteps(
+    day: row.day,
+    auto: row.auto,
+    manual: row.manual,
+    autoOrigin: row.autoOrigin,
+  );
 
   static Goal? _goalOf(StateRow state) {
     final progressionId = state.goalProgressionId;

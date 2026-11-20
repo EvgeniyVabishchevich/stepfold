@@ -18,6 +18,9 @@ class FakeStepSource implements StepSource {
   @override
   final AppPermission requiredPermission;
 
+  @override
+  AutoStepOrigin? get origin => null;
+
   final Map<Day, int> _steps;
   final StreamController<DayCount> _updates = StreamController.broadcast();
   StepSourceFailure? _failure;

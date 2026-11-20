@@ -15,6 +15,12 @@ final class CheckStepSync extends StepSyncEvent {
   const CheckStepSync();
 }
 
+/// Stops foreground reads while the app is in the background.
+final class PauseStepSync extends StepSyncEvent {
+  /// Creates the event.
+  const PauseStepSync();
+}
+
 /// The user asked for access to the counter.
 final class RequestStepPermission extends StepSyncEvent {
   /// Creates the event.
@@ -68,6 +74,8 @@ class StepSyncBloc extends Bloc<StepSyncEvent, StepSyncState> {
     switch (event) {
       case CheckStepSync():
         await _refresh(emit, request: false);
+      case PauseStepSync():
+        await _stopFollowing();
       case RequestStepPermission():
         if (state.permission == PermissionStatus.canRequest) {
           await _refresh(emit, request: true);

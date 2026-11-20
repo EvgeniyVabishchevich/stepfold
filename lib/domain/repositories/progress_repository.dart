@@ -17,11 +17,14 @@ abstract interface class ProgressRepository {
   /// order they were made.
   Stream<Progress> watch();
 
-  /// Sets the total of [day] from the phone's step source, replacing the
-  /// earlier one, even with a smaller one.
+  /// Sets the automatic total of [day] from [origin].
+  ///
+  /// A different source cannot replace a total already assigned to a source.
+  /// A legacy total with no origin can adopt a source at the same or a higher
+  /// count. A source can correct its own total in either direction.
   ///
   /// Throws an [ArgumentError] when [steps] is negative.
-  Future<void> saveAutoSteps(Day day, int steps);
+  Future<void> saveAutoSteps(Day day, int steps, {AutoStepOrigin? origin});
 
   /// Sets the steps of [day] added by hand, replacing the earlier
   /// addition; zero removes it.

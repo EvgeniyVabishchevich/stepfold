@@ -3,4 +3,9 @@ export 'crash/crash.dart' show CrashlyticsCrashReporter, FakeCrashReporter;
 export 'permissions/permissions.dart' show FakePermissionService;
 export 'progress/progress.dart'
     show DriftProgressRepository, FakeProgressRepository;
-export 'steps/steps.dart' show FakeStepSource;
+export 'steps/steps.dart'
+    show
+        AndroidPermissionService,
+        AndroidStepSource,
+        AndroidStepsApi,
+        FakeStepSource;

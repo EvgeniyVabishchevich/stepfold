@@ -39,11 +39,28 @@ Future<void> configureDependencies(Implementations implementations) async {
     },
   );
 
-  // Only fakes so far; the real ones come in stage D, and with them a choice
-  // in `Implementations`.
+  final stepsImpl = implementations.activeSteps;
+  final androidSteps = stepsImpl == StepsImpl.fake
+      ? null
+      : AndroidStepsApi.createWithNativeInteropApi();
+  final stepSource = switch (stepsImpl) {
+    StepsImpl.fake => FakeStepSource(),
+    StepsImpl.androidAutomatic => await AndroidStepSource.select(androidSteps!),
+    StepsImpl.androidHealthConnect => AndroidStepSource.healthConnect(
+      androidSteps!,
+    ),
+    StepsImpl.androidSensor => AndroidStepSource.sensor(androidSteps!),
+  };
   getIt
-    ..registerLazySingleton<PermissionService>(FakePermissionService.new)
-    ..registerLazySingleton<StepSource>(FakeStepSource.new);
+    ..registerSingleton<StepSource>(stepSource)
+    ..registerLazySingleton<PermissionService>(
+      () => androidSteps == null
+          ? FakePermissionService()
+          : AndroidPermissionService(
+              androidSteps,
+              stepSource.requiredPermission,
+            ),
+    );
 
   getIt.registerLazySingleton<ProgressRepository>(
     () => switch (implementations.progress) {

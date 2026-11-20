@@ -2,13 +2,19 @@ package dev.ettynat.stepfold
 
 import android.os.Handler
 import android.os.Looper
-import io.flutter.embedding.android.FlutterActivity
+import dev.ettynat.stepfold.steps.AndroidStepsApiRegistrar
+import dev.ettynat.stepfold.steps.AndroidStepsHost
+import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
-class MainActivity : FlutterActivity() {
+class MainActivity : FlutterFragmentActivity() {
+    private val steps = AndroidStepsHost(this)
+    private val stepsRegistrar = AndroidStepsApiRegistrar()
+
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        stepsRegistrar.register(steps, flutterEngine)
 
         // Debug tools; the name matches MethodChannelNativeCrasher in Dart.
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "dev.ettynat.stepfold/debug")
@@ -26,5 +32,10 @@ class MainActivity : FlutterActivity() {
                     else -> result.notImplemented()
                 }
             }
+    }
+
+    override fun cleanUpFlutterEngine(flutterEngine: FlutterEngine) {
+        stepsRegistrar.unregister(steps, flutterEngine)
+        super.cleanUpFlutterEngine(flutterEngine)
     }
 }

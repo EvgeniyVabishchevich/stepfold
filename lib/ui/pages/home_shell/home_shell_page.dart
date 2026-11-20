@@ -54,6 +54,8 @@ class HomeShellPage extends StatelessWidget {
     child: AppResumeListener(
       onResume: (context) =>
           context.read<StepSyncBloc>().add(const CheckStepSync()),
+      onPause: (context) =>
+          context.read<StepSyncBloc>().add(const PauseStepSync()),
       child: HomeShellView(
         currentIndex: currentIndex,
         onTabSelected: onTabSelected,

@@ -48,9 +48,13 @@ class FakeProgressRepository implements ProgressRepository {
   });
 
   @override
-  Future<void> saveAutoSteps(Day day, int steps) async {
+  Future<void> saveAutoSteps(
+    Day day,
+    int steps, {
+    AutoStepOrigin? origin,
+  }) async {
     _checkSteps(steps);
-    _write(_progress.recordAutoSteps(day, steps));
+    _write(_progress.recordAutoSteps(day, steps, origin: origin));
   }
 
   @override
