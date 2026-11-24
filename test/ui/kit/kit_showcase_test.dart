@@ -8,10 +8,11 @@ class _Showcase extends StatelessWidget {
   const _Showcase();
 
   static const _tabs = [
-    KitTab(icon: KitIcons.footprints, label: 'Сегодня'),
-    KitTab(icon: KitIcons.books, label: 'Каталог'),
-    KitTab(icon: KitIcons.globeHemisphereWest, label: 'Мир'),
-    KitTab(icon: KitIcons.cards, label: 'Альбом'),
+    KitTab(icon: KitIcons.navWalk, label: 'Сегодня'),
+    KitTab(icon: KitIcons.navCatalog, label: 'Каталог'),
+    KitTab(icon: KitIcons.navWorld, label: 'Мир'),
+    KitTab(icon: KitIcons.navAlbum, label: 'Альбом'),
+    KitTab(icon: KitIcons.navSettings, label: 'Настройки'),
   ];
 
   @override
@@ -50,7 +51,7 @@ class _Showcase extends StatelessWidget {
               ),
             ),
             const KitTopBar(title: 'Сегодня'),
-            for (final selected in [0, 3])
+            for (final selected in [0, 4])
               KitBottomNavigation(
                 tabs: _tabs,
                 selectedIndex: selected,

@@ -50,12 +50,13 @@ void main() {
       child: Builder(
         builder: (context) {
           final scheme = Theme.of(context).colorScheme;
-          final colors = StepfoldColors.of(context);
+          final colors = KitRelief.of(context);
           final tabs = [
-            KitIcons.footprints,
-            KitIcons.books,
-            KitIcons.globeHemisphereWest,
-            KitIcons.cards,
+            KitIcons.navWalk,
+            KitIcons.navCatalog,
+            KitIcons.navWorld,
+            KitIcons.navAlbum,
+            KitIcons.navSettings,
           ];
           return ColoredBox(
             color: scheme.surface,
@@ -67,13 +68,8 @@ void main() {
                     icon,
                     size: 48,
                     color: i == selected
-                        ? scheme.primary
+                        ? colors.accent
                         : scheme.onSurfaceVariant,
-                    fillColor: scheme.primary.withValues(
-                      alpha: i == selected
-                          ? colors.iconFillSelected
-                          : colors.iconFillIdle,
-                    ),
                   ),
               ],
             ),
@@ -88,7 +84,7 @@ void main() {
         child: Column(
           children: [
             Expanded(child: row(StepfoldTheme.light, selected: 0)),
-            Expanded(child: row(StepfoldTheme.dark, selected: 3)),
+            Expanded(child: row(StepfoldTheme.dark, selected: 4)),
           ],
         ),
       ),

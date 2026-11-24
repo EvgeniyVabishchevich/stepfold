@@ -53,8 +53,14 @@ void main() {
   });
 
   testWidgets('a link to a tab opens that tab', (tester) async {
-    await pumpRouter(tester, initialLocation: Routes.world);
+    await pumpRouter(tester, initialLocation: Routes.settings);
 
+    expect(location(), Routes.settings);
+    expect(selectedTab(tester), 4);
+    expect(find.byType(SettingsView), findsOneWidget);
+
+    await tester.tap(find.bySemanticsLabel('Мир'));
+    await tester.pumpAndSettle();
     expect(location(), Routes.world);
     expect(selectedTab(tester), 2);
   });
@@ -63,7 +69,7 @@ void main() {
     tester,
   ) async {
     await pumpRouter(tester);
-    await tester.tap(find.text('История шагов'));
+    await tester.tap(find.byTooltip('История шагов'));
     await tester.pumpAndSettle();
     expect(selectedTab(tester), 0);
     expect(find.text('Шагов пока нет'), findsOneWidget);

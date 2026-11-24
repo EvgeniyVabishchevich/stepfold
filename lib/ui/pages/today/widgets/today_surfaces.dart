@@ -32,7 +32,8 @@ class TodayNotice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return TodaySurface(
+    return KitSurface(
+      kind: primary ? KitSurfaceKind.featured : KitSurfaceKind.raised,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: Spacing.s8,
@@ -57,24 +58,4 @@ class TodayNotice extends StatelessWidget {
       ),
     );
   }
-}
-
-/// Provides the common card background and padding on the Today screen.
-class TodaySurface extends StatelessWidget {
-  /// Creates a surface around [child].
-  const TodaySurface({required this.child, super.key});
-
-  /// The content inside the card.
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) => Container(
-    width: double.infinity,
-    padding: const EdgeInsets.all(Spacing.s16),
-    decoration: BoxDecoration(
-      color: Theme.of(context).colorScheme.surface,
-      borderRadius: BorderRadius.circular(Radii.card),
-    ),
-    child: child,
-  );
 }

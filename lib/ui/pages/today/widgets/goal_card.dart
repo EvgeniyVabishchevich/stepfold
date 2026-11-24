@@ -37,7 +37,6 @@ class TodayGoalCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
-    final colors = StepfoldColors.of(context);
     final reserve = progress.reserve;
     final reserveText = reserve < 0
         ? l10n.todayDebt(l10n.stepCount(-reserve))
@@ -45,7 +44,9 @@ class TodayGoalCard extends StatelessWidget {
     final reserveLabel = Text(
       reserveText,
       style: theme.textTheme.labelMedium?.copyWith(
-        color: reserve < 0 ? colors.debt : theme.colorScheme.onSurfaceVariant,
+        color: reserve < 0
+            ? theme.colorScheme.error
+            : theme.colorScheme.onSurfaceVariant,
       ),
     );
 
@@ -93,53 +94,84 @@ class TodayGoalCard extends StatelessWidget {
         null => null,
       },
     };
-    return TodaySurface(
+    final formattedLeft = l10n.stepCount(target.left);
+    final remaining = target.left >= 100000
+        ? l10n.todayStepsLeft('\n$formattedLeft')
+        : l10n.todayStepsLeft(formattedLeft);
+    final valueStyle = theme.textTheme.titleLarge?.copyWith(
+      fontSize: 19,
+      fontWeight: FontWeight.w700,
+      color: reserve < 0 ? theme.colorScheme.error : null,
+      fontFeatures: const [FontFeature.tabularFigures()],
+    );
+    final price = Text(
+      l10n.todayGoalPrice(l10n.stepCount(target.price)),
+      style: theme.textTheme.labelMedium?.copyWith(
+        color: theme.colorScheme.onSurfaceVariant,
+      ),
+    );
+    return KitSurface(
+      kind: KitSurfaceKind.featured,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: Spacing.s12,
         children: [
-          Text(
-            target.progression.title,
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-          Text(title, style: theme.textTheme.headlineMedium),
-          SizedBox(
-            width: double.infinity,
-            child: Wrap(
-              spacing: Spacing.s12,
-              runSpacing: Spacing.s4,
-              alignment: WrapAlignment.spaceBetween,
-              children: [
-                Text(
-                  l10n.todayGoalPrice(l10n.stepCount(target.price)),
-                  style: theme.textTheme.labelMedium?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: Spacing.s4,
+            children: [
+              Text(
+                target.progression.title,
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
-                reserveLabel,
+              ),
+              Text(
+                title,
+                style: theme.textTheme.headlineMedium?.copyWith(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+          KitSurface(
+            kind: KitSurfaceKind.progress,
+            padding: const EdgeInsets.all(Spacing.s12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: Spacing.s12,
+              children: [
+                Text(ready ? l10n.todayReady : remaining, style: valueStyle),
+                KitProgressBar(
+                  value: target.price == 0
+                      ? (ready ? 1 : 0)
+                      : reserve / target.price,
+                  debt: reserve < 0,
+                ),
               ],
             ),
           ),
-          Semantics(
-            label: ready
-                ? l10n.todayReady
-                : l10n.todayStepsLeft(l10n.stepCount(target.left)),
-            child: KitProgressBar(
-              value: target.price == 0
-                  ? (ready ? 1 : 0)
-                  : reserve / target.price,
-              debt: reserve < 0,
-            ),
-          ),
-          Text(
-            ready
-                ? l10n.todayReady
-                : l10n.todayStepsLeft(l10n.stepCount(target.left)),
-            style: theme.textTheme.titleLarge?.copyWith(
-              color: reserve < 0 ? colors.debt : colors.primaryText,
-            ),
+          Divider(height: 1, color: theme.colorScheme.outlineVariant),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth <= 264) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: Spacing.s4,
+                  children: [reserveLabel, price],
+                );
+              }
+              return SizedBox(
+                width: double.infinity,
+                child: Wrap(
+                  spacing: Spacing.s12,
+                  runSpacing: Spacing.s4,
+                  alignment: WrapAlignment.spaceBetween,
+                  children: [reserveLabel, price],
+                ),
+              );
+            },
           ),
           if (ready || spending)
             KitButton(

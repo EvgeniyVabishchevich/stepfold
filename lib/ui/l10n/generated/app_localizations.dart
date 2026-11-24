@@ -124,6 +124,36 @@ abstract class AppLocalizations {
   /// **'Альбом'**
   String get tabAlbum;
 
+  /// Bottom bar tab: app settings.
+  ///
+  /// In ru, this message translates to:
+  /// **'Настройки'**
+  String get tabSettings;
+
+  /// No description provided for @todayMilestone.
+  ///
+  /// In ru, this message translates to:
+  /// **'Веха пути'**
+  String get todayMilestone;
+
+  /// No description provided for @todayMilestoneUnder.
+  ///
+  /// In ru, this message translates to:
+  /// **'Пройдено меньше 0,01% высоты Эвереста.'**
+  String get todayMilestoneUnder;
+
+  /// No description provided for @todayMilestonePercent.
+  ///
+  /// In ru, this message translates to:
+  /// **'Пройдено примерно {ratio}% высоты Эвереста.'**
+  String todayMilestonePercent(String ratio);
+
+  /// No description provided for @todayMilestoneMultiple.
+  ///
+  /// In ru, this message translates to:
+  /// **'Пройдено примерно {ratio} высоты Эвереста.'**
+  String todayMilestoneMultiple(String ratio);
+
   /// No description provided for @todaySteps.
   ///
   /// In ru, this message translates to:

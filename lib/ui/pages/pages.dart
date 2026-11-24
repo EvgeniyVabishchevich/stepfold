@@ -4,5 +4,6 @@ export 'chapter/chapter.dart';
 export 'dev_menu/dev_menu.dart';
 export 'history/history.dart';
 export 'home_shell/home_shell.dart';
+export 'settings/settings_page.dart';
 export 'today/today.dart';
 export 'world/world.dart';

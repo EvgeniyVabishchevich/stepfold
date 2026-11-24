@@ -24,6 +24,25 @@ class AppLocalizationsRu extends AppLocalizations {
   String get tabAlbum => 'Альбом';
 
   @override
+  String get tabSettings => 'Настройки';
+
+  @override
+  String get todayMilestone => 'Веха пути';
+
+  @override
+  String get todayMilestoneUnder => 'Пройдено меньше 0,01% высоты Эвереста.';
+
+  @override
+  String todayMilestonePercent(String ratio) {
+    return 'Пройдено примерно $ratio% высоты Эвереста.';
+  }
+
+  @override
+  String todayMilestoneMultiple(String ratio) {
+    return 'Пройдено примерно $ratio высоты Эвереста.';
+  }
+
+  @override
   String get todaySteps => 'Шаги сегодня';
 
   @override
