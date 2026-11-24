@@ -37,6 +37,19 @@ ProgressionDto _$ProgressionDtoFromJson(Map<String, dynamic> json) =>
           .map((e) => ChapterDto.fromJson(e as Map<String, dynamic>))
           .toList(),
       hidden: json['hidden'] as bool? ?? false,
+      journeyLegs:
+          (json['journeyLegs'] as List<dynamic>?)
+              ?.map(
+                (e) => (e as List<dynamic>)
+                    .map(
+                      (e) => (e as List<dynamic>)
+                          .map((e) => (e as num).toDouble())
+                          .toList(),
+                    )
+                    .toList(),
+              )
+              .toList() ??
+          const [],
     );
 
 const _$ChapterOrderEnumMap = {

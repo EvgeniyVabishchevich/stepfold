@@ -11,6 +11,9 @@ enum ChapterOrder {
   free,
 }
 
+/// A point on a catalog route in degrees.
+typedef JourneyPoint = ({double latitude, double longitude});
+
 /// A chapter: one step of a progression, opened for [price] steps.
 ///
 /// Holds only what a list shows. The text and pictures of the chapter are
@@ -42,6 +45,7 @@ abstract class Progression with _$Progression {
     @Default('') String title,
     @Default('') String description,
     @Default(false) bool hidden,
+    @Default(<List<JourneyPoint>>[]) List<List<JourneyPoint>> journeyLegs,
   }) = _Progression;
 
   const Progression._();

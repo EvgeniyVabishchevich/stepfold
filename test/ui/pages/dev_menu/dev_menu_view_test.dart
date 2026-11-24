@@ -6,11 +6,13 @@ import 'package:mocktail/mocktail.dart';
 import 'package:walks/ui/pages/dev_menu/bloc/bloc.dart';
 import 'package:walks/ui/pages/dev_menu/dev_menu.dart';
 
-class _MockDevMenuBloc extends MockBloc<DevMenuAction, DevMenuState>
+class _MockDevMenuBloc extends MockBloc<DevMenuEvent, DevMenuState>
     implements DevMenuBloc {}
 
 void main() {
   late _MockDevMenuBloc bloc;
+
+  setUpAll(() => registerFallbackValue(const DevAddSteps(1)));
 
   setUp(() {
     bloc = _MockDevMenuBloc();
@@ -45,7 +47,24 @@ void main() {
       () => bloc.state,
     ).thenReturn(const DevMenuState(lastAction: DevMenuAction.asyncError));
     await pump(tester);
+    await tester.drag(find.byType(ListView), const Offset(0, -300));
+    await tester.pumpAndSettle();
 
     expect(find.text('Последнее: asyncError'), findsOneWidget);
+  });
+
+  testWidgets('the step dialog submits a positive amount', (tester) async {
+    await pump(tester);
+    await tester.tap(find.text('Добавить шаги за сегодня'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Добавить'));
+    await tester.pumpAndSettle();
+    expect(find.text('Введи положительное число шагов'), findsOneWidget);
+
+    await tester.enterText(find.byKey(const Key('dev-step-amount')), '3000');
+    await tester.tap(find.text('Добавить'));
+    await tester.pumpAndSettle();
+    final event = verify(() => bloc.add(captureAny())).captured.single;
+    expect((event as DevAddSteps).steps, 3000);
   });
 }

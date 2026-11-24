@@ -57,6 +57,7 @@ class ChapterView extends StatelessWidget {
     required this.state,
     required this.onBack,
     required this.onRetry,
+    this.onJourneyTilesChanged,
     super.key,
   });
 
@@ -68,6 +69,9 @@ class ChapterView extends StatelessWidget {
 
   /// Loads the same chapter again.
   final VoidCallback onRetry;
+
+  /// Reports map tile failures and recovery for the active journey.
+  final ValueChanged<JourneyTilesChanged>? onJourneyTilesChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -122,6 +126,21 @@ class ChapterView extends StatelessWidget {
                 ),
               ],
               const SizedBox(height: Spacing.s32),
+              if (state.journey case final journey?) ...[
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 440),
+                    child: JourneyMap(
+                      key: ValueKey(journey.progression.id),
+                      journey: journey,
+                      tilesUnavailable: state.journeyTilesUnavailable,
+                      onTilesChanged: onJourneyTilesChanged,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: Spacing.s24),
+              ],
               if (blocks == null || blocks.isEmpty)
                 Text(l10n.chapterEmpty, style: theme.textTheme.bodyLarge)
               else
@@ -181,6 +200,7 @@ class _ChapterContentFrameState extends State<_ChapterContentFrame> {
     builder: (context, state) => ChapterView(
       state: state,
       onRetry: _load,
+      onJourneyTilesChanged: context.read<ChapterBloc>().add,
       onBack: () {
         if (context.canPop()) {
           context.pop();

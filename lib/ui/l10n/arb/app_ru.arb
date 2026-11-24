@@ -93,6 +93,23 @@
   "chapterReadError": "Не удалось загрузить главу",
   "chapterRetryMessage": "Попробуйте загрузить её ещё раз.",
   "chapterImageError": "Изображение недоступно",
+  "journeyMap": "Карта путешествия",
+  "journeyTilesUnavailable": "Подложка недоступна",
+  "journeyNextStop": "Следующая остановка — {title}",
+  "@journeyNextStop": {
+    "placeholders": {
+      "title": { "type": "String" }
+    }
+  },
+  "journeyReachedStop": "Достигнутая остановка",
+  "journeyPreviewPosition": "Предварительная позиция",
+  "journeyProgress": "{steps} из {total}",
+  "@journeyProgress": {
+    "placeholders": {
+      "steps": { "type": "int", "format": "decimalPattern" },
+      "total": { "type": "String" }
+    }
+  },
   "catalogReadError": "Каталог недоступен",
   "catalogRetryMessage": "Попробуйте загрузить его ещё раз.",
   "catalogEmpty": "В каталоге пока пусто",

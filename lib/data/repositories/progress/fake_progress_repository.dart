@@ -82,6 +82,15 @@ class FakeProgressRepository implements ProgressRepository {
   }
 
   @override
+  Future<bool> increaseManualSteps(Day day, int steps) async {
+    _checkSteps(steps);
+    if (day.isBefore(_progress.installDay)) return false;
+    final previous = _progress.stepsOf(day).manual ?? 0;
+    _write(_progress.recordManualSteps(day, previous + steps));
+    return true;
+  }
+
+  @override
   Future<void> addSpending(
     ({Spending spending, Goal? goalAfter}) Function(Progress current) decide,
   ) async {

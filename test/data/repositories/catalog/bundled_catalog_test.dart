@@ -65,6 +65,17 @@ void main() {
     }
   });
 
+  test('Golden Ring has road geometry between all five chapters', () async {
+    final index = await catalog.index('ru');
+    final route = index.progressionById('golden-ring')!;
+
+    expect(route.chapters, hasLength(5));
+    expect(route.journeyLegs, hasLength(4));
+    for (final leg in route.journeyLegs) {
+      expect(leg.length, greaterThan(2));
+    }
+  });
+
   // Progress is tied to these ids. Removing one would lose what users have
   // opened; hide the progression with `hidden` instead.
   test('no published id is removed', () async {

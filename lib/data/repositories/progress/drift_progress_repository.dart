@@ -96,6 +96,20 @@ class DriftProgressRepository implements ProgressRepository {
   );
 
   @override
+  Future<bool> increaseManualSteps(Day day, int steps) => _saveDay(
+    day,
+    steps,
+    insert: DayStepsTableCompanion.insert(
+      day: Value(day),
+      manual: Value(steps),
+    ),
+    update: DayStepsTableCompanion.custom(
+      manual:
+          ifNull(_db.dayStepsTable.manual, const Variable(0)) + Variable(steps),
+    ),
+  );
+
+  @override
   Future<void> updateManualEntryLock(
     ManualEntryLock Function(ManualEntryLock current) update,
   ) => guardStorage(
@@ -166,7 +180,7 @@ class DriftProgressRepository implements ProgressRepository {
     Day day,
     int steps, {
     required DayStepsTableCompanion insert,
-    required DayStepsTableCompanion update,
+    required Insertable<DayRow> update,
     bool Function(DaySteps previous)? accepts,
     bool Function(Day installDay, ManualEntryLock lock)? allow,
   }) => guardStorage(

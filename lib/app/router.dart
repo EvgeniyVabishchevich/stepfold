@@ -99,8 +99,11 @@ GoRouter createRouter({String initialLocation = Routes.today}) {
       if (devMenuEnabled)
         GoRoute(
           path: Routes.devMenu,
-          builder: (context, state) =>
-              DevMenuPage(crashReporter: getIt(), nativeCrasher: getIt()),
+          builder: (context, state) => DevMenuPage(
+            crashReporter: getIt(),
+            nativeCrasher: getIt(),
+            progress: getIt(),
+          ),
           routes: [
             GoRoute(
               path: Routes.historySegment,

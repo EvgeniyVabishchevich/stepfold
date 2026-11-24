@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ChapterState {
 
- bool get loading; bool get unavailable; bool get retryable; bool get storageFull; String? get progressionTitle; String? get chapterTitle; ChapterContent? get content;
+ bool get loading; bool get unavailable; bool get retryable; bool get storageFull; String? get progressionTitle; String? get chapterTitle; ChapterContent? get content; ChapterJourney? get journey; bool get journeyTilesUnavailable;
 /// Create a copy of ChapterState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,20 +27,20 @@ $ChapterStateCopyWith<ChapterState> get copyWith => _$ChapterStateCopyWithImpl<C
 @override
 bool operator ==(Object other) {
   final _this = this as ChapterState;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChapterState&&(identical(other.loading, _this.loading) || other.loading == _this.loading)&&(identical(other.unavailable, _this.unavailable) || other.unavailable == _this.unavailable)&&(identical(other.retryable, _this.retryable) || other.retryable == _this.retryable)&&(identical(other.storageFull, _this.storageFull) || other.storageFull == _this.storageFull)&&(identical(other.progressionTitle, _this.progressionTitle) || other.progressionTitle == _this.progressionTitle)&&(identical(other.chapterTitle, _this.chapterTitle) || other.chapterTitle == _this.chapterTitle)&&(identical(other.content, _this.content) || other.content == _this.content));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChapterState&&(identical(other.loading, _this.loading) || other.loading == _this.loading)&&(identical(other.unavailable, _this.unavailable) || other.unavailable == _this.unavailable)&&(identical(other.retryable, _this.retryable) || other.retryable == _this.retryable)&&(identical(other.storageFull, _this.storageFull) || other.storageFull == _this.storageFull)&&(identical(other.progressionTitle, _this.progressionTitle) || other.progressionTitle == _this.progressionTitle)&&(identical(other.chapterTitle, _this.chapterTitle) || other.chapterTitle == _this.chapterTitle)&&(identical(other.content, _this.content) || other.content == _this.content)&&(identical(other.journey, _this.journey) || other.journey == _this.journey)&&(identical(other.journeyTilesUnavailable, _this.journeyTilesUnavailable) || other.journeyTilesUnavailable == _this.journeyTilesUnavailable));
 }
 
 
 @override
 int get hashCode {
   final _this = this as ChapterState;
-  return Object.hash(runtimeType,_this.loading,_this.unavailable,_this.retryable,_this.storageFull,_this.progressionTitle,_this.chapterTitle,_this.content);
+  return Object.hash(runtimeType,_this.loading,_this.unavailable,_this.retryable,_this.storageFull,_this.progressionTitle,_this.chapterTitle,_this.content,_this.journey,_this.journeyTilesUnavailable);
 }
 
 @override
 String toString() {
   final _this = this as ChapterState;
-  return 'ChapterState(loading: ${_this.loading}, unavailable: ${_this.unavailable}, retryable: ${_this.retryable}, storageFull: ${_this.storageFull}, progressionTitle: ${_this.progressionTitle}, chapterTitle: ${_this.chapterTitle}, content: ${_this.content})';
+  return 'ChapterState(loading: ${_this.loading}, unavailable: ${_this.unavailable}, retryable: ${_this.retryable}, storageFull: ${_this.storageFull}, progressionTitle: ${_this.progressionTitle}, chapterTitle: ${_this.chapterTitle}, content: ${_this.content}, journey: ${_this.journey}, journeyTilesUnavailable: ${_this.journeyTilesUnavailable})';
 }
 
 
@@ -51,7 +51,7 @@ abstract mixin class $ChapterStateCopyWith<$Res>  {
   factory $ChapterStateCopyWith(ChapterState value, $Res Function(ChapterState) _then) = _$ChapterStateCopyWithImpl;
 @useResult
 $Res call({
- bool loading, bool unavailable, bool retryable, bool storageFull, String? progressionTitle, String? chapterTitle, ChapterContent? content
+ bool loading, bool unavailable, bool retryable, bool storageFull, String? progressionTitle, String? chapterTitle, ChapterContent? content, ChapterJourney? journey, bool journeyTilesUnavailable
 });
 
 
@@ -68,7 +68,7 @@ class _$ChapterStateCopyWithImpl<$Res>
 
 /// Create a copy of ChapterState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? loading = null,Object? unavailable = null,Object? retryable = null,Object? storageFull = null,Object? progressionTitle = freezed,Object? chapterTitle = freezed,Object? content = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? loading = null,Object? unavailable = null,Object? retryable = null,Object? storageFull = null,Object? progressionTitle = freezed,Object? chapterTitle = freezed,Object? content = freezed,Object? journey = freezed,Object? journeyTilesUnavailable = null,}) {
   return _then(ChapterState(
 loading: null == loading ? _self.loading : loading // ignore: cast_nullable_to_non_nullable
 as bool,unavailable: null == unavailable ? _self.unavailable : unavailable // ignore: cast_nullable_to_non_nullable
@@ -77,7 +77,9 @@ as bool,storageFull: null == storageFull ? _self.storageFull : storageFull // ig
 as bool,progressionTitle: freezed == progressionTitle ? _self.progressionTitle : progressionTitle // ignore: cast_nullable_to_non_nullable
 as String?,chapterTitle: freezed == chapterTitle ? _self.chapterTitle : chapterTitle // ignore: cast_nullable_to_non_nullable
 as String?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
-as ChapterContent?,
+as ChapterContent?,journey: freezed == journey ? _self.journey : journey // ignore: cast_nullable_to_non_nullable
+as ChapterJourney?,journeyTilesUnavailable: null == journeyTilesUnavailable ? _self.journeyTilesUnavailable : journeyTilesUnavailable // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 /// Create a copy of ChapterState
@@ -174,10 +176,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool loading,  bool unavailable,  bool retryable,  bool storageFull,  String? progressionTitle,  String? chapterTitle,  ChapterContent? content)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool loading,  bool unavailable,  bool retryable,  bool storageFull,  String? progressionTitle,  String? chapterTitle,  ChapterContent? content,  ChapterJourney? journey,  bool journeyTilesUnavailable)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ChapterState() when $default != null:
-return $default(_that.loading,_that.unavailable,_that.retryable,_that.storageFull,_that.progressionTitle,_that.chapterTitle,_that.content);case _:
+return $default(_that.loading,_that.unavailable,_that.retryable,_that.storageFull,_that.progressionTitle,_that.chapterTitle,_that.content,_that.journey,_that.journeyTilesUnavailable);case _:
   return orElse();
 
 }
@@ -195,10 +197,10 @@ return $default(_that.loading,_that.unavailable,_that.retryable,_that.storageFul
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool loading,  bool unavailable,  bool retryable,  bool storageFull,  String? progressionTitle,  String? chapterTitle,  ChapterContent? content)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool loading,  bool unavailable,  bool retryable,  bool storageFull,  String? progressionTitle,  String? chapterTitle,  ChapterContent? content,  ChapterJourney? journey,  bool journeyTilesUnavailable)  $default,) {final _that = this;
 switch (_that) {
 case _ChapterState():
-return $default(_that.loading,_that.unavailable,_that.retryable,_that.storageFull,_that.progressionTitle,_that.chapterTitle,_that.content);case _:
+return $default(_that.loading,_that.unavailable,_that.retryable,_that.storageFull,_that.progressionTitle,_that.chapterTitle,_that.content,_that.journey,_that.journeyTilesUnavailable);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -215,10 +217,10 @@ return $default(_that.loading,_that.unavailable,_that.retryable,_that.storageFul
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool loading,  bool unavailable,  bool retryable,  bool storageFull,  String? progressionTitle,  String? chapterTitle,  ChapterContent? content)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool loading,  bool unavailable,  bool retryable,  bool storageFull,  String? progressionTitle,  String? chapterTitle,  ChapterContent? content,  ChapterJourney? journey,  bool journeyTilesUnavailable)?  $default,) {final _that = this;
 switch (_that) {
 case _ChapterState() when $default != null:
-return $default(_that.loading,_that.unavailable,_that.retryable,_that.storageFull,_that.progressionTitle,_that.chapterTitle,_that.content);case _:
+return $default(_that.loading,_that.unavailable,_that.retryable,_that.storageFull,_that.progressionTitle,_that.chapterTitle,_that.content,_that.journey,_that.journeyTilesUnavailable);case _:
   return null;
 
 }
@@ -230,7 +232,7 @@ return $default(_that.loading,_that.unavailable,_that.retryable,_that.storageFul
 
 
 class _ChapterState implements ChapterState {
-  const _ChapterState({this.loading = true, this.unavailable = false, this.retryable = false, this.storageFull = false, this.progressionTitle, this.chapterTitle, this.content});
+  const _ChapterState({this.loading = true, this.unavailable = false, this.retryable = false, this.storageFull = false, this.progressionTitle, this.chapterTitle, this.content, this.journey, this.journeyTilesUnavailable = false});
   
 
 @override@JsonKey() final  bool loading;
@@ -240,6 +242,8 @@ class _ChapterState implements ChapterState {
 @override final  String? progressionTitle;
 @override final  String? chapterTitle;
 @override final  ChapterContent? content;
+@override final  ChapterJourney? journey;
+@override@JsonKey() final  bool journeyTilesUnavailable;
 
 /// Create a copy of ChapterState
 /// with the given fields replaced by the non-null parameter values.
@@ -251,18 +255,18 @@ _$ChapterStateCopyWith<_ChapterState> get copyWith => __$ChapterStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChapterState&&(identical(other.loading, loading) || other.loading == loading)&&(identical(other.unavailable, unavailable) || other.unavailable == unavailable)&&(identical(other.retryable, retryable) || other.retryable == retryable)&&(identical(other.storageFull, storageFull) || other.storageFull == storageFull)&&(identical(other.progressionTitle, progressionTitle) || other.progressionTitle == progressionTitle)&&(identical(other.chapterTitle, chapterTitle) || other.chapterTitle == chapterTitle)&&(identical(other.content, content) || other.content == content));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChapterState&&(identical(other.loading, loading) || other.loading == loading)&&(identical(other.unavailable, unavailable) || other.unavailable == unavailable)&&(identical(other.retryable, retryable) || other.retryable == retryable)&&(identical(other.storageFull, storageFull) || other.storageFull == storageFull)&&(identical(other.progressionTitle, progressionTitle) || other.progressionTitle == progressionTitle)&&(identical(other.chapterTitle, chapterTitle) || other.chapterTitle == chapterTitle)&&(identical(other.content, content) || other.content == content)&&(identical(other.journey, journey) || other.journey == journey)&&(identical(other.journeyTilesUnavailable, journeyTilesUnavailable) || other.journeyTilesUnavailable == journeyTilesUnavailable));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,loading,unavailable,retryable,storageFull,progressionTitle,chapterTitle,content);
+    return Object.hash(runtimeType,loading,unavailable,retryable,storageFull,progressionTitle,chapterTitle,content,journey,journeyTilesUnavailable);
 }
 
 @override
 String toString() {
-    return 'ChapterState(loading: $loading, unavailable: $unavailable, retryable: $retryable, storageFull: $storageFull, progressionTitle: $progressionTitle, chapterTitle: $chapterTitle, content: $content)';
+    return 'ChapterState(loading: $loading, unavailable: $unavailable, retryable: $retryable, storageFull: $storageFull, progressionTitle: $progressionTitle, chapterTitle: $chapterTitle, content: $content, journey: $journey, journeyTilesUnavailable: $journeyTilesUnavailable)';
 }
 
 
@@ -273,7 +277,7 @@ abstract mixin class _$ChapterStateCopyWith<$Res> implements $ChapterStateCopyWi
   factory _$ChapterStateCopyWith(_ChapterState value, $Res Function(_ChapterState) _then) = __$ChapterStateCopyWithImpl;
 @override @useResult
 $Res call({
- bool loading, bool unavailable, bool retryable, bool storageFull, String? progressionTitle, String? chapterTitle, ChapterContent? content
+ bool loading, bool unavailable, bool retryable, bool storageFull, String? progressionTitle, String? chapterTitle, ChapterContent? content, ChapterJourney? journey, bool journeyTilesUnavailable
 });
 
 
@@ -290,7 +294,7 @@ class __$ChapterStateCopyWithImpl<$Res>
 
 /// Create a copy of ChapterState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? loading = null,Object? unavailable = null,Object? retryable = null,Object? storageFull = null,Object? progressionTitle = freezed,Object? chapterTitle = freezed,Object? content = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? loading = null,Object? unavailable = null,Object? retryable = null,Object? storageFull = null,Object? progressionTitle = freezed,Object? chapterTitle = freezed,Object? content = freezed,Object? journey = freezed,Object? journeyTilesUnavailable = null,}) {
   return _then(_ChapterState(
 loading: null == loading ? _self.loading : loading // ignore: cast_nullable_to_non_nullable
 as bool,unavailable: null == unavailable ? _self.unavailable : unavailable // ignore: cast_nullable_to_non_nullable
@@ -299,7 +303,9 @@ as bool,storageFull: null == storageFull ? _self.storageFull : storageFull // ig
 as bool,progressionTitle: freezed == progressionTitle ? _self.progressionTitle : progressionTitle // ignore: cast_nullable_to_non_nullable
 as String?,chapterTitle: freezed == chapterTitle ? _self.chapterTitle : chapterTitle // ignore: cast_nullable_to_non_nullable
 as String?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
-as ChapterContent?,
+as ChapterContent?,journey: freezed == journey ? _self.journey : journey // ignore: cast_nullable_to_non_nullable
+as ChapterJourney?,journeyTilesUnavailable: null == journeyTilesUnavailable ? _self.journeyTilesUnavailable : journeyTilesUnavailable // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

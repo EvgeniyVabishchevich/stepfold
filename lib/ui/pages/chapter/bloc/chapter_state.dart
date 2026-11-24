@@ -1,7 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:walks/domain/models/models.dart';
+import 'package:walks/domain/domain.dart';
 
 part 'chapter_state.freezed.dart';
+
+/// Geometry and progress to display on the journey map.
+typedef ChapterJourney = ({Progression progression, JourneyPosition position});
 
 /// The content and status of the reader.
 @freezed
@@ -15,5 +18,7 @@ abstract class ChapterState with _$ChapterState {
     String? progressionTitle,
     String? chapterTitle,
     ChapterContent? content,
+    ChapterJourney? journey,
+    @Default(false) bool journeyTilesUnavailable,
   }) = _ChapterState;
 }

@@ -388,6 +388,42 @@ abstract class AppLocalizations {
   /// **'Изображение недоступно'**
   String get chapterImageError;
 
+  /// No description provided for @journeyMap.
+  ///
+  /// In ru, this message translates to:
+  /// **'Карта путешествия'**
+  String get journeyMap;
+
+  /// No description provided for @journeyTilesUnavailable.
+  ///
+  /// In ru, this message translates to:
+  /// **'Подложка недоступна'**
+  String get journeyTilesUnavailable;
+
+  /// No description provided for @journeyNextStop.
+  ///
+  /// In ru, this message translates to:
+  /// **'Следующая остановка — {title}'**
+  String journeyNextStop(String title);
+
+  /// No description provided for @journeyReachedStop.
+  ///
+  /// In ru, this message translates to:
+  /// **'Достигнутая остановка'**
+  String get journeyReachedStop;
+
+  /// No description provided for @journeyPreviewPosition.
+  ///
+  /// In ru, this message translates to:
+  /// **'Предварительная позиция'**
+  String get journeyPreviewPosition;
+
+  /// No description provided for @journeyProgress.
+  ///
+  /// In ru, this message translates to:
+  /// **'{steps} из {total}'**
+  String journeyProgress(int steps, String total);
+
   /// No description provided for @catalogReadError.
   ///
   /// In ru, this message translates to:

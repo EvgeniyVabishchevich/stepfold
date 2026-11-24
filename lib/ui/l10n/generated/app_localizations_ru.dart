@@ -203,6 +203,32 @@ class AppLocalizationsRu extends AppLocalizations {
   String get chapterImageError => 'Изображение недоступно';
 
   @override
+  String get journeyMap => 'Карта путешествия';
+
+  @override
+  String get journeyTilesUnavailable => 'Подложка недоступна';
+
+  @override
+  String journeyNextStop(String title) {
+    return 'Следующая остановка — $title';
+  }
+
+  @override
+  String get journeyReachedStop => 'Достигнутая остановка';
+
+  @override
+  String get journeyPreviewPosition => 'Предварительная позиция';
+
+  @override
+  String journeyProgress(int steps, String total) {
+    final intl.NumberFormat stepsNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String stepsString = stepsNumberFormat.format(steps);
+
+    return '$stepsString из $total';
+  }
+
+  @override
   String get catalogReadError => 'Каталог недоступен';
 
   @override
