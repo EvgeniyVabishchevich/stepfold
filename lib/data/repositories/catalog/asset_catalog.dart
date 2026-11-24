@@ -123,6 +123,12 @@ class AssetCatalog implements Catalog {
     title: texts.title,
     description: texts.description,
     hidden: dto.hidden,
+    journeyLegs: List.unmodifiable([
+      for (final leg in dto.journeyLegs)
+        List<JourneyPoint>.unmodifiable([
+          for (final point in leg) (longitude: point[0], latitude: point[1]),
+        ]),
+    ]),
     chapters: List.unmodifiable([
       for (final c in dto.chapters)
         Chapter(
@@ -210,6 +216,39 @@ class AssetCatalog implements Catalog {
       for (final c in p.chapters) {
         if (c.price <= 0) fail('chapter ${p.id}/${c.id} has price ${c.price}');
       }
+      _checkJourney(path, p);
+    }
+  }
+
+  static void _checkJourney(String path, ProgressionDto progression) {
+    final legs = progression.journeyLegs;
+    if (legs.isEmpty) return;
+
+    Never fail(String message) =>
+        throw CatalogFormatError(path, 'journey ${progression.id}: $message');
+
+    if (progression.kind != 'journey' ||
+        progression.order != ChapterOrder.strict ||
+        legs.length != progression.chapters.length - 1) {
+      fail('expected one leg between each pair of consecutive chapters');
+    }
+    List<double>? previousEnd;
+    for (final leg in legs) {
+      if (leg.length < 2) fail('each leg needs at least two points');
+      for (final point in leg) {
+        if (point.length != 2 ||
+            !point[0].isFinite ||
+            point[0].abs() > 180 ||
+            !point[1].isFinite ||
+            point[1].abs() > 90) {
+          fail('invalid coordinates $point');
+        }
+      }
+      if (previousEnd != null &&
+          (previousEnd[0] != leg.first[0] || previousEnd[1] != leg.first[1])) {
+        fail('consecutive legs must share a stop');
+      }
+      previousEnd = leg.last;
     }
   }
 

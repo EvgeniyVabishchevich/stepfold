@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DevMenuState {
 
- DevMenuAction? get lastAction;
+ DevMenuAction? get lastAction; DevStepAddition get stepAddition;
 /// Create a copy of DevMenuState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,20 +27,20 @@ $DevMenuStateCopyWith<DevMenuState> get copyWith => _$DevMenuStateCopyWithImpl<D
 @override
 bool operator ==(Object other) {
   final _this = this as DevMenuState;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DevMenuState&&(identical(other.lastAction, _this.lastAction) || other.lastAction == _this.lastAction));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DevMenuState&&(identical(other.lastAction, _this.lastAction) || other.lastAction == _this.lastAction)&&(identical(other.stepAddition, _this.stepAddition) || other.stepAddition == _this.stepAddition));
 }
 
 
 @override
 int get hashCode {
   final _this = this as DevMenuState;
-  return Object.hash(runtimeType,_this.lastAction);
+  return Object.hash(runtimeType,_this.lastAction,_this.stepAddition);
 }
 
 @override
 String toString() {
   final _this = this as DevMenuState;
-  return 'DevMenuState(lastAction: ${_this.lastAction})';
+  return 'DevMenuState(lastAction: ${_this.lastAction}, stepAddition: ${_this.stepAddition})';
 }
 
 
@@ -51,7 +51,7 @@ abstract mixin class $DevMenuStateCopyWith<$Res>  {
   factory $DevMenuStateCopyWith(DevMenuState value, $Res Function(DevMenuState) _then) = _$DevMenuStateCopyWithImpl;
 @useResult
 $Res call({
- DevMenuAction? lastAction
+ DevMenuAction? lastAction, DevStepAddition stepAddition
 });
 
 
@@ -68,10 +68,11 @@ class _$DevMenuStateCopyWithImpl<$Res>
 
 /// Create a copy of DevMenuState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? lastAction = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? lastAction = freezed,Object? stepAddition = null,}) {
   return _then(DevMenuState(
 lastAction: freezed == lastAction ? _self.lastAction : lastAction // ignore: cast_nullable_to_non_nullable
-as DevMenuAction?,
+as DevMenuAction?,stepAddition: null == stepAddition ? _self.stepAddition : stepAddition // ignore: cast_nullable_to_non_nullable
+as DevStepAddition,
   ));
 }
 
@@ -156,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( DevMenuAction? lastAction)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( DevMenuAction? lastAction,  DevStepAddition stepAddition)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DevMenuState() when $default != null:
-return $default(_that.lastAction);case _:
+return $default(_that.lastAction,_that.stepAddition);case _:
   return orElse();
 
 }
@@ -177,10 +178,10 @@ return $default(_that.lastAction);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( DevMenuAction? lastAction)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( DevMenuAction? lastAction,  DevStepAddition stepAddition)  $default,) {final _that = this;
 switch (_that) {
 case _DevMenuState():
-return $default(_that.lastAction);case _:
+return $default(_that.lastAction,_that.stepAddition);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +198,10 @@ return $default(_that.lastAction);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( DevMenuAction? lastAction)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( DevMenuAction? lastAction,  DevStepAddition stepAddition)?  $default,) {final _that = this;
 switch (_that) {
 case _DevMenuState() when $default != null:
-return $default(_that.lastAction);case _:
+return $default(_that.lastAction,_that.stepAddition);case _:
   return null;
 
 }
@@ -212,10 +213,11 @@ return $default(_that.lastAction);case _:
 
 
 class _DevMenuState implements DevMenuState {
-  const _DevMenuState({this.lastAction});
+  const _DevMenuState({this.lastAction, this.stepAddition = DevStepAddition.idle});
   
 
 @override final  DevMenuAction? lastAction;
+@override@JsonKey() final  DevStepAddition stepAddition;
 
 /// Create a copy of DevMenuState
 /// with the given fields replaced by the non-null parameter values.
@@ -227,18 +229,18 @@ _$DevMenuStateCopyWith<_DevMenuState> get copyWith => __$DevMenuStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DevMenuState&&(identical(other.lastAction, lastAction) || other.lastAction == lastAction));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DevMenuState&&(identical(other.lastAction, lastAction) || other.lastAction == lastAction)&&(identical(other.stepAddition, stepAddition) || other.stepAddition == stepAddition));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,lastAction);
+    return Object.hash(runtimeType,lastAction,stepAddition);
 }
 
 @override
 String toString() {
-    return 'DevMenuState(lastAction: $lastAction)';
+    return 'DevMenuState(lastAction: $lastAction, stepAddition: $stepAddition)';
 }
 
 
@@ -249,7 +251,7 @@ abstract mixin class _$DevMenuStateCopyWith<$Res> implements $DevMenuStateCopyWi
   factory _$DevMenuStateCopyWith(_DevMenuState value, $Res Function(_DevMenuState) _then) = __$DevMenuStateCopyWithImpl;
 @override @useResult
 $Res call({
- DevMenuAction? lastAction
+ DevMenuAction? lastAction, DevStepAddition stepAddition
 });
 
 
@@ -266,10 +268,11 @@ class __$DevMenuStateCopyWithImpl<$Res>
 
 /// Create a copy of DevMenuState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? lastAction = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? lastAction = freezed,Object? stepAddition = null,}) {
   return _then(_DevMenuState(
 lastAction: freezed == lastAction ? _self.lastAction : lastAction // ignore: cast_nullable_to_non_nullable
-as DevMenuAction?,
+as DevMenuAction?,stepAddition: null == stepAddition ? _self.stepAddition : stepAddition // ignore: cast_nullable_to_non_nullable
+as DevStepAddition,
   ));
 }
 

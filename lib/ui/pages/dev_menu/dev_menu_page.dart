@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
@@ -16,6 +17,7 @@ class DevMenuPage extends StatelessWidget {
   const DevMenuPage({
     required this.crashReporter,
     required this.nativeCrasher,
+    required this.progress,
     super.key,
   });
 
@@ -25,12 +27,16 @@ class DevMenuPage extends StatelessWidget {
   /// Triggers a test crash in native code.
   final NativeCrasher nativeCrasher;
 
+  /// Stores the steps credited from the developer menu.
+  final ProgressRepository progress;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => DevMenuBloc(
         crashReporter: crashReporter,
         nativeCrasher: nativeCrasher,
+        progress: progress,
       ),
       child: const DevMenuView(),
     );
@@ -50,6 +56,22 @@ class DevMenuView extends StatelessWidget {
       body: ListView(
         children: [
           const DevMenuSectionTitle('История шагов'),
+          BlocBuilder<DevMenuBloc, DevMenuState>(
+            builder: (context, state) => ListTile(
+              leading: const Icon(Icons.add_circle_outline),
+              title: const Text('Добавить шаги за сегодня'),
+              subtitle: Text(switch (state.stepAddition) {
+                DevStepAddition.idle => 'Прибавить к ручным шагам за сегодня',
+                DevStepAddition.saving => 'Сохраняем шаги…',
+                DevStepAddition.added => 'Шаги добавлены',
+                DevStepAddition.failed => 'Не удалось добавить шаги',
+                DevStepAddition.storageFull => 'В хранилище нет места',
+              }),
+              onTap: state.stepAddition == DevStepAddition.saving
+                  ? null
+                  : () => _promptForSteps(context, bloc),
+            ),
+          ),
           ListTile(
             leading: const Icon(Icons.history),
             title: const Text('Сгенерировать 1 000 дней'),
@@ -98,5 +120,50 @@ class DevMenuView extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _promptForSteps(BuildContext context, DevMenuBloc bloc) async {
+    final form = GlobalKey<FormState>();
+    late int amount;
+    final steps = await showDialog<int>(
+      context: context,
+      builder: (context) {
+        void submit() {
+          final fields = form.currentState!;
+          if (!fields.validate()) return;
+          fields.save();
+          Navigator.of(context).pop(amount);
+        }
+
+        return AlertDialog(
+          title: const Text('Добавить шаги за сегодня'),
+          content: Form(
+            key: form,
+            child: TextFormField(
+              key: const Key('dev-step-amount'),
+              autofocus: true,
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.done,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              maxLength: 9,
+              decoration: const InputDecoration(labelText: 'Количество шагов'),
+              validator: (text) => (int.tryParse(text ?? '') ?? 0) <= 0
+                  ? 'Введи положительное число шагов'
+                  : null,
+              onSaved: (text) => amount = int.parse(text!),
+              onFieldSubmitted: (_) => submit(),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Отмена'),
+            ),
+            FilledButton(onPressed: submit, child: const Text('Добавить')),
+          ],
+        );
+      },
+    );
+    if (context.mounted && steps != null) bloc.add(DevAddSteps(steps));
   }
 }

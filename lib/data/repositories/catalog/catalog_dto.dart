@@ -69,6 +69,7 @@ class ProgressionDto {
     required this.order,
     required this.chapters,
     this.hidden = false,
+    this.journeyLegs = const [],
   });
 
   /// Reads a progression from decoded JSON.
@@ -89,6 +90,9 @@ class ProgressionDto {
 
   /// Not offered to new users any more.
   final bool hidden;
+
+  /// Ordered road geometries between chapters as [longitude, latitude] pairs.
+  final List<List<List<double>>> journeyLegs;
 }
 
 /// A chapter in `catalog.json`.

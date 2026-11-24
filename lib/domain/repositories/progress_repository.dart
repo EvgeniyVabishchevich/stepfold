@@ -44,6 +44,10 @@ abstract interface class ProgressRepository {
     ManualEntryLock Function(ManualEntryLock current) update,
   );
 
+  /// Atomically adds [steps] to the day's manual total for development.
+  /// Returns false if [day] predates installation.
+  Future<bool> increaseManualSteps(Day day, int steps);
+
   /// Runs [decide] on the current progress and records the resulting
   /// spending and goal in the same atomic operation.
   ///

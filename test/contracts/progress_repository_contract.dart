@@ -101,6 +101,23 @@ void progressRepositoryContract(
       },
     );
 
+    test(
+      'incrementing manual steps preserves auto steps and adds both writes',
+      () async {
+        await repository.saveAutoSteps(installDay, 1200);
+        await repository.increaseManualSteps(installDay, 500);
+        await Future.wait([
+          repository.increaseManualSteps(installDay, 200),
+          repository.increaseManualSteps(installDay, 300),
+        ]);
+
+        final steps = (await repository.watch().first).stepsOf(installDay);
+        expect(steps.auto, 1200);
+        expect(steps.manual, 1000);
+        expect(steps.counted, 2200);
+      },
+    );
+
     test('saveManualSteps with zero removes the addition', () async {
       await repository.saveManualSteps(installDay, 3000);
       await repository.saveManualSteps(installDay, 0);
