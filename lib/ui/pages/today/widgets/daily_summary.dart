@@ -1,8 +1,10 @@
+import 'dart:math' as math;
+
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:walks/domain/domain.dart';
+import 'package:walks/ui/kit/kit.dart';
 import 'package:walks/ui/l10n/l10n.dart';
-import 'package:walks/ui/pages/today/widgets/today_surfaces.dart';
 import 'package:walks/ui/theme/theme.dart';
 
 /// Displays the day's step count and the seven-day streak.
@@ -28,41 +30,84 @@ class TodayDailySummary extends StatelessWidget {
     final count = record.auto == null && !record.isManual
         ? l10n.todayUnknownSteps
         : NumberFormat.decimalPattern(l10n.localeName).format(record.counted);
-    return TodaySurface(
+    final numberStyle = theme.textTheme.displayMedium!;
+    final labelStyle = theme.textTheme.labelMedium!.copyWith(
+      color: theme.colorScheme.onSurfaceVariant,
+    );
+    final seriesStyle = theme.textTheme.titleLarge!.copyWith(
+      fontFeatures: const [FontFeature.tabularFigures()],
+    );
+    final seriesText = l10n.todayStreakDays(streak(progress, day));
+    return KitSurface(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: Spacing.s12,
         children: [
           LayoutBuilder(
             builder: (context, constraints) {
+              final stepsWidth = math.max(
+                _width(context, l10n.todaySteps, labelStyle),
+                _width(context, count, numberStyle),
+              );
+              final seriesWidth = math.max(
+                _width(context, l10n.todayStreak, labelStyle),
+                _width(context, seriesText, seriesStyle),
+              );
+              const gap = Spacing.s12 * 2 + 1;
+              final inline =
+                  constraints.maxWidth >= 288 &&
+                  stepsWidth + seriesWidth + gap <= constraints.maxWidth;
               final steps = _Metric(
                 label: l10n.todaySteps,
+                labelStyle: labelStyle,
                 value: count,
-                style: theme.textTheme.displayMedium,
+                style: numberStyle,
+                singleLine: true,
               );
-              final series = _Metric(
-                label: l10n.todayStreak,
-                value: l10n.todayStreakDays(streak(progress, day)),
-                style: theme.textTheme.headlineMedium,
-              );
-              final scale = MediaQuery.textScalerOf(context).scale(48) / 48;
-              if (constraints.maxWidth < 260 * scale) {
+              if (!inline) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: Spacing.s12,
-                  children: [steps, series],
+                  spacing: Spacing.s8,
+                  children: [
+                    steps,
+                    Wrap(
+                      spacing: Spacing.s8,
+                      runSpacing: Spacing.s4,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Text(l10n.todayStreak, style: labelStyle),
+                        Text(seriesText, style: seriesStyle),
+                      ],
+                    ),
+                  ],
                 );
               }
               return Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: Spacing.s16,
+                spacing: Spacing.s12,
                 children: [
                   Expanded(child: steps),
-                  Expanded(child: series),
+                  SizedBox(
+                    height: 52,
+                    child: VerticalDivider(
+                      width: 1,
+                      color: theme.colorScheme.outlineVariant,
+                    ),
+                  ),
+                  SizedBox(
+                    width: seriesWidth,
+                    child: _Metric(
+                      label: l10n.todayStreak,
+                      labelStyle: labelStyle,
+                      value: seriesText,
+                      style: seriesStyle,
+                    ),
+                  ),
                 ],
               );
             },
           ),
+          Divider(height: 1, color: theme.colorScheme.outlineVariant),
           Text(
             l10n.todayStreakThreshold(streakDayThreshold),
             style: theme.textTheme.labelMedium?.copyWith(
@@ -85,32 +130,48 @@ class TodayDailySummary extends StatelessWidget {
       ),
     );
   }
+
+  static double _width(BuildContext context, String text, TextStyle style) {
+    final painter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      textDirection: Directionality.of(context),
+      textScaler: MediaQuery.textScalerOf(context),
+    )..layout();
+    final width = painter.width;
+    painter.dispose();
+    return width;
+  }
 }
 
 class _Metric extends StatelessWidget {
   const _Metric({
     required this.label,
+    required this.labelStyle,
     required this.value,
     required this.style,
+    this.singleLine = false,
   });
 
   final String label;
+  final TextStyle labelStyle;
   final String value;
   final TextStyle? style;
+  final bool singleLine;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: theme.textTheme.labelMedium?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant,
-          ),
-        ),
-        Text(value, style: style),
+        Text(label, style: labelStyle),
+        if (singleLine)
+          FittedBox(
+            alignment: AlignmentDirectional.centerStart,
+            fit: BoxFit.scaleDown,
+            child: Text(value, style: style),
+          )
+        else
+          Text(value, style: style),
       ],
     );
   }
@@ -131,7 +192,7 @@ class _StreakDay extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
-    final colors = StepfoldColors.of(context);
+    final colors = KitRelief.of(context);
     final date = DateTime.utc(day.year, day.month, day.day);
     final dayLabel = DateFormat.EEEE(l10n.localeName).format(date);
     return Semantics(
@@ -149,7 +210,7 @@ class _StreakDay extends StatelessWidget {
               DateFormat.E(l10n.localeName).format(date),
               style: theme.textTheme.labelMedium?.copyWith(
                 color: today
-                    ? colors.primaryText
+                    ? colors.accent
                     : theme.colorScheme.onSurfaceVariant,
               ),
             ),
@@ -158,15 +219,18 @@ class _StreakDay extends StatelessWidget {
             dimension: 24,
             child: Center(
               child: Container(
-                width: today ? 24 : 20,
-                height: today ? 24 : 20,
+                width: 13,
+                height: 13,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: reached ? theme.colorScheme.primary : null,
+                  color: reached ? colors.accent : null,
                   border: reached
                       ? null
                       : Border.all(color: theme.colorScheme.outline),
                 ),
+                child: today && reached
+                    ? Icon(Icons.check, size: 10, color: colors.onAction)
+                    : null,
               ),
             ),
           ),

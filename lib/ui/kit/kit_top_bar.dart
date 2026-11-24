@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:walks/ui/kit/kit_icon.dart';
+import 'package:walks/ui/kit/kit_surface.dart';
 import 'package:walks/ui/theme/theme.dart';
 
 /// An action on the right of [KitTopBar].
@@ -53,7 +54,7 @@ class KitTopBar extends StatelessWidget implements PreferredSizeWidget {
     final onBack = this.onBack;
     final action = this.action;
     return Material(
-      color: theme.colorScheme.surface,
+      color: theme.scaffoldBackgroundColor,
       child: SafeArea(
         bottom: false,
         child: SizedBox(
@@ -66,7 +67,7 @@ class KitTopBar extends StatelessWidget implements PreferredSizeWidget {
             child: Row(
               children: [
                 if (onBack != null)
-                  _IconAction(
+                  KitIconAction(
                     icon: KitIcons.arrowLeft,
                     label: backLabel ?? '',
                     onPressed: onBack,
@@ -80,7 +81,7 @@ class KitTopBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 ),
                 if (action != null)
-                  _IconAction(
+                  KitIconAction(
                     icon: action.icon,
                     label: action.label,
                     onPressed: action.onPressed,
@@ -94,24 +95,43 @@ class KitTopBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
-class _IconAction extends StatelessWidget {
-  const _IconAction({
+/// A compact action set into a surface, with a 48-unit touch target.
+class KitIconAction extends StatelessWidget {
+  /// Creates a recessed icon action.
+  const KitIconAction({
     required this.icon,
     required this.label,
     required this.onPressed,
+    super.key,
   });
 
+  /// The symbol for the action.
   final KitIcons icon;
+
+  /// Tooltip and accessible action name.
   final String label;
+
+  /// Called when the button is pressed.
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: onPressed,
-      tooltip: label,
-      constraints: const BoxConstraints.tightFor(width: 48, height: 48),
-      icon: KitIcon(icon, color: Theme.of(context).colorScheme.onSurface),
+    return KitSurface(
+      kind: KitSurfaceKind.recessed,
+      padding: EdgeInsets.zero,
+      child: IconButton(
+        onPressed: onPressed,
+        tooltip: label,
+        constraints: const BoxConstraints.tightFor(width: 48, height: 48),
+        style: const ButtonStyle(
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+            ),
+          ),
+        ),
+        icon: KitIcon(icon, color: Theme.of(context).colorScheme.onSurface),
+      ),
     );
   }
 }

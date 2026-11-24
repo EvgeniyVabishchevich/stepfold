@@ -65,7 +65,7 @@ class HomeShellPage extends StatelessWidget {
   );
 }
 
-/// The frame around the four tabs: the open tab and the bottom bar.
+/// The frame around the tabs: the open tab and the bottom bar.
 ///
 /// Knows nothing of the router: the router hands it the tab content and
 /// says which tab is open.
@@ -78,7 +78,7 @@ class HomeShellView extends StatelessWidget {
     super.key,
   });
 
-  /// Index of the open tab: Today, Catalog, World, Album.
+  /// Index of the open tab.
   final int currentIndex;
 
   /// Called with the index of the tab the user tapped.
@@ -96,10 +96,11 @@ class HomeShellView extends StatelessWidget {
         selectedIndex: currentIndex,
         onSelected: onTabSelected,
         tabs: [
-          KitTab(icon: KitIcons.footprints, label: l10n.tabToday),
-          KitTab(icon: KitIcons.books, label: l10n.tabCatalog),
-          KitTab(icon: KitIcons.globeHemisphereWest, label: l10n.tabWorld),
-          KitTab(icon: KitIcons.cards, label: l10n.tabAlbum),
+          KitTab(icon: KitIcons.navWalk, label: l10n.tabToday),
+          KitTab(icon: KitIcons.navCatalog, label: l10n.tabCatalog),
+          KitTab(icon: KitIcons.navWorld, label: l10n.tabWorld),
+          KitTab(icon: KitIcons.navAlbum, label: l10n.tabAlbum),
+          KitTab(icon: KitIcons.navSettings, label: l10n.tabSettings),
         ],
       ),
     );

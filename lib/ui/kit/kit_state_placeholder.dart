@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:walks/ui/kit/kit_button.dart';
 import 'package:walks/ui/kit/kit_icon.dart';
+import 'package:walks/ui/kit/kit_surface.dart';
 import 'package:walks/ui/theme/theme.dart';
 
 /// What a screen shows instead of its content: empty, loading or failed.
@@ -62,35 +63,37 @@ class KitStatePlaceholder extends StatelessWidget {
     final scheme = theme.colorScheme;
     final colors = StepfoldColors.of(context);
     if (_loading) return const _Skeleton();
-    return Padding(
-      padding: const EdgeInsets.all(Spacing.s24),
+    return KitSurface(
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: Spacing.s8,
         children: [
-          KitIcon(
-            icon!,
-            size: 64,
-            color: scheme.onSurfaceVariant,
-            fillColor: scheme.primary.withValues(alpha: colors.iconFillIdle),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: Spacing.s8,
+            children: [
+              KitIcon(
+                icon!,
+                size: 22,
+                color: _actionKind == KitButtonKind.secondary
+                    ? scheme.error
+                    : scheme.onSurfaceVariant,
+                fillColor: scheme.primary.withValues(
+                  alpha: colors.iconFillIdle,
+                ),
+              ),
+              Expanded(child: Text(title!, style: theme.textTheme.titleMedium)),
+            ],
           ),
-          const SizedBox(height: Spacing.s16),
-          Text(
-            title!,
-            style: theme.textTheme.titleLarge,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: Spacing.s8),
           Text(
             message!,
-            style: theme.textTheme.bodyLarge?.copyWith(
+            style: theme.textTheme.bodyMedium?.copyWith(
               color: scheme.onSurfaceVariant,
             ),
-            textAlign: TextAlign.center,
           ),
-          if (actionLabel case final label?) ...[
-            const SizedBox(height: Spacing.s24),
+          if (actionLabel case final label?)
             KitButton(kind: _actionKind, label: label, onPressed: onAction),
-          ],
         ],
       ),
     );
@@ -113,21 +116,12 @@ class _Skeleton extends StatelessWidget {
     );
     return Semantics(
       label: MaterialLocalizations.of(context).refreshIndicatorSemanticLabel,
-      child: Padding(
-        padding: const EdgeInsets.all(Spacing.s24),
+      child: KitSurface(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
-            block(64, 64, Radii.small),
-            const SizedBox(height: Spacing.s16),
-            block(200, 20, 10),
-            const SizedBox(height: Spacing.s12),
-            block(280, 14, 7),
-            const SizedBox(height: Spacing.s8),
-            block(220, 14, 7),
-            const SizedBox(height: Spacing.s24),
-            block(160, 48, Radii.small),
-          ],
+          crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: Spacing.s12,
+          children: [block(120, 10, 5), block(216, 10, 5), block(260, 10, 5)],
         ),
       ),
     );

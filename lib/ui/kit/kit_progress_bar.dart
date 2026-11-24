@@ -1,44 +1,50 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:walks/ui/theme/theme.dart';
+import 'package:walks/ui/kit/kit_surface.dart';
 
-/// A thin bar of progress toward a goal, 8 tall, fully rounded.
-///
-/// In [debt] it turns calm amber: steps are owed, nothing is broken.
+/// The filled share of a goal. A short leading mark indicates debt.
 class KitProgressBar extends StatelessWidget {
-  /// Creates the bar filled to [value], from 0 to 1.
+  /// Creates a bar filled to [value], from zero to one.
   const KitProgressBar({required this.value, this.debt = false, super.key});
 
-  /// How full, from 0 to 1; values outside are clamped.
+  /// How full the progress is.
   final double value;
 
-  /// Whether the reserve is below zero.
+  /// Whether the available balance is below zero.
   final bool debt;
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final fill = debt ? StepfoldColors.of(context).debt : scheme.primary;
-    return ClipRRect(
-      borderRadius: const BorderRadius.all(Radius.circular(4)),
-      child: SizedBox(
-        height: 8,
-        child: ColoredBox(
-          color: scheme.surfaceContainerHighest,
-          child: Align(
-            alignment: AlignmentDirectional.centerStart,
-            child: FractionallySizedBox(
-              widthFactor: value.clamp(0, 1),
-              heightFactor: 1,
-              child: DecoratedBox(
-                decoration: ShapeDecoration(
-                  color: fill,
-                  shape: const StadiumBorder(),
+    final colors = KitRelief.of(context);
+    final fill = debt ? Theme.of(context).colorScheme.error : colors.accent;
+    return SizedBox(
+      height: 8,
+      child: DecoratedBox(
+        decoration: ShapeDecoration(
+          color: colors.track,
+          shape: const StadiumBorder(),
+        ),
+        child: Align(
+          alignment: AlignmentDirectional.centerStart,
+          child: debt
+              ? SizedBox(width: 4, height: 8, child: _Fill(color: fill))
+              : FractionallySizedBox(
+                  widthFactor: value.clamp(0, 1),
+                  heightFactor: 1,
+                  child: _Fill(color: fill),
                 ),
-              ),
-            ),
-          ),
         ),
       ),
     );
   }
+}
+
+class _Fill extends StatelessWidget {
+  const _Fill({required this.color});
+
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+    decoration: ShapeDecoration(color: color, shape: const StadiumBorder()),
+  );
 }

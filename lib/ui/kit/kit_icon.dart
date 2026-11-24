@@ -25,7 +25,28 @@ enum KitIcons {
   arrowLeft(duotone: false),
 
   /// Settings.
-  gearSix(duotone: false);
+  gearSix(duotone: false),
+
+  /// Stepfold walking trail.
+  navWalk(duotone: false),
+
+  /// Stepfold catalog bookmark.
+  navCatalog(duotone: false),
+
+  /// Stepfold globe.
+  navWorld(duotone: false),
+
+  /// Stepfold collectible cards.
+  navAlbum(duotone: false),
+
+  /// Stepfold settings.
+  navSettings(duotone: false),
+
+  /// Step history shortcut.
+  historyClock(duotone: false),
+
+  /// Distance milestone.
+  milestonePeak(duotone: false);
 
   const KitIcons({required this.duotone});
 

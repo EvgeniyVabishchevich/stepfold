@@ -28,6 +28,9 @@ abstract final class Routes {
   /// The Album tab.
   static const album = '/album';
 
+  /// The Settings tab.
+  static const settings = '/settings';
+
   /// A chapter reader on the root navigator.
   static const chapter = '/chapter/:progressionId/:chapterId';
 

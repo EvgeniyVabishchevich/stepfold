@@ -9,15 +9,16 @@ Widget bottomNavigation(BuildContext context) => Align(
   child: KitBottomNavigation(
     selectedIndex: context.knobs.int.slider(
       label: 'Открыта',
-      max: 3,
-      divisions: 3,
+      max: 4,
+      divisions: 4,
     ),
     onSelected: (_) {},
     tabs: const [
-      KitTab(icon: KitIcons.footprints, label: 'Сегодня'),
-      KitTab(icon: KitIcons.books, label: 'Каталог'),
-      KitTab(icon: KitIcons.globeHemisphereWest, label: 'Мир'),
-      KitTab(icon: KitIcons.cards, label: 'Альбом'),
+      KitTab(icon: KitIcons.navWalk, label: 'Сегодня'),
+      KitTab(icon: KitIcons.navCatalog, label: 'Каталог'),
+      KitTab(icon: KitIcons.navWorld, label: 'Мир'),
+      KitTab(icon: KitIcons.navAlbum, label: 'Альбом'),
+      KitTab(icon: KitIcons.navSettings, label: 'Настройки'),
     ],
   ),
 );

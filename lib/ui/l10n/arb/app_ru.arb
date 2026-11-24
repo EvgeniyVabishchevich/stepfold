@@ -20,6 +20,20 @@
   "@tabAlbum": {
     "description": "Bottom bar tab: rewards by kind."
   },
+  "tabSettings": "Настройки",
+  "@tabSettings": {
+    "description": "Bottom bar tab: app settings."
+  },
+  "todayMilestone": "Веха пути",
+  "todayMilestoneUnder": "Пройдено меньше 0,01% высоты Эвереста.",
+  "todayMilestonePercent": "Пройдено примерно {ratio}% высоты Эвереста.",
+  "@todayMilestonePercent": {
+    "placeholders": { "ratio": { "type": "String" } }
+  },
+  "todayMilestoneMultiple": "Пройдено примерно {ratio} высоты Эвереста.",
+  "@todayMilestoneMultiple": {
+    "placeholders": { "ratio": { "type": "String" } }
+  },
   "todaySteps": "Шаги сегодня",
   "todayUnknownSteps": "—",
   "todayStreak": "Серия",

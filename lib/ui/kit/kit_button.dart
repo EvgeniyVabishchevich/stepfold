@@ -1,23 +1,21 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:walks/ui/kit/kit_surface.dart';
+import 'package:walks/ui/theme/theme.dart';
 
-/// The three buttons of the kit.
+/// The three emphasis levels of a kit button.
 enum KitButtonKind {
-  /// The one main action of a screen: filled.
+  /// The filled, raised action.
   primary,
 
-  /// A second action: outlined.
+  /// The tonal action.
   secondary,
 
-  /// A quiet action: text only.
+  /// A quiet text action.
   text,
 }
 
-/// A button of the kit; its look comes from the theme.
-///
-/// Disabled when [onPressed] is null. While [loading], a spinner replaces
-/// the label, the button keeps its width and ignores taps, so a second tap
-/// cannot start the action twice.
-class KitButton extends StatelessWidget {
+/// An action with relief and a stable size while it is loading.
+class KitButton extends StatefulWidget {
   /// Creates a button of [kind].
   const KitButton({
     required this.kind,
@@ -27,67 +25,167 @@ class KitButton extends StatelessWidget {
     super.key,
   });
 
-  /// Filled, outlined or text.
+  /// The emphasis level.
   final KitButtonKind kind;
 
-  /// What the button does, as the user reads it.
+  /// The readable action label.
   final String label;
 
-  /// The action; null disables the button.
+  /// The action, or null when the control is disabled.
   final VoidCallback? onPressed;
 
-  /// Whether the action is running.
+  /// Whether the action is in progress.
   final bool loading;
 
   @override
+  State<KitButton> createState() => _KitButtonState();
+}
+
+class _KitButtonState extends State<KitButton> {
+  final _states = WidgetStatesController();
+
+  @override
+  void dispose() {
+    _states.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final child = _Label(label: label, loading: loading);
-    // Retain the loading appearance from the kit while blocking activation.
-    final onPressed = loading ? _ignore : this.onPressed;
-    final button = switch (kind) {
-      KitButtonKind.primary => FilledButton(onPressed: onPressed, child: child),
-      KitButtonKind.secondary => OutlinedButton(
-        onPressed: onPressed,
+    final colors = KitRelief.of(context);
+    final primary = widget.kind == KitButtonKind.primary;
+    final tonal = widget.kind == KitButtonKind.secondary;
+    final disabled = widget.onPressed == null && !widget.loading;
+    final foreground = disabled
+        ? colors.onDisabled
+        : primary
+        ? colors.onAction
+        : tonal
+        ? Theme.of(context).colorScheme.onSurface
+        : colors.accent;
+    final style = ButtonStyle(
+      minimumSize: const WidgetStatePropertyAll(Size(48, 52)),
+      padding: const WidgetStatePropertyAll(
+        EdgeInsets.symmetric(horizontal: Spacing.s24, vertical: Spacing.s12),
+      ),
+      shape: const WidgetStatePropertyAll(StadiumBorder()),
+      side: const WidgetStatePropertyAll(BorderSide.none),
+      backgroundColor: const WidgetStatePropertyAll(Colors.transparent),
+      foregroundColor: WidgetStatePropertyAll(foreground),
+      overlayColor: WidgetStatePropertyAll(foreground.withValues(alpha: .10)),
+      elevation: const WidgetStatePropertyAll(0),
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      textStyle: WidgetStatePropertyAll(
+        Theme.of(context).textTheme.titleMedium?.copyWith(
+          fontSize: 15,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+    final label = Text(widget.label, textAlign: TextAlign.center);
+    final child = widget.loading
+        ? Stack(
+            alignment: Alignment.center,
+            children: [
+              Visibility.maintain(visible: false, child: label),
+              SizedBox.square(
+                dimension: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: foreground,
+                ),
+              ),
+            ],
+          )
+        : label;
+    final action = widget.loading ? () {} : widget.onPressed;
+    final button = switch (widget.kind) {
+      KitButtonKind.primary => FilledButton(
+        onPressed: action,
+        style: style,
+        statesController: _states,
         child: child,
       ),
-      KitButtonKind.text => TextButton(onPressed: onPressed, child: child),
+      KitButtonKind.secondary => OutlinedButton(
+        onPressed: action,
+        style: style,
+        statesController: _states,
+        child: child,
+      ),
+      KitButtonKind.text => TextButton(
+        onPressed: action,
+        style: style,
+        statesController: _states,
+        child: child,
+      ),
     };
-    if (!loading) return button;
-
+    final raised = primary && !disabled;
+    final control = Stack(
+      fit: StackFit.passthrough,
+      children: [
+        Positioned.fill(
+          child: ValueListenableBuilder(
+            valueListenable: _states,
+            builder: (context, states, _) {
+              final pressed = states.contains(WidgetState.pressed);
+              final color = disabled
+                  ? tonal || primary
+                        ? colors.disabled
+                        : Colors.transparent
+                  : primary
+                  ? colors.pressed
+                  : tonal
+                  ? pressed
+                        ? colors.track
+                        : colors.recess
+                  : pressed
+                  ? colors.recess
+                  : Colors.transparent;
+              return Stack(
+                fit: StackFit.expand,
+                children: [
+                  if (raised && !pressed)
+                    DecoratedBox(
+                      decoration: ShapeDecoration(
+                        color: colors.rim,
+                        shape: const StadiumBorder(),
+                      ),
+                    ),
+                  Positioned.fill(
+                    top: raised && pressed ? 3 : 0,
+                    bottom: raised && !pressed ? 4 : 0,
+                    child: DecoratedBox(
+                      decoration: ShapeDecoration(
+                        color: raised && !pressed ? null : color,
+                        gradient: raised && !pressed
+                            ? LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [colors.action, colors.actionEnd],
+                              )
+                            : null,
+                        shape: const StadiumBorder(),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(bottom: primary ? 4 : 0),
+          child: button,
+        ),
+      ],
+    );
+    if (!widget.loading) return control;
     return Semantics(
-      label: label,
+      label: widget.label,
       button: true,
       enabled: false,
       excludeSemantics: true,
-      child: AbsorbPointer(child: ExcludeFocus(child: button)),
-    );
-  }
-}
-
-void _ignore() {}
-
-class _Label extends StatelessWidget {
-  const _Label({required this.label, required this.loading});
-
-  final String label;
-  final bool loading;
-
-  @override
-  Widget build(BuildContext context) {
-    if (!loading) return Text(label);
-    // The hidden label keeps the width, so the layout does not jump.
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Visibility.maintain(visible: false, child: Text(label)),
-        SizedBox.square(
-          dimension: 20,
-          child: CircularProgressIndicator(
-            strokeWidth: 2,
-            color: DefaultTextStyle.of(context).style.color,
-          ),
-        ),
-      ],
+      child: AbsorbPointer(child: ExcludeFocus(child: control)),
     );
   }
 }

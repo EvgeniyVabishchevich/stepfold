@@ -118,9 +118,17 @@ class TodayView extends StatelessWidget {
     return SafeArea(
       bottom: false,
       child: ListView(
-        padding: const EdgeInsets.all(Spacing.s16),
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.sizeOf(context).width <= 320
+              ? Spacing.s12
+              : Spacing.s16,
+          vertical: Spacing.s16,
+        ),
         children: [
-          TodayHeading(day: state.day, onLongPress: onOpenDevMenu),
+          TodayHeading(
+            onLongPress: onOpenDevMenu,
+            onOpenHistory: onOpenHistory,
+          ),
           const SizedBox(height: Spacing.s16),
           if (state.progressFailure case final failure?)
             KitStatePlaceholder.error(
@@ -131,19 +139,15 @@ class TodayView extends StatelessWidget {
               actionLabel: l10n.retry,
               onAction: onRetryProgress,
             )
-          else if (progress == null)
-            const KitStatePlaceholder.loading()
-          else ...[
+          else if (progress == null) ...[
+            const KitStatePlaceholder.loading(),
+            const SizedBox(height: Spacing.s12),
+            const KitStatePlaceholder.loading(),
+            const SizedBox(height: Spacing.s12),
+            const KitStatePlaceholder.loading(),
+          ] else ...[
             TodayDailySummary(progress: progress, day: state.day),
-            const SizedBox(height: Spacing.s16),
-            if (onOpenHistory case final onOpenHistory?) ...[
-              KitButton(
-                kind: KitButtonKind.secondary,
-                label: l10n.historyTitle,
-                onPressed: onOpenHistory,
-              ),
-              const SizedBox(height: Spacing.s16),
-            ],
+            const SizedBox(height: Spacing.s12),
             TodayGoalCard(
               progress: progress,
               state: state,
@@ -154,6 +158,9 @@ class TodayView extends StatelessWidget {
             if (_counterNotice(context) case final notice?) ...[
               const SizedBox(height: Spacing.s16),
               notice,
+            ] else if (!sync.checking && progress.totalSteps > 0) ...[
+              const SizedBox(height: Spacing.s12),
+              TodayMilestone(steps: progress.totalSteps),
             ],
           ],
         ],

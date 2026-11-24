@@ -17,10 +17,10 @@ import 'package:walks/ui/pages/pages.dart';
 /// │  ├─ /catalog
 /// │  │  └─ :progressionId (chapters, bar stays)
 /// │  ├─ /world
-/// │  └─ /album
+/// │  ├─ /album
+/// │  └─ /settings
 /// ├─ /chapter/:progressionId/:chapterId (full screen over the tabs)
 /// ├─ /paywall               (modal over the tabs)
-/// ├─ /settings              (over the tabs)
 /// └─ /dev                   (developer menu, not in release)
 /// ```
 ///
@@ -83,6 +83,7 @@ GoRouter createRouter({String initialLocation = Routes.today}) {
           ),
           _tab(Routes.world, (context, state) => const WorldPage()),
           _tab(Routes.album, (context, state) => const AlbumPage()),
+          _tab(Routes.settings, (context, state) => const SettingsPage()),
         ],
       ),
       // Routes outside the shell go on the root navigator, over the tabs.
